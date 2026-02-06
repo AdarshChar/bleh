@@ -129,7 +129,7 @@ CREATE TABLE api_company (
   accounting_email VARCHAR(254) NOT NULL UNIQUE,
   software_logo VARCHAR(1000) NOT NULL,
   software_name VARCHAR(50) NOT NULL,
-  standard_currency_id INTEGER REFERENCES api_currency(id)
+  standard_currency_id INTEGER
 );
 
 -- Business unit model
@@ -137,7 +137,7 @@ CREATE TABLE api_businessunitmodel (
   business_unit_id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   accounting_email VARCHAR(254) NOT NULL,
-  location_id INTEGER NOT NULL REFERENCES api_locationmodel(location_id)
+  location_id INTEGER NOT NULL
 );
 
 -- Cost centre model
@@ -201,17 +201,17 @@ CREATE TABLE api_detaileduser (
   image_url TEXT NOT NULL,
   agreement_accepted BOOLEAN NOT NULL,
   first_time_login BOOLEAN NOT NULL,
-  business_unit_id INTEGER REFERENCES api_businessunitmodel(business_unit_id),
-  company_id CHAR(32) REFERENCES api_company(company_id),
-  role_permissions_id INTEGER REFERENCES api_rolepermissions(id),
-  cost_centre_id INTEGER REFERENCES api_costcentremodel(cost_centre_id)
+  business_unit_id INTEGER,
+  company_id CHAR(32),
+  role_permissions_id INTEGER,
+  cost_centre_id INTEGER
 );
 
 -- Detailed user location (many-to-many)
 CREATE TABLE api_detaileduser_location (
   id SERIAL PRIMARY KEY,
-  detaileduser_id INTEGER NOT NULL REFERENCES api_detaileduser(detailed_user_id),
-  locationmodel_id INTEGER NOT NULL REFERENCES api_locationmodel(location_id),
+  detaileduser_id INTEGER NOT NULL,
+  locationmodel_id INTEGER NOT NULL,
   UNIQUE(detaileduser_id, locationmodel_id)
 );
 
@@ -221,8 +221,8 @@ CREATE TABLE api_fueltype (
   name VARCHAR(50) NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Job specification
@@ -272,8 +272,8 @@ CREATE TABLE api_assettypechecks (
   other_leaks BOOLEAN NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
+  created_by_id INTEGER,
+  modified_by_id INTEGER,
   anchoring_system BOOLEAN NOT NULL,
   communication BOOLEAN NOT NULL,
   electrical BOOLEAN NOT NULL,
@@ -293,9 +293,9 @@ CREATE TABLE api_assettypemodel (
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
   custom_fields TEXT,
-  asset_type_checks_id INTEGER REFERENCES api_assettypechecks(id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  asset_type_checks_id INTEGER,
+  created_by_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Asset manufacturer model
@@ -304,15 +304,15 @@ CREATE TABLE api_assetmanufacturermodel (
   name VARCHAR(100) NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Asset manufacturer model asset type (many-to-many)
 CREATE TABLE api_assetmanufacturermodel_asset_type (
   id SERIAL PRIMARY KEY,
-  assetmanufacturermodel_id INTEGER NOT NULL REFERENCES api_assetmanufacturermodel(id),
-  assettypemodel_id INTEGER NOT NULL REFERENCES api_assettypemodel(id),
+  assetmanufacturermodel_id INTEGER NOT NULL,
+  assettypemodel_id INTEGER NOT NULL,
   UNIQUE(assetmanufacturermodel_id, assettypemodel_id)
 );
 
@@ -325,11 +325,11 @@ CREATE TABLE api_equipmenttypemodel (
   date_modified TIMESTAMP NOT NULL,
   fuel_tank_capacity DOUBLE PRECISION,
   fuel_tank_capacity_unit VARCHAR(50),
-  asset_type_id INTEGER REFERENCES api_assettypemodel(id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  fuel_id INTEGER REFERENCES api_fueltype(id),
-  manufacturer_id INTEGER REFERENCES api_assetmanufacturermodel(id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  asset_type_id INTEGER,
+  created_by_id INTEGER,
+  fuel_id INTEGER,
+  manufacturer_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Asset model
@@ -372,18 +372,18 @@ CREATE TABLE api_assetmodel (
   custom_fields TEXT,
   overdue_date_variance INTEGER NOT NULL,
   due_soon_date_variance INTEGER NOT NULL,
-  company_id CHAR(32) REFERENCES api_company(company_id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  current_location_id INTEGER REFERENCES api_locationmodel(location_id),
-  department_id INTEGER REFERENCES api_businessunitmodel(business_unit_id),
-  equipment_type_id INTEGER REFERENCES api_equipmenttypemodel(equipment_type_id),
-  fuel_id INTEGER REFERENCES api_fueltype(id),
-  job_specification_id INTEGER REFERENCES api_jobspecification(job_specification_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  original_location_id INTEGER REFERENCES api_locationmodel(location_id),
-  parent_id VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  cost_centre_id INTEGER REFERENCES api_costcentremodel(cost_centre_id),
+  company_id CHAR(32),
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  current_location_id INTEGER,
+  department_id INTEGER,
+  equipment_type_id INTEGER,
+  fuel_id INTEGER,
+  job_specification_id INTEGER,
+  modified_by_id INTEGER,
+  original_location_id INTEGER,
+  parent_id VARCHAR(100),
+  cost_centre_id INTEGER,
   lifespan_years INTEGER NOT NULL
 );
 
@@ -392,7 +392,7 @@ CREATE TABLE api_enginemodel (
   engine_id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   hours DOUBLE PRECISION NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
+  "VIN_id" VARCHAR(100) NOT NULL,
   daily_average_hours DOUBLE PRECISION NOT NULL
 );
 
@@ -425,7 +425,7 @@ CREATE TABLE api_approvedvendorsmodel (
   address VARCHAR(100) NOT NULL,
   website VARCHAR(1000) NOT NULL,
   primary_email VARCHAR(254) NOT NULL,
-  vendor_department_id INTEGER REFERENCES api_approvedvendordepartments(id),
+  vendor_department_id INTEGER,
   rating DOUBLE PRECISION NOT NULL,
   vendor_task_id VARCHAR(100)
 );
@@ -433,8 +433,8 @@ CREATE TABLE api_approvedvendorsmodel (
 -- Approved vendors model vendor services (many-to-many)
 CREATE TABLE api_approvedvendorsmodel_vendor_services (
   id SERIAL PRIMARY KEY,
-  approvedvendorsmodel_id INTEGER NOT NULL REFERENCES api_approvedvendorsmodel(vendor_id),
-  approvedvendorservices_id INTEGER NOT NULL REFERENCES api_approvedvendorservices(id),
+  approvedvendorsmodel_id INTEGER NOT NULL,
+  approvedvendorservices_id INTEGER NOT NULL,
   UNIQUE(approvedvendorsmodel_id, approvedvendorservices_id)
 );
 
@@ -459,11 +459,11 @@ CREATE TABLE api_assetdisposalmodel (
   status VARCHAR(50) NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id),
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  vendor_id INTEGER,
   estimated_cost DOUBLE PRECISION,
   potential_vendor_ids VARCHAR(1000),
   quote_deadline TIMESTAMP,
@@ -487,11 +487,11 @@ CREATE TABLE api_accidentmodel (
   downtime_hours DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  disposal_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Accident file model
@@ -502,7 +502,7 @@ CREATE TABLE api_accidentfilemodel (
   file_url TEXT NOT NULL,
   bytes BIGINT NOT NULL,
   file_created TIMESTAMP NOT NULL,
-  accident_id INTEGER REFERENCES api_accidentmodel(accident_id)
+  accident_id INTEGER
 );
 
 -- Maintenance request model
@@ -521,12 +521,12 @@ CREATE TABLE api_maintenancerequestmodel (
   mileage DOUBLE PRECISION NOT NULL,
   hours DOUBLE PRECISION NOT NULL,
   status VARCHAR(50) NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  assigned_vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  inspection_type_id INTEGER NOT NULL REFERENCES api_inspectiontypemodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
+  "VIN_id" VARCHAR(100) NOT NULL,
+  assigned_vendor_id INTEGER,
+  created_by_id INTEGER,
+  inspection_type_id INTEGER NOT NULL,
+  location_id INTEGER,
+  modified_by_id INTEGER,
   description TEXT NOT NULL,
   estimated_cost DOUBLE PRECISION,
   potential_vendor_ids VARCHAR(1000),
@@ -554,12 +554,12 @@ CREATE TABLE api_repairsmodel (
   hours DOUBLE PRECISION NOT NULL,
   is_urgent BOOLEAN NOT NULL,
   status VARCHAR(50) NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id),
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  disposal_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  vendor_id INTEGER,
   estimated_cost DOUBLE PRECISION,
   potential_vendor_ids VARCHAR(1000),
   quote_deadline TIMESTAMP,
@@ -573,8 +573,8 @@ CREATE TABLE api_assetissuecategory (
   name VARCHAR(100) NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Asset issue model
@@ -588,13 +588,13 @@ CREATE TABLE api_assetissuemodel (
   is_resolved BOOLEAN NOT NULL,
   issue_created TIMESTAMP NOT NULL,
   issue_updated TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  accident_id_id INTEGER REFERENCES api_accidentmodel(accident_id),
-  category_id INTEGER REFERENCES api_assetissuecategory(id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  "VIN_id" VARCHAR(100) NOT NULL,
+  accident_id_id INTEGER,
+  category_id INTEGER,
+  created_by_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  repair_id_id INTEGER
 );
 
 -- Asset daily checks model
@@ -638,10 +638,10 @@ CREATE TABLE api_assetdailychecksmodel (
   hydraulic_hoses BOOLEAN,
   trailer_air_lines BOOLEAN,
   other_leaks BOOLEAN,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
   anchoring_system BOOLEAN,
   communication BOOLEAN,
   electrical BOOLEAN,
@@ -663,9 +663,9 @@ CREATE TABLE api_assetfile (
   date_created DATE NOT NULL,
   date_modified DATE NOT NULL,
   expiration_date DATE,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Asset request justification model
@@ -686,16 +686,16 @@ CREATE TABLE api_assetrequestmodel (
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
   quantity INTEGER NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  business_unit_id INTEGER NOT NULL REFERENCES api_businessunitmodel(business_unit_id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  equipment_id INTEGER NOT NULL REFERENCES api_equipmenttypemodel(equipment_type_id),
-  justification_id INTEGER NOT NULL REFERENCES api_assetrequestjustificationmodel(justification_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id),
-  cost_centre_id INTEGER REFERENCES api_costcentremodel(cost_centre_id),
+  "VIN_id" VARCHAR(100),
+  business_unit_id INTEGER NOT NULL,
+  created_by_id INTEGER,
+  disposal_id INTEGER,
+  equipment_id INTEGER NOT NULL,
+  justification_id INTEGER NOT NULL,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  vendor_id INTEGER,
+  cost_centre_id INTEGER,
   potential_vendor_ids VARCHAR(1000),
   vendor_delivery BOOLEAN,
   date_delivered TIMESTAMP,
@@ -712,15 +712,15 @@ CREATE TABLE api_approval (
   is_approved BOOLEAN,
   date_created DATE NOT NULL,
   date_modified DATE NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  approving_user_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  asset_request_id INTEGER REFERENCES api_assetrequestmodel(id),
+  "VIN_id" VARCHAR(100),
+  approving_user_id INTEGER,
+  asset_request_id INTEGER,
   asset_transfer_request_id INTEGER,
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_request_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  repair_request_id INTEGER REFERENCES api_repairsmodel(repair_id),
-  requesting_user_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  disposal_request_id INTEGER REFERENCES api_assetdisposalmodel(id)
+  location_id INTEGER,
+  maintenance_request_id INTEGER,
+  repair_request_id INTEGER,
+  requesting_user_id INTEGER,
+  disposal_request_id INTEGER
 );
 
 -- Asset transfer
@@ -740,16 +740,16 @@ CREATE TABLE api_assettransfer (
   hours DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  destination_location_id INTEGER REFERENCES api_locationmodel(location_id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  original_location_id INTEGER REFERENCES api_locationmodel(location_id),
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  destination_location_id INTEGER,
+  disposal_id INTEGER,
+  modified_by_id INTEGER,
+  original_location_id INTEGER,
   estimated_cost DOUBLE PRECISION,
   potential_vendor_ids VARCHAR(1000),
   quote_deadline TIMESTAMP,
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id),
+  vendor_id INTEGER,
   vendor_contacted_date TIMESTAMP,
   vendor_email VARCHAR(100) NOT NULL
 );
@@ -770,13 +770,13 @@ CREATE TABLE api_parts (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  issue_id INTEGER REFERENCES api_assetissuemodel(issue_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  disposal_id INTEGER,
+  issue_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Labor cost
@@ -790,13 +790,13 @@ CREATE TABLE api_laborcost (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  issue_id INTEGER REFERENCES api_assetissuemodel(issue_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  disposal_id INTEGER,
+  issue_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Delivery cost
@@ -807,14 +807,14 @@ CREATE TABLE api_deliverycost (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  asset_request_id INTEGER REFERENCES api_assetrequestmodel(id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  asset_request_id INTEGER,
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  disposal_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER,
+  repair_id INTEGER
 );
 
 -- Fuel cost
@@ -826,12 +826,12 @@ CREATE TABLE api_fuelcost (
   taxes DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  fuel_type_id INTEGER REFERENCES api_fueltype(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
+  "VIN_id" VARCHAR(100),
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  fuel_type_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
   flagged BOOLEAN NOT NULL
 );
 
@@ -840,9 +840,9 @@ CREATE TABLE api_fuelcostcheck (
   fuel_cost_check_id SERIAL PRIMARY KEY,
   type VARCHAR(20) NOT NULL,
   volume_ratio_threshold DOUBLE PRECISION NOT NULL,
-  company_id CHAR(32) NOT NULL REFERENCES api_company(company_id),
+  company_id CHAR(32) NOT NULL,
   cost_ratio_threshold DOUBLE PRECISION NOT NULL,
-  cost_ratio_type_id INTEGER REFERENCES api_fueltype(id),
+  cost_ratio_type_id INTEGER,
   cost_ratio_units VARCHAR(50)
 );
 
@@ -853,12 +853,12 @@ CREATE TABLE api_insurancecost (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  accident_id INTEGER REFERENCES api_accidentmodel(accident_id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  accident_id INTEGER,
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- License cost
@@ -870,11 +870,11 @@ CREATE TABLE api_licensecost (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Rental cost
@@ -883,14 +883,14 @@ CREATE TABLE api_rentalcost (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  accident_id INTEGER REFERENCES api_accidentmodel(accident_id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  "VIN_id" VARCHAR(100),
+  accident_id INTEGER,
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER,
+  repair_id INTEGER
 );
 
 -- Acquisition cost
@@ -902,11 +902,11 @@ CREATE TABLE api_acquisitioncost (
   misc_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Annual report
@@ -944,8 +944,8 @@ CREATE TABLE api_annualreport (
   crew_qualifications_notes TEXT NOT NULL,
   signature_name VARCHAR(100),
   signature_date VARCHAR(100),
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  file_id INTEGER NOT NULL REFERENCES api_assetfile(file_id),
+  "VIN_id" VARCHAR(100) NOT NULL,
+  file_id INTEGER NOT NULL,
   changed_this_year BOOLEAN NOT NULL,
   damaged_this_year BOOLEAN NOT NULL
 );
@@ -959,10 +959,10 @@ CREATE TABLE api_assetlog (
   content TEXT NOT NULL,
   asset_log_created TIMESTAMP NOT NULL,
   asset_log_updated TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Maintenance forecast rules
@@ -974,12 +974,12 @@ CREATE TABLE api_maintenanceforecastrules (
   hour_cycle DOUBLE PRECISION NOT NULL,
   mileage_cycle DOUBLE PRECISION NOT NULL,
   time_cycle DOUBLE PRECISION NOT NULL,
-  "VIN_id" VARCHAR(100) NOT NULL REFERENCES api_assetmodel("VIN"),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  inspection_type_id INTEGER NOT NULL REFERENCES api_inspectiontypemodel(id),
-  location_id INTEGER NOT NULL REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  linked_engine_id INTEGER REFERENCES api_enginemodel(engine_id)
+  "VIN_id" VARCHAR(100) NOT NULL,
+  created_by_id INTEGER,
+  inspection_type_id INTEGER NOT NULL,
+  location_id INTEGER NOT NULL,
+  modified_by_id INTEGER,
+  linked_engine_id INTEGER
 );
 
 -- Error report
@@ -991,7 +991,7 @@ CREATE TABLE api_errorreport (
   steps_to_reproduce TEXT,
   date_created DATE NOT NULL,
   status VARCHAR(50) NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER
 );
 
 -- Error report file
@@ -1002,7 +1002,7 @@ CREATE TABLE api_errorreportfile (
   file_url TEXT NOT NULL,
   bytes BIGINT NOT NULL,
   file_created TIMESTAMP NOT NULL,
-  error_report_id INTEGER NOT NULL REFERENCES api_errorreport(error_report_id)
+  error_report_id INTEGER NOT NULL
 );
 
 -- Fleet guru
@@ -1019,9 +1019,9 @@ CREATE TABLE api_fuelcard (
   card_id SERIAL PRIMARY KEY,
   expiration DATE,
   is_active BOOLEAN NOT NULL,
-  assigned_employee_id VARCHAR(254) REFERENCES api_detaileduser(email),
-  business_unit_id INTEGER REFERENCES api_businessunitmodel(business_unit_id),
-  issuer_id VARCHAR(254) REFERENCES api_detaileduser(email)
+  assigned_employee_id VARCHAR(254),
+  business_unit_id INTEGER,
+  issuer_id VARCHAR(254)
 );
 
 -- Inventory
@@ -1035,10 +1035,10 @@ CREATE TABLE api_inventory (
   date_of_manufacture DATE,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  equipment_type_id INTEGER REFERENCES api_equipmenttypemodel(equipment_type_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  equipment_type_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Daily inspection
@@ -1082,8 +1082,8 @@ CREATE TABLE api_dailyinspection (
   structural_changes_made_since_last_report BOOLEAN NOT NULL,
   date_created DATE NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  created_by_id INTEGER,
+  modified_by_id INTEGER
 );
 
 -- Notification configuration
@@ -1100,7 +1100,7 @@ CREATE TABLE api_notificationconfiguration (
   business_units TEXT,
   roles TEXT,
   date_modified TIMESTAMP NOT NULL,
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  modified_by_id INTEGER
 );
 
 -- Request quote
@@ -1111,13 +1111,13 @@ CREATE TABLE api_requestquote (
   estimated_cost DOUBLE PRECISION,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  approved_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  asset_request_id INTEGER REFERENCES api_assetrequestmodel(id),
-  disposal_request_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  maintenance_request_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  repair_request_id INTEGER REFERENCES api_repairsmodel(repair_id),
-  transfer_request_id INTEGER REFERENCES api_assettransfer(asset_transfer_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  approved_by_id INTEGER,
+  asset_request_id INTEGER,
+  disposal_request_id INTEGER,
+  maintenance_request_id INTEGER,
+  repair_request_id INTEGER,
+  transfer_request_id INTEGER,
+  vendor_id INTEGER
 );
 
 -- User configuration
@@ -1128,7 +1128,7 @@ CREATE TABLE api_userconfiguration (
   sound_percentage INTEGER NOT NULL CHECK (sound_percentage >= 0),
   dashboard_layout TEXT,
   table_filter TEXT,
-  user_id INTEGER NOT NULL REFERENCES api_detaileduser(detailed_user_id)
+  user_id INTEGER NOT NULL
 );
 
 -- User table layout model
@@ -1136,7 +1136,7 @@ CREATE TABLE api_usertablelayoutmodel (
   id SERIAL PRIMARY KEY,
   key VARCHAR(100) NOT NULL,
   value TEXT,
-  user_id INTEGER NOT NULL REFERENCES api_detaileduser(detailed_user_id)
+  user_id INTEGER NOT NULL
 );
 
 -- Snapshot tables
@@ -1151,7 +1151,7 @@ CREATE TABLE api_snapshotdailycurrency (
   id SERIAL PRIMARY KEY,
   currency_value DOUBLE PRECISION NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  currency_id INTEGER NOT NULL REFERENCES api_currency(id)
+  currency_id INTEGER NOT NULL
 );
 
 CREATE TABLE api_snapshotdailylocationcost (
@@ -1254,9 +1254,9 @@ CREATE TABLE api_accidentmodelhistory (
   accident_summary TEXT,
   downtime_hours DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  accident_id INTEGER NOT NULL REFERENCES api_accidentmodel(accident_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  accident_id INTEGER NOT NULL,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_acquisitioncostmodelhistory (
@@ -1266,11 +1266,11 @@ CREATE TABLE api_acquisitioncostmodelhistory (
   administrative_cost DOUBLE PRECISION NOT NULL,
   misc_cost DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  acquisition_cost_id INTEGER REFERENCES api_acquisitioncost(id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  acquisition_cost_id INTEGER,
+  currency_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_approvalmodelhistory (
@@ -1281,15 +1281,15 @@ CREATE TABLE api_approvalmodelhistory (
   is_approved BOOLEAN,
   accident_summary TEXT,
   date TIMESTAMP NOT NULL,
-  approval_id INTEGER NOT NULL REFERENCES api_approval(approval_id),
-  approving_user_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  asset_request_id INTEGER REFERENCES api_assetrequestmodel(id),
-  asset_transfer_request_id INTEGER REFERENCES api_assettransfer(asset_transfer_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_request_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  repair_request_id INTEGER REFERENCES api_repairsmodel(repair_id),
-  requesting_user_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  disposal_request_id INTEGER REFERENCES api_assetdisposalmodel(id)
+  approval_id INTEGER NOT NULL,
+  approving_user_id INTEGER,
+  asset_request_id INTEGER,
+  asset_transfer_request_id INTEGER,
+  location_id INTEGER,
+  maintenance_request_id INTEGER,
+  repair_request_id INTEGER,
+  requesting_user_id INTEGER,
+  disposal_request_id INTEGER
 );
 
 CREATE TABLE api_assetdailychecksmodelhistory (
@@ -1331,9 +1331,9 @@ CREATE TABLE api_assetdailychecksmodelhistory (
   hydraulic_hoses BOOLEAN,
   trailer_air_lines BOOLEAN,
   other_leaks BOOLEAN,
-  daily_check_id INTEGER REFERENCES api_assetdailychecksmodel(daily_check_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  daily_check_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_assetdailycheckscomment (
@@ -1341,7 +1341,7 @@ CREATE TABLE api_assetdailycheckscomment (
   comment TEXT NOT NULL,
   "check" VARCHAR(50) NOT NULL,
   date_created TIMESTAMP NOT NULL,
-  daily_check_id INTEGER REFERENCES api_assetdailychecksmodel(daily_check_id)
+  daily_check_id INTEGER
 );
 
 CREATE TABLE api_assetdisposalmodelhistory (
@@ -1354,10 +1354,10 @@ CREATE TABLE api_assetdisposalmodelhistory (
   accounting_contacted_date TIMESTAMP,
   available_pickup_date TIMESTAMP,
   date TIMESTAMP NOT NULL,
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  disposal_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_assetdisposalfile (
@@ -1369,9 +1369,9 @@ CREATE TABLE api_assetdisposalfile (
   bytes BIGINT NOT NULL,
   date_created TIMESTAMP NOT NULL,
   expiration_date DATE,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  created_by_id INTEGER,
+  disposal_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_assetissuefilemodel (
@@ -1381,7 +1381,7 @@ CREATE TABLE api_assetissuefilemodel (
   file_url TEXT NOT NULL,
   bytes BIGINT NOT NULL,
   file_created TIMESTAMP NOT NULL,
-  issue_id INTEGER REFERENCES api_assetissuemodel(issue_id)
+  issue_id INTEGER
 );
 
 CREATE TABLE api_assetissuemodelhistory (
@@ -1393,11 +1393,11 @@ CREATE TABLE api_assetissuemodelhistory (
   issue_result VARCHAR(100) NOT NULL,
   is_resolved BOOLEAN NOT NULL,
   date TIMESTAMP NOT NULL,
-  accident_id INTEGER REFERENCES api_accidentmodel(accident_id),
-  issue_id INTEGER REFERENCES api_assetissuemodel(issue_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  accident_id INTEGER,
+  issue_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  repair_id INTEGER
 );
 
 CREATE TABLE api_assetmodelhistory (
@@ -1432,17 +1432,17 @@ CREATE TABLE api_assetmodelhistory (
   custom_fields TEXT,
   overdue_date_variance INTEGER NOT NULL,
   due_soon_date_variance INTEGER NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  company_id CHAR(32) REFERENCES api_company(company_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  current_location_id INTEGER REFERENCES api_locationmodel(location_id),
-  department_id INTEGER REFERENCES api_businessunitmodel(business_unit_id),
-  equipment_type_id INTEGER REFERENCES api_equipmenttypemodel(equipment_type_id),
-  fuel_id INTEGER REFERENCES api_fueltype(id),
-  job_specification_id INTEGER REFERENCES api_jobspecification(job_specification_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  original_location_id INTEGER REFERENCES api_locationmodel(location_id),
-  parent_id VARCHAR(100) REFERENCES api_assetmodel("VIN")
+  "VIN_id" VARCHAR(100),
+  company_id CHAR(32),
+  currency_id INTEGER,
+  current_location_id INTEGER,
+  department_id INTEGER,
+  equipment_type_id INTEGER,
+  fuel_id INTEGER,
+  job_specification_id INTEGER,
+  modified_by_id INTEGER,
+  original_location_id INTEGER,
+  parent_id VARCHAR(100)
 );
 
 CREATE TABLE api_assetrequestfile (
@@ -1454,9 +1454,9 @@ CREATE TABLE api_assetrequestfile (
   bytes BIGINT NOT NULL,
   date_created TIMESTAMP NOT NULL,
   expiration_date DATE,
-  asset_request_id INTEGER REFERENCES api_assetrequestmodel(id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  asset_request_id INTEGER,
+  created_by_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_assetrequestmodelhistory (
@@ -1469,14 +1469,14 @@ CREATE TABLE api_assetrequestmodelhistory (
   status VARCHAR(100) NOT NULL,
   date TIMESTAMP NOT NULL,
   quantity INTEGER NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  asset_request_id INTEGER NOT NULL REFERENCES api_assetrequestmodel(id),
-  business_unit_id INTEGER REFERENCES api_businessunitmodel(business_unit_id),
-  equipment_id INTEGER REFERENCES api_equipmenttypemodel(equipment_type_id),
-  justification_id INTEGER REFERENCES api_assetrequestjustificationmodel(justification_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  "VIN_id" VARCHAR(100),
+  asset_request_id INTEGER NOT NULL,
+  business_unit_id INTEGER,
+  equipment_id INTEGER,
+  justification_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_assettransfermodelhistory (
@@ -1494,11 +1494,11 @@ CREATE TABLE api_assettransfermodelhistory (
   mileage DOUBLE PRECISION NOT NULL,
   hours DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  asset_transfer_id INTEGER NOT NULL REFERENCES api_assettransfer(asset_transfer_id),
-  destination_location_id INTEGER REFERENCES api_locationmodel(location_id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  original_location_id INTEGER REFERENCES api_locationmodel(location_id)
+  asset_transfer_id INTEGER NOT NULL,
+  destination_location_id INTEGER,
+  disposal_id INTEGER,
+  modified_by_id INTEGER,
+  original_location_id INTEGER
 );
 
 CREATE TABLE api_assettypecheckshistory (
@@ -1540,8 +1540,8 @@ CREATE TABLE api_assettypecheckshistory (
   trailer_air_lines BOOLEAN NOT NULL,
   other_leaks BOOLEAN NOT NULL,
   date TIMESTAMP NOT NULL,
-  asset_type_checks_id INTEGER REFERENCES api_assettypechecks(id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  asset_type_checks_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_dailyinspectionhistory (
@@ -1591,15 +1591,15 @@ CREATE TABLE api_deliverycosthistory (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_updated TIMESTAMP NOT NULL,
-  asset_request_id INTEGER REFERENCES api_assetrequestmodel(id),
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  delivery_cost_id INTEGER REFERENCES api_deliverycost(id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  asset_request_id INTEGER,
+  created_by_id INTEGER,
+  currency_id INTEGER,
+  delivery_cost_id INTEGER,
+  disposal_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER,
+  repair_id INTEGER
 );
 
 CREATE TABLE api_detailedusermodelhistory (
@@ -1608,10 +1608,10 @@ CREATE TABLE api_detailedusermodelhistory (
   email VARCHAR(254) NOT NULL,
   cost_allowance INTEGER NOT NULL,
   image_url TEXT NOT NULL,
-  business_unit_id INTEGER REFERENCES api_businessunitmodel(business_unit_id),
-  company_id CHAR(32) REFERENCES api_company(company_id),
-  role_permissions_id INTEGER REFERENCES api_rolepermissions(id),
-  user_id INTEGER NOT NULL REFERENCES api_detaileduser(detailed_user_id)
+  business_unit_id INTEGER,
+  company_id CHAR(32),
+  role_permissions_id INTEGER,
+  user_id INTEGER NOT NULL
 );
 
 CREATE TABLE api_enginehistorymodel (
@@ -1619,12 +1619,12 @@ CREATE TABLE api_enginehistorymodel (
   updated_name VARCHAR(100),
   updated_hours DOUBLE PRECISION,
   action VARCHAR(20) NOT NULL,
-  responsible_user_id INTEGER NOT NULL REFERENCES api_detaileduser(detailed_user_id),
+  responsible_user_id INTEGER NOT NULL,
   date TIMESTAMP NOT NULL,
-  engine_id_id INTEGER REFERENCES api_enginemodel(engine_id),
-  responsible_daily_check_id INTEGER REFERENCES api_assetdailychecksmodel(daily_check_id),
-  responsible_maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  responsible_repair_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  engine_id_id INTEGER,
+  responsible_daily_check_id INTEGER,
+  responsible_maintenance_id INTEGER,
+  responsible_repair_id INTEGER
 );
 
 CREATE TABLE api_fuelcostmodelhistory (
@@ -1634,12 +1634,12 @@ CREATE TABLE api_fuelcostmodelhistory (
   total_cost DOUBLE PRECISION NOT NULL,
   taxes DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  currency_id INTEGER REFERENCES api_currency(id),
-  fuel_cost_id INTEGER REFERENCES api_fuelcost(id),
-  fuel_type_id INTEGER REFERENCES api_fueltype(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  currency_id INTEGER,
+  fuel_cost_id INTEGER,
+  fuel_type_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_insurancecostmodelhistory (
@@ -1647,12 +1647,12 @@ CREATE TABLE api_insurancecostmodelhistory (
   deductible DOUBLE PRECISION NOT NULL,
   total_cost DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  accident_id INTEGER REFERENCES api_accidentmodel(accident_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  insurance_cost_id INTEGER REFERENCES api_insurancecost(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  accident_id INTEGER,
+  currency_id INTEGER,
+  insurance_cost_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_laborcostmodelhistory (
@@ -1664,13 +1664,13 @@ CREATE TABLE api_laborcostmodelhistory (
   taxes DOUBLE PRECISION NOT NULL,
   total_cost DOUBLE PRECISION NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  currency_id INTEGER REFERENCES api_currency(id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  issue_id INTEGER REFERENCES api_assetissuemodel(issue_id),
-  labor_id INTEGER REFERENCES api_laborcost(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  currency_id INTEGER,
+  disposal_id INTEGER,
+  issue_id INTEGER,
+  labor_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_licensecostmodelhistory (
@@ -1680,11 +1680,11 @@ CREATE TABLE api_licensecostmodelhistory (
   license_plate_renewal DOUBLE PRECISION NOT NULL,
   total_cost DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  currency_id INTEGER REFERENCES api_currency(id),
-  license_cost_id INTEGER REFERENCES api_licensecost(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  "VIN_id" VARCHAR(100),
+  currency_id INTEGER,
+  license_cost_id INTEGER,
+  location_id INTEGER,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_maintenanceforecastruleshistory (
@@ -1694,9 +1694,9 @@ CREATE TABLE api_maintenanceforecastruleshistory (
   hour_cycle DOUBLE PRECISION NOT NULL,
   mileage_cycle DOUBLE PRECISION NOT NULL,
   time_cycle DOUBLE PRECISION NOT NULL,
-  maintenance_forecast_id INTEGER NOT NULL REFERENCES api_maintenanceforecastrules(id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  linked_engine_id INTEGER REFERENCES api_enginemodel(engine_id)
+  maintenance_forecast_id INTEGER NOT NULL,
+  modified_by_id INTEGER,
+  linked_engine_id INTEGER
 );
 
 CREATE TABLE api_maintenancerequestfile (
@@ -1708,9 +1708,9 @@ CREATE TABLE api_maintenancerequestfile (
   bytes BIGINT NOT NULL,
   date_created TIMESTAMP NOT NULL,
   expiration_date DATE,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  maintenance_request_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  created_by_id INTEGER,
+  maintenance_request_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_maintenancerequestmodelhistory (
@@ -1726,11 +1726,11 @@ CREATE TABLE api_maintenancerequestmodelhistory (
   mileage DOUBLE PRECISION NOT NULL,
   hours DOUBLE PRECISION NOT NULL,
   status VARCHAR(100) NOT NULL,
-  assigned_vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id),
-  inspection_type_id INTEGER REFERENCES api_inspectiontypemodel(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER NOT NULL REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id)
+  assigned_vendor_id INTEGER,
+  inspection_type_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER NOT NULL,
+  modified_by_id INTEGER
 );
 
 CREATE TABLE api_partsmodelhistory (
@@ -1743,27 +1743,27 @@ CREATE TABLE api_partsmodelhistory (
   total_cost DOUBLE PRECISION NOT NULL,
   date_created TIMESTAMP NOT NULL,
   date_modified TIMESTAMP NOT NULL,
-  currency_id INTEGER REFERENCES api_currency(id),
-  disposal_id INTEGER REFERENCES api_assetdisposalmodel(id),
-  issue_id INTEGER REFERENCES api_assetissuemodel(issue_id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  parts_id INTEGER REFERENCES api_parts(id)
+  currency_id INTEGER,
+  disposal_id INTEGER,
+  issue_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER,
+  parts_id INTEGER
 );
 
 CREATE TABLE api_rentalcostmodelhistory (
   id SERIAL PRIMARY KEY,
   total_cost DOUBLE PRECISION NOT NULL,
   date TIMESTAMP NOT NULL,
-  "VIN_id" VARCHAR(100) REFERENCES api_assetmodel("VIN"),
-  accident_id INTEGER REFERENCES api_accidentmodel(accident_id),
-  currency_id INTEGER REFERENCES api_currency(id),
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  maintenance_id INTEGER REFERENCES api_maintenancerequestmodel(maintenance_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  rental_cost_id INTEGER REFERENCES api_rentalcost(id),
-  repair_id INTEGER REFERENCES api_repairsmodel(repair_id)
+  "VIN_id" VARCHAR(100),
+  accident_id INTEGER,
+  currency_id INTEGER,
+  location_id INTEGER,
+  maintenance_id INTEGER,
+  modified_by_id INTEGER,
+  rental_cost_id INTEGER,
+  repair_id INTEGER
 );
 
 CREATE TABLE api_repairfile (
@@ -1775,9 +1775,9 @@ CREATE TABLE api_repairfile (
   bytes BIGINT NOT NULL,
   date_created TIMESTAMP NOT NULL,
   expiration_date DATE,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id INTEGER REFERENCES api_repairsmodel(repair_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  created_by_id INTEGER,
+  repair_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_repairsmodelhistory (
@@ -1795,10 +1795,10 @@ CREATE TABLE api_repairsmodelhistory (
   mileage DOUBLE PRECISION NOT NULL,
   hours DOUBLE PRECISION NOT NULL,
   status VARCHAR(100) NOT NULL,
-  location_id INTEGER REFERENCES api_locationmodel(location_id),
-  modified_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  repair_id INTEGER NOT NULL REFERENCES api_repairsmodel(repair_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  location_id INTEGER,
+  modified_by_id INTEGER,
+  repair_id INTEGER NOT NULL,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_transferfile (
@@ -1809,15 +1809,15 @@ CREATE TABLE api_transferfile (
   bytes BIGINT NOT NULL,
   file_created TIMESTAMP NOT NULL,
   file_purpose VARCHAR(50) NOT NULL,
-  created_by_id INTEGER REFERENCES api_detaileduser(detailed_user_id),
-  transfer_id INTEGER REFERENCES api_assettransfer(asset_transfer_id),
-  vendor_id INTEGER REFERENCES api_approvedvendorsmodel(vendor_id)
+  created_by_id INTEGER,
+  transfer_id INTEGER,
+  vendor_id INTEGER
 );
 
 CREATE TABLE api_approvedvendorrequest (
   id SERIAL PRIMARY KEY,
-  vendor_department_id INTEGER REFERENCES api_approvedvendordepartments(id),
-  vendor_services_id INTEGER REFERENCES api_approvedvendorservices(id)
+  vendor_department_id INTEGER,
+  vendor_services_id INTEGER
 );
 
 -- Django migrations table
@@ -1839,3 +1839,340 @@ CREATE INDEX idx_repairs_vin ON api_repairsmodel("VIN_id");
 CREATE INDEX idx_fuelcost_vin ON api_fuelcost("VIN_id");
 
 COMMIT;
+
+-- Foreign key constraints
+ALTER TABLE "api_company" ADD CONSTRAINT "api_company_standard_currency_id_fkey" FOREIGN KEY (standard_currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_businessunitmodel" ADD CONSTRAINT "api_businessunitmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_business_unit_id_fkey" FOREIGN KEY (business_unit_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_company_id_fkey" FOREIGN KEY (company_id) REFERENCES api_company(company_id);
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_role_permissions_id_fkey" FOREIGN KEY (role_permissions_id) REFERENCES api_rolepermissions(id);
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_cost_centre_id_fkey" FOREIGN KEY (cost_centre_id) REFERENCES api_costcentremodel(cost_centre_id);
+ALTER TABLE "api_detaileduser_location" ADD CONSTRAINT "api_detaileduser_location_detaileduser_id_fkey" FOREIGN KEY (detaileduser_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_detaileduser_location" ADD CONSTRAINT "api_detaileduser_location_locationmodel_id_fkey" FOREIGN KEY (locationmodel_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_fueltype" ADD CONSTRAINT "api_fueltype_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_fueltype" ADD CONSTRAINT "api_fueltype_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettypechecks" ADD CONSTRAINT "api_assettypechecks_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettypechecks" ADD CONSTRAINT "api_assettypechecks_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettypemodel" ADD CONSTRAINT "api_assettypemodel_asset_type_checks_id_fkey" FOREIGN KEY (asset_type_checks_id) REFERENCES api_assettypechecks(id);
+ALTER TABLE "api_assettypemodel" ADD CONSTRAINT "api_assettypemodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettypemodel" ADD CONSTRAINT "api_assettypemodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmanufacturermodel" ADD CONSTRAINT "api_assetmanufacturermodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmanufacturermodel" ADD CONSTRAINT "api_assetmanufacturermodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmanufacturermodel_asset_type" ADD CONSTRAINT "api_assetmanufacturermodel_asset_type_assetmanufacturermodel_id_fkey" FOREIGN KEY (assetmanufacturermodel_id) REFERENCES api_assetmanufacturermodel(id);
+ALTER TABLE "api_assetmanufacturermodel_asset_type" ADD CONSTRAINT "api_assetmanufacturermodel_asset_type_assettypemodel_id_fkey" FOREIGN KEY (assettypemodel_id) REFERENCES api_assettypemodel(id);
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemodel_asset_type_id_fkey" FOREIGN KEY (asset_type_id) REFERENCES api_assettypemodel(id);
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemodel_fuel_id_fkey" FOREIGN KEY (fuel_id) REFERENCES api_fueltype(id);
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemodel_manufacturer_id_fkey" FOREIGN KEY (manufacturer_id) REFERENCES api_assetmanufacturermodel(id);
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_company_id_fkey" FOREIGN KEY (company_id) REFERENCES api_company(company_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_current_location_id_fkey" FOREIGN KEY (current_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_department_id_fkey" FOREIGN KEY (department_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_equipment_type_id_fkey" FOREIGN KEY (equipment_type_id) REFERENCES api_equipmenttypemodel(equipment_type_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_fuel_id_fkey" FOREIGN KEY (fuel_id) REFERENCES api_fueltype(id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_job_specification_id_fkey" FOREIGN KEY (job_specification_id) REFERENCES api_jobspecification(job_specification_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_original_location_id_fkey" FOREIGN KEY (original_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_parent_id_fkey" FOREIGN KEY (parent_id) REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_cost_centre_id_fkey" FOREIGN KEY (cost_centre_id) REFERENCES api_costcentremodel(cost_centre_id);
+ALTER TABLE "api_enginemodel" ADD CONSTRAINT "api_enginemodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_approvedvendorsmodel" ADD CONSTRAINT "api_approvedvendorsmodel_vendor_department_id_fkey" FOREIGN KEY (vendor_department_id) REFERENCES api_approvedvendordepartments(id);
+ALTER TABLE "api_approvedvendorsmodel_vendor_services" ADD CONSTRAINT "api_approvedvendorsmodel_vendor_services_approvedvendorsmodel_id_fkey" FOREIGN KEY (approvedvendorsmodel_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_approvedvendorsmodel_vendor_services" ADD CONSTRAINT "api_approvedvendorsmodel_vendor_services_approvedvendorservices_id_fkey" FOREIGN KEY (approvedvendorservices_id) REFERENCES api_approvedvendorservices(id);
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmodel_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_accidentfilemodel" ADD CONSTRAINT "api_accidentfilemodel_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancerequestmodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancerequestmodel_assigned_vendor_id_fkey" FOREIGN KEY (assigned_vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancerequestmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancerequestmodel_inspection_type_id_fkey" FOREIGN KEY (inspection_type_id) REFERENCES api_inspectiontypemodel(id);
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancerequestmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancerequestmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_assetissuecategory" ADD CONSTRAINT "api_assetissuecategory_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetissuecategory" ADD CONSTRAINT "api_assetissuecategory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_accident_id_id_fkey" FOREIGN KEY (accident_id_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_category_id_fkey" FOREIGN KEY (category_id) REFERENCES api_assetissuecategory(id);
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_repair_id_id_fkey" FOREIGN KEY (repair_id_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecksmodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecksmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecksmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecksmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetfile" ADD CONSTRAINT "api_assetfile_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetfile" ADD CONSTRAINT "api_assetfile_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetfile" ADD CONSTRAINT "api_assetfile_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_business_unit_id_fkey" FOREIGN KEY (business_unit_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_equipment_id_fkey" FOREIGN KEY (equipment_id) REFERENCES api_equipmenttypemodel(equipment_type_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_justification_id_fkey" FOREIGN KEY (justification_id) REFERENCES api_assetrequestjustificationmodel(justification_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_cost_centre_id_fkey" FOREIGN KEY (cost_centre_id) REFERENCES api_costcentremodel(cost_centre_id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_approving_user_id_fkey" FOREIGN KEY (approving_user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_maintenance_request_id_fkey" FOREIGN KEY (maintenance_request_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_repair_request_id_fkey" FOREIGN KEY (repair_request_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_requesting_user_id_fkey" FOREIGN KEY (requesting_user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_disposal_request_id_fkey" FOREIGN KEY (disposal_request_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_destination_location_id_fkey" FOREIGN KEY (destination_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_original_location_id_fkey" FOREIGN KEY (original_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_issue_id_fkey" FOREIGN KEY (issue_id) REFERENCES api_assetissuemodel(issue_id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_issue_id_fkey" FOREIGN KEY (issue_id) REFERENCES api_assetissuemodel(issue_id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_fuel_type_id_fkey" FOREIGN KEY (fuel_type_id) REFERENCES api_fueltype(id);
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_fuelcostcheck" ADD CONSTRAINT "api_fuelcostcheck_company_id_fkey" FOREIGN KEY (company_id) REFERENCES api_company(company_id);
+ALTER TABLE "api_fuelcostcheck" ADD CONSTRAINT "api_fuelcostcheck_cost_ratio_type_id_fkey" FOREIGN KEY (cost_ratio_type_id) REFERENCES api_fueltype(id);
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_annualreport" ADD CONSTRAINT "api_annualreport_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_annualreport" ADD CONSTRAINT "api_annualreport_file_id_fkey" FOREIGN KEY (file_id) REFERENCES api_assetfile(file_id);
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforecastrules_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforecastrules_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforecastrules_inspection_type_id_fkey" FOREIGN KEY (inspection_type_id) REFERENCES api_inspectiontypemodel(id);
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforecastrules_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforecastrules_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforecastrules_linked_engine_id_fkey" FOREIGN KEY (linked_engine_id) REFERENCES api_enginemodel(engine_id);
+ALTER TABLE "api_errorreport" ADD CONSTRAINT "api_errorreport_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_errorreportfile" ADD CONSTRAINT "api_errorreportfile_error_report_id_fkey" FOREIGN KEY (error_report_id) REFERENCES api_errorreport(error_report_id);
+ALTER TABLE "api_fuelcard" ADD CONSTRAINT "api_fuelcard_assigned_employee_id_fkey" FOREIGN KEY (assigned_employee_id) REFERENCES api_detaileduser(email);
+ALTER TABLE "api_fuelcard" ADD CONSTRAINT "api_fuelcard_business_unit_id_fkey" FOREIGN KEY (business_unit_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_fuelcard" ADD CONSTRAINT "api_fuelcard_issuer_id_fkey" FOREIGN KEY (issuer_id) REFERENCES api_detaileduser(email);
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_equipment_type_id_fkey" FOREIGN KEY (equipment_type_id) REFERENCES api_equipmenttypemodel(equipment_type_id);
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_dailyinspection" ADD CONSTRAINT "api_dailyinspection_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_dailyinspection" ADD CONSTRAINT "api_dailyinspection_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_notificationconfiguration" ADD CONSTRAINT "api_notificationconfiguration_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_approved_by_id_fkey" FOREIGN KEY (approved_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_disposal_request_id_fkey" FOREIGN KEY (disposal_request_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_maintenance_request_id_fkey" FOREIGN KEY (maintenance_request_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_repair_request_id_fkey" FOREIGN KEY (repair_request_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_transfer_request_id_fkey" FOREIGN KEY (transfer_request_id) REFERENCES api_assettransfer(asset_transfer_id);
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_userconfiguration" ADD CONSTRAINT "api_userconfiguration_user_id_fkey" FOREIGN KEY (user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_usertablelayoutmodel" ADD CONSTRAINT "api_usertablelayoutmodel_user_id_fkey" FOREIGN KEY (user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_snapshotdailycurrency" ADD CONSTRAINT "api_snapshotdailycurrency_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_accidentmodelhistory" ADD CONSTRAINT "api_accidentmodelhistory_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_accidentmodelhistory" ADD CONSTRAINT "api_accidentmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_accidentmodelhistory" ADD CONSTRAINT "api_accidentmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostmodelhistory_acquisition_cost_id_fkey" FOREIGN KEY (acquisition_cost_id) REFERENCES api_acquisitioncost(id);
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_approval_id_fkey" FOREIGN KEY (approval_id) REFERENCES api_approval(approval_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_approving_user_id_fkey" FOREIGN KEY (approving_user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_asset_transfer_request_id_fkey" FOREIGN KEY (asset_transfer_request_id) REFERENCES api_assettransfer(asset_transfer_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_maintenance_request_id_fkey" FOREIGN KEY (maintenance_request_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_repair_request_id_fkey" FOREIGN KEY (repair_request_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_requesting_user_id_fkey" FOREIGN KEY (requesting_user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhistory_disposal_request_id_fkey" FOREIGN KEY (disposal_request_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assetdailychecksmodelhistory" ADD CONSTRAINT "api_assetdailychecksmodelhistory_daily_check_id_fkey" FOREIGN KEY (daily_check_id) REFERENCES api_assetdailychecksmodel(daily_check_id);
+ALTER TABLE "api_assetdailychecksmodelhistory" ADD CONSTRAINT "api_assetdailychecksmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetdailychecksmodelhistory" ADD CONSTRAINT "api_assetdailychecksmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetdailycheckscomment" ADD CONSTRAINT "api_assetdailycheckscomment_daily_check_id_fkey" FOREIGN KEY (daily_check_id) REFERENCES api_assetdailychecksmodel(daily_check_id);
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmodelhistory_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmodelhistory_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_assetdisposalfile" ADD CONSTRAINT "api_assetdisposalfile_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetdisposalfile" ADD CONSTRAINT "api_assetdisposalfile_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assetdisposalfile" ADD CONSTRAINT "api_assetdisposalfile_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_assetissuefilemodel" ADD CONSTRAINT "api_assetissuefilemodel_issue_id_fkey" FOREIGN KEY (issue_id) REFERENCES api_assetissuemodel(issue_id);
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelhistory_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelhistory_issue_id_fkey" FOREIGN KEY (issue_id) REFERENCES api_assetissuemodel(issue_id);
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelhistory_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_company_id_fkey" FOREIGN KEY (company_id) REFERENCES api_company(company_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_current_location_id_fkey" FOREIGN KEY (current_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_department_id_fkey" FOREIGN KEY (department_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_equipment_type_id_fkey" FOREIGN KEY (equipment_type_id) REFERENCES api_equipmenttypemodel(equipment_type_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_fuel_id_fkey" FOREIGN KEY (fuel_id) REFERENCES api_fueltype(id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_job_specification_id_fkey" FOREIGN KEY (job_specification_id) REFERENCES api_jobspecification(job_specification_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_original_location_id_fkey" FOREIGN KEY (original_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_parent_id_fkey" FOREIGN KEY (parent_id) REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetrequestfile" ADD CONSTRAINT "api_assetrequestfile_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_assetrequestfile" ADD CONSTRAINT "api_assetrequestfile_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetrequestfile" ADD CONSTRAINT "api_assetrequestfile_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_business_unit_id_fkey" FOREIGN KEY (business_unit_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_equipment_id_fkey" FOREIGN KEY (equipment_id) REFERENCES api_equipmenttypemodel(equipment_type_id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_justification_id_fkey" FOREIGN KEY (justification_id) REFERENCES api_assetrequestjustificationmodel(justification_id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmodelhistory_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermodelhistory_asset_transfer_id_fkey" FOREIGN KEY (asset_transfer_id) REFERENCES api_assettransfer(asset_transfer_id);
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermodelhistory_destination_location_id_fkey" FOREIGN KEY (destination_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermodelhistory_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermodelhistory_original_location_id_fkey" FOREIGN KEY (original_location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_assettypecheckshistory" ADD CONSTRAINT "api_assettypecheckshistory_asset_type_checks_id_fkey" FOREIGN KEY (asset_type_checks_id) REFERENCES api_assettypechecks(id);
+ALTER TABLE "api_assettypecheckshistory" ADD CONSTRAINT "api_assettypecheckshistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_asset_request_id_fkey" FOREIGN KEY (asset_request_id) REFERENCES api_assetrequestmodel(id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_delivery_cost_id_fkey" FOREIGN KEY (delivery_cost_id) REFERENCES api_deliverycost(id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermodelhistory_business_unit_id_fkey" FOREIGN KEY (business_unit_id) REFERENCES api_businessunitmodel(business_unit_id);
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermodelhistory_company_id_fkey" FOREIGN KEY (company_id) REFERENCES api_company(company_id);
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermodelhistory_role_permissions_id_fkey" FOREIGN KEY (role_permissions_id) REFERENCES api_rolepermissions(id);
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermodelhistory_user_id_fkey" FOREIGN KEY (user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymodel_responsible_user_id_fkey" FOREIGN KEY (responsible_user_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymodel_engine_id_id_fkey" FOREIGN KEY (engine_id_id) REFERENCES api_enginemodel(engine_id);
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymodel_responsible_daily_check_id_fkey" FOREIGN KEY (responsible_daily_check_id) REFERENCES api_assetdailychecksmodel(daily_check_id);
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymodel_responsible_maintenance_id_fkey" FOREIGN KEY (responsible_maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymodel_responsible_repair_id_fkey" FOREIGN KEY (responsible_repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_fuel_cost_id_fkey" FOREIGN KEY (fuel_cost_id) REFERENCES api_fuelcost(id);
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_fuel_type_id_fkey" FOREIGN KEY (fuel_type_id) REFERENCES api_fueltype(id);
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmodelhistory_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmodelhistory_insurance_cost_id_fkey" FOREIGN KEY (insurance_cost_id) REFERENCES api_insurancecost(id);
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_issue_id_fkey" FOREIGN KEY (issue_id) REFERENCES api_assetissuemodel(issue_id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_labor_id_fkey" FOREIGN KEY (labor_id) REFERENCES api_laborcost(id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodelhistory_license_cost_id_fkey" FOREIGN KEY (license_cost_id) REFERENCES api_licensecost(id);
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenanceforecastruleshistory" ADD CONSTRAINT "api_maintenanceforecastruleshistory_maintenance_forecast_id_fkey" FOREIGN KEY (maintenance_forecast_id) REFERENCES api_maintenanceforecastrules(id);
+ALTER TABLE "api_maintenanceforecastruleshistory" ADD CONSTRAINT "api_maintenanceforecastruleshistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenanceforecastruleshistory" ADD CONSTRAINT "api_maintenanceforecastruleshistory_linked_engine_id_fkey" FOREIGN KEY (linked_engine_id) REFERENCES api_enginemodel(engine_id);
+ALTER TABLE "api_maintenancerequestfile" ADD CONSTRAINT "api_maintenancerequestfile_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_maintenancerequestfile" ADD CONSTRAINT "api_maintenancerequestfile_maintenance_request_id_fkey" FOREIGN KEY (maintenance_request_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_maintenancerequestfile" ADD CONSTRAINT "api_maintenancerequestfile_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancerequestmodelhistory_assigned_vendor_id_fkey" FOREIGN KEY (assigned_vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancerequestmodelhistory_inspection_type_id_fkey" FOREIGN KEY (inspection_type_id) REFERENCES api_inspectiontypemodel(id);
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancerequestmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancerequestmodelhistory_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancerequestmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_disposal_id_fkey" FOREIGN KEY (disposal_id) REFERENCES api_assetdisposalmodel(id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_issue_id_fkey" FOREIGN KEY (issue_id) REFERENCES api_assetissuemodel(issue_id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_parts_id_fkey" FOREIGN KEY (parts_id) REFERENCES api_parts(id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_VIN_id_fkey" FOREIGN KEY ("VIN_id") REFERENCES api_assetmodel("VIN");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_accident_id_fkey" FOREIGN KEY (accident_id) REFERENCES api_accidentmodel(accident_id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_currency_id_fkey" FOREIGN KEY (currency_id) REFERENCES api_currency(id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_maintenance_id_fkey" FOREIGN KEY (maintenance_id) REFERENCES api_maintenancerequestmodel(maintenance_id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_rental_cost_id_fkey" FOREIGN KEY (rental_cost_id) REFERENCES api_rentalcost(id);
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_repairfile" ADD CONSTRAINT "api_repairfile_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_repairfile" ADD CONSTRAINT "api_repairfile_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_repairfile" ADD CONSTRAINT "api_repairfile_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhistory_location_id_fkey" FOREIGN KEY (location_id) REFERENCES api_locationmodel(location_id);
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhistory_modified_by_id_fkey" FOREIGN KEY (modified_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhistory_repair_id_fkey" FOREIGN KEY (repair_id) REFERENCES api_repairsmodel(repair_id);
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhistory_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_transferfile" ADD CONSTRAINT "api_transferfile_created_by_id_fkey" FOREIGN KEY (created_by_id) REFERENCES api_detaileduser(detailed_user_id);
+ALTER TABLE "api_transferfile" ADD CONSTRAINT "api_transferfile_transfer_id_fkey" FOREIGN KEY (transfer_id) REFERENCES api_assettransfer(asset_transfer_id);
+ALTER TABLE "api_transferfile" ADD CONSTRAINT "api_transferfile_vendor_id_fkey" FOREIGN KEY (vendor_id) REFERENCES api_approvedvendorsmodel(vendor_id);
+ALTER TABLE "api_approvedvendorrequest" ADD CONSTRAINT "api_approvedvendorrequest_vendor_department_id_fkey" FOREIGN KEY (vendor_department_id) REFERENCES api_approvedvendordepartments(id);
+ALTER TABLE "api_approvedvendorrequest" ADD CONSTRAINT "api_approvedvendorrequest_vendor_services_id_fkey" FOREIGN KEY (vendor_services_id) REFERENCES api_approvedvendorservices(id);
