@@ -18,8 +18,7 @@ CREATE TABLE "api_accidentfilemodel" (
   "bytes" bigint NOT NULL,
   "file_created" timestamp(6) NOT NULL,
   "accident_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_accidentfilemode_accident_id_a356de30_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_accidentfilemode_accident_id_a356de30_fk_api_accid" ON "api_accidentfilemodel" ("accident_id");
@@ -55,12 +54,7 @@ CREATE TABLE "api_accidentmodel" (
   "disposal_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("accident_id"),
-  CONSTRAINT "api_accidentmodel_created_by_id_3c566486_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_accidentmodel_disposal_id_a16512ac_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_accidentmodel_location_id_1b207e0d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_accidentmodel_modified_by_id_ef02950f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("accident_id")
 );
 
 CREATE INDEX "api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN" ON "api_accidentmodel" ("VIN_id");
@@ -97,10 +91,7 @@ CREATE TABLE "api_accidentmodelhistory" (
   "accident_id" int NOT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("accident_history_id"),
-  CONSTRAINT "api_accidentmodelhis_accident_id_7eec054b_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_accidentmodelhis_location_id_9d5dc35c_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_accidentmodelhis_modified_by_id_d676ee67_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("accident_history_id")
 );
 
 CREATE INDEX "api_accidentmodelhis_accident_id_7eec054b_fk_api_accid" ON "api_accidentmodelhistory" ("accident_id");
@@ -130,12 +121,7 @@ CREATE TABLE "api_acquisitioncost" (
   "currency_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_acquisitioncost_created_by_id_2a71eeed_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_acquisitioncost_currency_id_e73277cd_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_acquisitioncost_location_id_5bd5e472_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_acquisitioncost_modified_by_id_1662932d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN" ON "api_acquisitioncost" ("VIN_id");
@@ -166,12 +152,7 @@ CREATE TABLE "api_acquisitioncostmodelhistory" (
   "currency_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_acquisitioncostm_acquisition_cost_id_7094c72d_fk_api_acqui" FOREIGN KEY ("acquisition_cost_id") REFERENCES "api_acquisitioncost" ("id"),
-  CONSTRAINT "api_acquisitioncostm_currency_id_4f614d77_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_acquisitioncostm_location_id_fe5ae5a3_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_acquisitioncostm_modified_by_id_ffbff6db_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_acquisitioncostm_VIN_id_943b3499_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_acquisitioncostm_VIN_id_943b3499_fk_api_asset" ON "api_acquisitioncostmodelhistory" ("VIN_id");
@@ -228,9 +209,7 @@ CREATE TABLE "api_annualreport" (
   "file_id" int NOT NULL,
   "changed_this_year" boolean NOT NULL,
   "damaged_this_year" boolean NOT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_annualreport_file_id_c90b0f55_fk_api_assetfile_file_id" FOREIGN KEY ("file_id") REFERENCES "api_assetfile" ("file_id"),
-  CONSTRAINT "api_annualreport_VIN_id_3faed4f1_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_annualreport_VIN_id_3faed4f1_fk_api_assetmodel_VIN" ON "api_annualreport" ("VIN_id");
@@ -263,16 +242,7 @@ CREATE TABLE "api_approval" (
   "repair_request_id" int DEFAULT NULL,
   "requesting_user_id" int DEFAULT NULL,
   "disposal_request_id" int DEFAULT NULL,
-  PRIMARY KEY ("approval_id"),
-  CONSTRAINT "api_approval_approving_user_id_42cad599_fk_api_detai" FOREIGN KEY ("approving_user_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_approval_asset_request_id_11278853_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_approval_asset_transfer_reque_a51ddf9b_fk_api_asset" FOREIGN KEY ("asset_transfer_request_id") REFERENCES "api_assettransfer" ("asset_transfer_id"),
-  CONSTRAINT "api_approval_disposal_request_id_028da8d1_fk_api_asset" FOREIGN KEY ("disposal_request_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_approval_location_id_090f0b07_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_approval_maintenance_request__2f0759c6_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_approval_repair_request_id_2651d208_fk_api_repai" FOREIGN KEY ("repair_request_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_approval_requesting_user_id_e6e018a6_fk_api_detai" FOREIGN KEY ("requesting_user_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_approval_VIN_id_867898b0_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("approval_id")
 );
 
 CREATE INDEX "api_approval_approving_user_id_42cad599_fk_api_detai" ON "api_approval" ("approving_user_id");
@@ -312,16 +282,7 @@ CREATE TABLE "api_approvalmodelhistory" (
   "repair_request_id" int DEFAULT NULL,
   "requesting_user_id" int DEFAULT NULL,
   "disposal_request_id" int DEFAULT NULL,
-  PRIMARY KEY ("approval_history_id"),
-  CONSTRAINT "api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro" FOREIGN KEY ("approval_id") REFERENCES "api_approval" ("approval_id"),
-  CONSTRAINT "api_approvalmodelhis_approving_user_id_0f09aa8a_fk_api_detai" FOREIGN KEY ("approving_user_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_approvalmodelhis_asset_request_id_95a3e31b_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_approvalmodelhis_asset_transfer_reque_58f1e105_fk_api_asset" FOREIGN KEY ("asset_transfer_request_id") REFERENCES "api_assettransfer" ("asset_transfer_id"),
-  CONSTRAINT "api_approvalmodelhis_disposal_request_id_80638fac_fk_api_asset" FOREIGN KEY ("disposal_request_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_approvalmodelhis_location_id_60640ac2_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_approvalmodelhis_maintenance_request__e206156c_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_approvalmodelhis_repair_request_id_6f14411b_fk_api_repai" FOREIGN KEY ("repair_request_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_approvalmodelhis_requesting_user_id_39c5af2f_fk_api_detai" FOREIGN KEY ("requesting_user_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("approval_history_id")
 );
 
 CREATE INDEX "api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro" ON "api_approvalmodelhistory" ("approval_id");
@@ -365,9 +326,7 @@ CREATE TABLE "api_approvedvendorrequest" (
   "id" int NOT NULL GENERATED BY DEFAULT AS IDENTITY,
   "vendor_department_id" int DEFAULT NULL,
   "vendor_services_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro" FOREIGN KEY ("vendor_department_id") REFERENCES "api_approvedvendordepartments" ("id"),
-  CONSTRAINT "api_approvedvendorre_vendor_services_id_936d9ccf_fk_api_appro" FOREIGN KEY ("vendor_services_id") REFERENCES "api_approvedvendorservices" ("id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro" ON "api_approvedvendorrequest" ("vendor_department_id");
@@ -411,8 +370,7 @@ CREATE TABLE "api_approvedvendorsmodel" (
   "vendor_department_id" int DEFAULT NULL,
   "rating" double precision NOT NULL,
   "vendor_task_id" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("vendor_id"),
-  CONSTRAINT "api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro" FOREIGN KEY ("vendor_department_id") REFERENCES "api_approvedvendordepartments" ("id")
+  PRIMARY KEY ("vendor_id")
 );
 
 CREATE INDEX "api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro" ON "api_approvedvendorsmodel" ("vendor_department_id");
@@ -432,9 +390,7 @@ CREATE TABLE "api_approvedvendorsmodel_vendor_services" (
   "approvedvendorsmodel_id" int NOT NULL,
   "approvedvendorservices_id" int NOT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "api_approvedvendorsmodel_approvedvendorsmodel_id__7de36f16_uniq" UNIQUE ("approvedvendorsmodel_id","approvedvendorservices_id"),
-  CONSTRAINT "api_approvedvendorsm_approvedvendorservic_619bc4e9_fk_api_appro" FOREIGN KEY ("approvedvendorservices_id") REFERENCES "api_approvedvendorservices" ("id"),
-  CONSTRAINT "api_approvedvendorsm_approvedvendorsmodel_5c335073_fk_api_appro" FOREIGN KEY ("approvedvendorsmodel_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  CONSTRAINT "api_approvedvendorsmodel_approvedvendorsmodel_id__7de36f16_uniq" UNIQUE ("approvedvendorsmodel_id","approvedvendorservices_id")
 );
 
 CREATE INDEX "api_approvedvendorsm_approvedvendorservic_619bc4e9_fk_api_appro" ON "api_approvedvendorsmodel_vendor_services" ("approvedvendorservices_id");
@@ -455,8 +411,7 @@ CREATE TABLE "api_assetdailycheckscomment" (
   "check" varchar(50) NOT NULL,
   "date_created" timestamp(6) NOT NULL,
   "daily_check_id" int DEFAULT NULL,
-  PRIMARY KEY ("daily_check_comment_id"),
-  CONSTRAINT "api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset" FOREIGN KEY ("daily_check_id") REFERENCES "api_assetdailychecksmodel" ("daily_check_id")
+  PRIMARY KEY ("daily_check_comment_id")
 );
 
 CREATE INDEX "api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset" ON "api_assetdailycheckscomment" ("daily_check_id");
@@ -523,11 +478,7 @@ CREATE TABLE "api_assetdailychecksmodel" (
   "lifesaving_equipments" boolean DEFAULT NULL,
   "navigation_and_strobe_lights" boolean DEFAULT NULL,
   "steering_and_hydraulics" boolean DEFAULT NULL,
-  PRIMARY KEY ("daily_check_id"),
-  CONSTRAINT "api_assetdailychecks_created_by_id_029fc175_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetdailychecks_location_id_f76e3d5a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetdailychecks_modified_by_id_4fbf1c05_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("daily_check_id")
 );
 
 CREATE INDEX "api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN" ON "api_assetdailychecksmodel" ("VIN_id");
@@ -587,10 +538,7 @@ CREATE TABLE "api_assetdailychecksmodelhistory" (
   "daily_check_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("daily_check_history_id"),
-  CONSTRAINT "api_assetdailychecks_daily_check_id_668316ed_fk_api_asset" FOREIGN KEY ("daily_check_id") REFERENCES "api_assetdailychecksmodel" ("daily_check_id"),
-  CONSTRAINT "api_assetdailychecks_location_id_21106c94_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetdailychecks_modified_by_id_107f412c_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("daily_check_history_id")
 );
 
 CREATE INDEX "api_assetdailychecks_daily_check_id_668316ed_fk_api_asset" ON "api_assetdailychecksmodelhistory" ("daily_check_id");
@@ -619,10 +567,7 @@ CREATE TABLE "api_assetdisposalfile" (
   "created_by_id" int DEFAULT NULL,
   "disposal_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetdisposalfil_disposal_id_21e54a10_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_assetdisposalfil_vendor_id_61f19a09_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai" ON "api_assetdisposalfile" ("created_by_id");
@@ -668,12 +613,7 @@ CREATE TABLE "api_assetdisposalmodel" (
   "potential_vendor_ids" varchar(1000) DEFAULT NULL,
   "quote_deadline" timestamp(6) DEFAULT NULL,
   "primary_vendor_email" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_assetdisposalmod_created_by_id_64abcd41_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetdisposalmod_location_id_b2ebc3c6_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetdisposalmod_modified_by_id_8e1214f6_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetdisposalmod_vendor_id_ceb0fad4_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN" ON "api_assetdisposalmodel" ("VIN_id");
@@ -706,11 +646,7 @@ CREATE TABLE "api_assetdisposalmodelhistory" (
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("disposal_history_id"),
-  CONSTRAINT "api_assetdisposalmod_disposal_id_eab85920_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_assetdisposalmod_location_id_b9df111d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetdisposalmod_modified_by_id_77d46eb8_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetdisposalmod_vendor_id_10c94a92_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("disposal_history_id")
 );
 
 CREATE INDEX "api_assetdisposalmod_disposal_id_eab85920_fk_api_asset" ON "api_assetdisposalmodelhistory" ("disposal_id");
@@ -741,10 +677,7 @@ CREATE TABLE "api_assetfile" (
   "VIN_id" varchar(100) NOT NULL,
   "created_by_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_assetfile_created_by_id_db646b2a_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetfile_modified_by_id_8c9e37fc_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN" ON "api_assetfile" ("VIN_id");
@@ -769,9 +702,7 @@ CREATE TABLE "api_assetissuecategory" (
   "date_updated" timestamp(6) NOT NULL,
   "created_by_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_assetissuecatego_created_by_id_ba655274_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetissuecatego_modified_by_id_c453ea4c_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_assetissuecatego_created_by_id_ba655274_fk_api_detai" ON "api_assetissuecategory" ("created_by_id");
@@ -795,8 +726,7 @@ CREATE TABLE "api_assetissuefilemodel" (
   "bytes" bigint NOT NULL,
   "file_created" timestamp(6) NOT NULL,
   "issue_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset" ON "api_assetissuefilemodel" ("issue_id");
@@ -828,14 +758,7 @@ CREATE TABLE "api_assetissuemodel" (
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "repair_id_id" int DEFAULT NULL,
-  PRIMARY KEY ("issue_id"),
-  CONSTRAINT "api_assetissuemodel_accident_id_id_22653a0e_fk_api_accid" FOREIGN KEY ("accident_id_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_assetissuemodel_category_id_cd4c02f3_fk_api_asset" FOREIGN KEY ("category_id") REFERENCES "api_assetissuecategory" ("id"),
-  CONSTRAINT "api_assetissuemodel_created_by_id_0f5c0bd9_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetissuemodel_location_id_af14c6da_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetissuemodel_modified_by_id_9575934e_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetissuemodel_repair_id_id_4ca7bc53_fk_api_repai" FOREIGN KEY ("repair_id_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("issue_id")
 );
 
 CREATE INDEX "api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN" ON "api_assetissuemodel" ("VIN_id");
@@ -870,12 +793,7 @@ CREATE TABLE "api_assetissuemodelhistory" (
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "repair_id" int DEFAULT NULL,
-  PRIMARY KEY ("issue_history_id"),
-  CONSTRAINT "api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_assetissuemodelh_issue_id_405009a0_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id"),
-  CONSTRAINT "api_assetissuemodelh_location_id_d302e45a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetissuemodelh_modified_by_id_4ccfcbc4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetissuemodelh_repair_id_177618a0_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id")
+  PRIMARY KEY ("issue_history_id")
 );
 
 CREATE INDEX "api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid" ON "api_assetissuemodelhistory" ("accident_id");
@@ -906,11 +824,7 @@ CREATE TABLE "api_assetlog" (
   "created_by_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("asset_log_id"),
-  CONSTRAINT "api_assetlog_created_by_id_ca0ba384_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetlog_location_id_d02de46b_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetlog_modified_by_id_cf6e288f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("asset_log_id")
 );
 
 CREATE INDEX "api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN" ON "api_assetlog" ("VIN_id");
@@ -935,9 +849,7 @@ CREATE TABLE "api_assetmanufacturermodel" (
   "date_modified" timestamp(6) NOT NULL,
   "created_by_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_assetmanufacture_created_by_id_4003f7de_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetmanufacture_modified_by_id_752c0d40_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_assetmanufacture_created_by_id_4003f7de_fk_api_detai" ON "api_assetmanufacturermodel" ("created_by_id");
@@ -958,9 +870,7 @@ CREATE TABLE "api_assetmanufacturermodel_asset_type" (
   "assetmanufacturermodel_id" int NOT NULL,
   "assettypemodel_id" int NOT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "api_assetmanufacturermod_assetmanufacturermodel_i_065ca3a4_uniq" UNIQUE ("assetmanufacturermodel_id","assettypemodel_id"),
-  CONSTRAINT "api_assetmanufacture_assetmanufacturermod_c02f3a63_fk_api_asset" FOREIGN KEY ("assetmanufacturermodel_id") REFERENCES "api_assetmanufacturermodel" ("id"),
-  CONSTRAINT "api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset" FOREIGN KEY ("assettypemodel_id") REFERENCES "api_assettypemodel" ("id")
+  CONSTRAINT "api_assetmanufacturermod_assetmanufacturermodel_i_065ca3a4_uniq" UNIQUE ("assetmanufacturermodel_id","assettypemodel_id")
 );
 
 CREATE INDEX "api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset" ON "api_assetmanufacturermodel_asset_type" ("assettypemodel_id");
@@ -1027,19 +937,7 @@ CREATE TABLE "api_assetmodel" (
   "parent_id" varchar(100) DEFAULT NULL,
   "cost_centre_id" int DEFAULT NULL,
   "lifespan_years" int NOT NULL,
-  PRIMARY KEY ("VIN"),
-  CONSTRAINT "api_assetmodel_company_id_f122d18f_fk_api_company_company_id" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id"),
-  CONSTRAINT "api_assetmodel_cost_centre_id_a29a81e9_fk_api_costc" FOREIGN KEY ("cost_centre_id") REFERENCES "api_costcentremodel" ("cost_centre_id"),
-  CONSTRAINT "api_assetmodel_created_by_id_d48a4bf8_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetmodel_currency_id_fa8254f2_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_assetmodel_current_location_id_f50c42e2_fk_api_locat" FOREIGN KEY ("current_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetmodel_department_id_95103181_fk_api_busin" FOREIGN KEY ("department_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_assetmodel_equipment_type_id_08bc551d_fk_api_equip" FOREIGN KEY ("equipment_type_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id"),
-  CONSTRAINT "api_assetmodel_fuel_id_90e7cb1a_fk_api_fueltype_id" FOREIGN KEY ("fuel_id") REFERENCES "api_fueltype" ("id"),
-  CONSTRAINT "api_assetmodel_job_specification_id_b5467ffd_fk_api_jobsp" FOREIGN KEY ("job_specification_id") REFERENCES "api_jobspecification" ("job_specification_id"),
-  CONSTRAINT "api_assetmodel_modified_by_id_6826ae09_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetmodel_original_location_id_9d64c4f1_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetmodel_parent_id_9e5f5e9c_fk_api_assetmodel_VIN" FOREIGN KEY ("parent_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("VIN")
 );
 
 CREATE INDEX "api_assetmodel_company_id_f122d18f_fk_api_company_company_id" ON "api_assetmodel" ("company_id");
@@ -1108,18 +1006,7 @@ CREATE TABLE "api_assetmodelhistory" (
   "modified_by_id" int DEFAULT NULL,
   "original_location_id" int DEFAULT NULL,
   "parent_id" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("asset_history_id"),
-  CONSTRAINT "api_assetmodelhistor_company_id_f7bb1171_fk_api_compa" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id"),
-  CONSTRAINT "api_assetmodelhistor_current_location_id_467d3a2f_fk_api_locat" FOREIGN KEY ("current_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetmodelhistor_department_id_8fb917a8_fk_api_busin" FOREIGN KEY ("department_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_assetmodelhistor_equipment_type_id_4b88b5ce_fk_api_equip" FOREIGN KEY ("equipment_type_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id"),
-  CONSTRAINT "api_assetmodelhistor_job_specification_id_78ef1952_fk_api_jobsp" FOREIGN KEY ("job_specification_id") REFERENCES "api_jobspecification" ("job_specification_id"),
-  CONSTRAINT "api_assetmodelhistor_modified_by_id_77a2bcc7_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetmodelhistor_original_location_id_6c04f79b_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetmodelhistory_currency_id_ab3b9b7a_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_assetmodelhistory_fuel_id_73ea8d75_fk_api_fueltype_id" FOREIGN KEY ("fuel_id") REFERENCES "api_fueltype" ("id"),
-  CONSTRAINT "api_assetmodelhistory_parent_id_1c81d2a0_fk_api_assetmodel_VIN" FOREIGN KEY ("parent_id") REFERENCES "api_assetmodel" ("VIN"),
-  CONSTRAINT "api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("asset_history_id")
 );
 
 CREATE INDEX "api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN" ON "api_assetmodelhistory" ("VIN_id");
@@ -1156,10 +1043,7 @@ CREATE TABLE "api_assetrequestfile" (
   "asset_request_id" int DEFAULT NULL,
   "created_by_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_assetrequestfile_asset_request_id_c29ec116_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_assetrequestfile_created_by_id_83520cc2_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetrequestfile_vendor_id_725b6af9_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_assetrequestfile_asset_request_id_c29ec116_fk_api_asset" ON "api_assetrequestfile" ("asset_request_id");
@@ -1219,17 +1103,7 @@ CREATE TABLE "api_assetrequestmodel" (
   "date_delivered" timestamp(6) DEFAULT NULL,
   "estimated_cost" double precision DEFAULT NULL,
   "quote_deadline" timestamp(6) DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_assetrequestmode_cost_centre_id_77d6521a_fk_api_costc" FOREIGN KEY ("cost_centre_id") REFERENCES "api_costcentremodel" ("cost_centre_id"),
-  CONSTRAINT "api_assetrequestmode_created_by_id_d8e64481_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetrequestmode_disposal_id_89a7a0e3_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_assetrequestmode_equipment_id_ace308f7_fk_api_equip" FOREIGN KEY ("equipment_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id"),
-  CONSTRAINT "api_assetrequestmode_justification_id_a448f514_fk_api_asset" FOREIGN KEY ("justification_id") REFERENCES "api_assetrequestjustificationmodel" ("justification_id"),
-  CONSTRAINT "api_assetrequestmode_location_id_ed98707a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetrequestmode_modified_by_id_7f4fd728_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetrequestmode_vendor_id_6bd6d19d_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_assetrequestmodel_VIN_id_a420f925_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin" ON "api_assetrequestmodel" ("business_unit_id");
@@ -1271,15 +1145,7 @@ CREATE TABLE "api_assetrequestmodelhistory" (
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("asset_request_history_id"),
-  CONSTRAINT "api_assetrequestmode_asset_request_id_eeb3776d_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_assetrequestmode_business_unit_id_5b84c75a_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_assetrequestmode_equipment_id_4f536288_fk_api_equip" FOREIGN KEY ("equipment_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id"),
-  CONSTRAINT "api_assetrequestmode_justification_id_cf624510_fk_api_asset" FOREIGN KEY ("justification_id") REFERENCES "api_assetrequestjustificationmodel" ("justification_id"),
-  CONSTRAINT "api_assetrequestmode_location_id_18ff3e40_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assetrequestmode_modified_by_id_5c2c48c1_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assetrequestmode_vendor_id_e6b31e09_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("asset_request_history_id")
 );
 
 CREATE INDEX "api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset" ON "api_assetrequestmodelhistory" ("VIN_id");
@@ -1329,14 +1195,7 @@ CREATE TABLE "api_assettransfer" (
   "vendor_id" int DEFAULT NULL,
   "vendor_contacted_date" timestamp(6) DEFAULT NULL,
   "vendor_email" varchar(100) NOT NULL,
-  PRIMARY KEY ("asset_transfer_id"),
-  CONSTRAINT "api_assettransfer_created_by_id_ab9cdd92_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assettransfer_destination_location_51514ea1_fk_api_locat" FOREIGN KEY ("destination_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assettransfer_disposal_id_dbc94e0f_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_assettransfer_modified_by_id_b584b255_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assettransfer_original_location_id_2bc14e49_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assettransfer_vendor_id_8888ce28_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_assettransfer_VIN_id_12084905_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("asset_transfer_id")
 );
 
 CREATE INDEX "api_assettransfer_created_by_id_ab9cdd92_fk_api_detai" ON "api_assettransfer" ("created_by_id");
@@ -1377,12 +1236,7 @@ CREATE TABLE "api_assettransfermodelhistory" (
   "disposal_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "original_location_id" int DEFAULT NULL,
-  PRIMARY KEY ("asset_transfer_history_id"),
-  CONSTRAINT "api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset" FOREIGN KEY ("asset_transfer_id") REFERENCES "api_assettransfer" ("asset_transfer_id"),
-  CONSTRAINT "api_assettransfermod_destination_location_3ca950b2_fk_api_locat" FOREIGN KEY ("destination_location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_assettransfermod_disposal_id_01325a31_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_assettransfermod_modified_by_id_eb45f7a7_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assettransfermod_original_location_id_d180fece_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id")
+  PRIMARY KEY ("asset_transfer_history_id")
 );
 
 CREATE INDEX "api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset" ON "api_assettransfermodelhistory" ("asset_transfer_id");
@@ -1452,9 +1306,7 @@ CREATE TABLE "api_assettypechecks" (
   "navigation_and_strobe_lights" boolean NOT NULL,
   "steering_and_hydraulics" boolean NOT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "asset_type_name" UNIQUE ("asset_type_name"),
-  CONSTRAINT "api_assettypechecks_created_by_id_afdea472_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assettypechecks_modified_by_id_12ec3feb_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  CONSTRAINT "asset_type_name" UNIQUE ("asset_type_name")
 );
 
 CREATE INDEX "api_assettypechecks_created_by_id_afdea472_fk_api_detai" ON "api_assettypechecks" ("created_by_id");
@@ -1511,9 +1363,7 @@ CREATE TABLE "api_assettypecheckshistory" (
   "date" timestamp(6) NOT NULL,
   "asset_type_checks_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset" FOREIGN KEY ("asset_type_checks_id") REFERENCES "api_assettypechecks" ("id"),
-  CONSTRAINT "api_assettypechecksh_modified_by_id_80f02d97_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset" ON "api_assettypecheckshistory" ("asset_type_checks_id");
@@ -1540,10 +1390,7 @@ CREATE TABLE "api_assettypemodel" (
   "asset_type_checks_id" int DEFAULT NULL,
   "created_by_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_assettypemodel_asset_type_checks_id_dd77b5e2_fk_api_asset" FOREIGN KEY ("asset_type_checks_id") REFERENCES "api_assettypechecks" ("id"),
-  CONSTRAINT "api_assettypemodel_created_by_id_be41afef_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_assettypemodel_modified_by_id_a7557b41_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_assettypemodel_created_by_id_be41afef_fk_api_detai" ON "api_assettypemodel" ("created_by_id");
@@ -1565,8 +1412,7 @@ CREATE TABLE "api_businessunitmodel" (
   "name" varchar(100) NOT NULL,
   "accounting_email" varchar(254) NOT NULL,
   "location_id" int NOT NULL,
-  PRIMARY KEY ("business_unit_id"),
-  CONSTRAINT "api_businessunitmode_location_id_1fdea960_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id")
+  PRIMARY KEY ("business_unit_id")
 );
 
 CREATE INDEX "api_businessunitmode_location_id_1fdea960_fk_api_locat" ON "api_businessunitmodel" ("location_id");
@@ -1591,8 +1437,7 @@ CREATE TABLE "api_company" (
   "software_name" varchar(50) NOT NULL,
   "standard_currency_id" int DEFAULT NULL,
   PRIMARY KEY ("company_id"),
-  CONSTRAINT "accounting_email" UNIQUE ("accounting_email"),
-  CONSTRAINT "api_company_standard_currency_id_7f70e121_fk_api_currency_id" FOREIGN KEY ("standard_currency_id") REFERENCES "api_currency" ("id")
+  CONSTRAINT "accounting_email" UNIQUE ("accounting_email")
 );
 
 CREATE INDEX "api_company_standard_currency_id_7f70e121_fk_api_currency_id" ON "api_company" ("standard_currency_id");
@@ -1685,9 +1530,7 @@ CREATE TABLE "api_dailyinspection" (
   "date_updated" timestamp(6) NOT NULL,
   "created_by_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_dailyinspection_created_by_id_f033ed51_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_dailyinspection_modified_by_id_ccd7e2b7_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_dailyinspection_created_by_id_f033ed51_fk_api_detai" ON "api_dailyinspection" ("created_by_id");
@@ -1770,15 +1613,7 @@ CREATE TABLE "api_deliverycost" (
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "repair_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_deliverycost_asset_request_id_4f0d9ded_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_deliverycost_created_by_id_c17f28d6_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_deliverycost_currency_id_91d26aab_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_deliverycost_disposal_id_9dc4f78b_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_deliverycost_location_id_4354d4fc_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_deliverycost_maintenance_id_418648c9_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_deliverycost_modified_by_id_5500cc05_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_deliverycost_repair_id_1ba17210_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_deliverycost_created_by_id_c17f28d6_fk_api_detai" ON "api_deliverycost" ("created_by_id");
@@ -1816,16 +1651,7 @@ CREATE TABLE "api_deliverycosthistory" (
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "repair_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_deliverycosthist_created_by_id_93a7f210_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_deliverycosthist_delivery_cost_id_06598be1_fk_api_deliv" FOREIGN KEY ("delivery_cost_id") REFERENCES "api_deliverycost" ("id"),
-  CONSTRAINT "api_deliverycosthist_disposal_id_b5de59a0_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_deliverycosthist_location_id_6956ae5d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_deliverycosthist_maintenance_id_142da7d7_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_deliverycosthist_modified_by_id_7fb448f4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_deliverycosthist_repair_id_7fef1a8d_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_deliverycosthistory_currency_id_5506c51d_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset" ON "api_deliverycosthistory" ("asset_request_id");
@@ -1860,11 +1686,7 @@ CREATE TABLE "api_detaileduser" (
   "role_permissions_id" int DEFAULT NULL,
   "cost_centre_id" int DEFAULT NULL,
   PRIMARY KEY ("detailed_user_id"),
-  CONSTRAINT "email" UNIQUE ("email"),
-  CONSTRAINT "api_detaileduser_business_unit_id_7932adec_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_detaileduser_company_id_4d55f60a_fk_api_company_company_id" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id"),
-  CONSTRAINT "api_detaileduser_cost_centre_id_dbed5ea7_fk_api_costc" FOREIGN KEY ("cost_centre_id") REFERENCES "api_costcentremodel" ("cost_centre_id"),
-  CONSTRAINT "api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep" FOREIGN KEY ("role_permissions_id") REFERENCES "api_rolepermissions" ("id")
+  CONSTRAINT "email" UNIQUE ("email")
 );
 
 CREATE INDEX "api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep" ON "api_detaileduser" ("role_permissions_id");
@@ -1887,9 +1709,7 @@ CREATE TABLE "api_detaileduser_location" (
   "detaileduser_id" int NOT NULL,
   "locationmodel_id" int NOT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "api_detaileduser_locatio_detaileduser_id_location_0662e2dc_uniq" UNIQUE ("detaileduser_id","locationmodel_id"),
-  CONSTRAINT "api_detaileduser_loc_detaileduser_id_e5cfc688_fk_api_detai" FOREIGN KEY ("detaileduser_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat" FOREIGN KEY ("locationmodel_id") REFERENCES "api_locationmodel" ("location_id")
+  CONSTRAINT "api_detaileduser_locatio_detaileduser_id_location_0662e2dc_uniq" UNIQUE ("detaileduser_id","locationmodel_id")
 );
 
 CREATE INDEX "api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat" ON "api_detaileduser_location" ("locationmodel_id");
@@ -1914,11 +1734,7 @@ CREATE TABLE "api_detailedusermodelhistory" (
   "company_id" char(32) DEFAULT NULL,
   "role_permissions_id" int DEFAULT NULL,
   "user_id" int NOT NULL,
-  PRIMARY KEY ("detailed_user_history_id"),
-  CONSTRAINT "api_detailedusermode_business_unit_id_c0219409_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_detailedusermode_company_id_7c62abcc_fk_api_compa" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id"),
-  CONSTRAINT "api_detailedusermode_role_permissions_id_f60796a1_fk_api_rolep" FOREIGN KEY ("role_permissions_id") REFERENCES "api_rolepermissions" ("id"),
-  CONSTRAINT "api_detailedusermode_user_id_458862a4_fk_api_detai" FOREIGN KEY ("user_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("detailed_user_history_id")
 );
 
 CREATE INDEX "api_detailedusermode_business_unit_id_c0219409_fk_api_busin" ON "api_detailedusermodelhistory" ("business_unit_id");
@@ -1947,12 +1763,7 @@ CREATE TABLE "api_enginehistorymodel" (
   "responsible_daily_check_id" int DEFAULT NULL,
   "responsible_maintenance_id" int DEFAULT NULL,
   "responsible_repair_id" int DEFAULT NULL,
-  PRIMARY KEY ("engine_history_id"),
-  CONSTRAINT "api_enginehistorymod_engine_id_id_6dfadf2c_fk_api_engin" FOREIGN KEY ("engine_id_id") REFERENCES "api_enginemodel" ("engine_id"),
-  CONSTRAINT "api_enginehistorymod_responsible_daily_ch_08e0d8ff_fk_api_asset" FOREIGN KEY ("responsible_daily_check_id") REFERENCES "api_assetdailychecksmodel" ("daily_check_id"),
-  CONSTRAINT "api_enginehistorymod_responsible_maintena_9ddbea1a_fk_api_maint" FOREIGN KEY ("responsible_maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_enginehistorymod_responsible_repair_i_1b274ea4_fk_api_repai" FOREIGN KEY ("responsible_repair_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_enginehistorymod_responsible_user_id_3e190328_fk_api_detai" FOREIGN KEY ("responsible_user_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("engine_history_id")
 );
 
 CREATE INDEX "api_enginehistorymod_responsible_user_id_3e190328_fk_api_detai" ON "api_enginehistorymodel" ("responsible_user_id");
@@ -1977,8 +1788,7 @@ CREATE TABLE "api_enginemodel" (
   "hours" double precision NOT NULL,
   "VIN_id" varchar(100) NOT NULL,
   "daily_average_hours" double precision NOT NULL,
-  PRIMARY KEY ("engine_id"),
-  CONSTRAINT "api_enginemodel_VIN_id_93922063_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("engine_id")
 );
 
 CREATE INDEX "api_enginemodel_VIN_id_93922063_fk_api_assetmodel_VIN" ON "api_enginemodel" ("VIN_id");
@@ -2006,12 +1816,7 @@ CREATE TABLE "api_equipmenttypemodel" (
   "fuel_id" int DEFAULT NULL,
   "manufacturer_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("equipment_type_id"),
-  CONSTRAINT "api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset" FOREIGN KEY ("asset_type_id") REFERENCES "api_assettypemodel" ("id"),
-  CONSTRAINT "api_equipmenttypemod_created_by_id_c346a1e6_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_equipmenttypemod_manufacturer_id_29668e7f_fk_api_asset" FOREIGN KEY ("manufacturer_id") REFERENCES "api_assetmanufacturermodel" ("id"),
-  CONSTRAINT "api_equipmenttypemod_modified_by_id_da7eef15_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_equipmenttypemodel_fuel_id_cba9eff5_fk_api_fueltype_id" FOREIGN KEY ("fuel_id") REFERENCES "api_fueltype" ("id")
+  PRIMARY KEY ("equipment_type_id")
 );
 
 CREATE INDEX "api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset" ON "api_equipmenttypemodel" ("asset_type_id");
@@ -2039,8 +1844,7 @@ CREATE TABLE "api_errorreport" (
   "date_created" date NOT NULL,
   "status" varchar(50) NOT NULL,
   "created_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("error_report_id"),
-  CONSTRAINT "api_errorreport_created_by_id_d3637fe3_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("error_report_id")
 );
 
 CREATE INDEX "api_errorreport_created_by_id_d3637fe3_fk_api_detai" ON "api_errorreport" ("created_by_id");
@@ -2063,8 +1867,7 @@ CREATE TABLE "api_errorreportfile" (
   "bytes" bigint NOT NULL,
   "file_created" timestamp(6) NOT NULL,
   "error_report_id" int NOT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_errorreportfile_error_report_id_ee964a4f_fk_api_error" FOREIGN KEY ("error_report_id") REFERENCES "api_errorreport" ("error_report_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_errorreportfile_error_report_id_ee964a4f_fk_api_error" ON "api_errorreportfile" ("error_report_id");
@@ -2106,10 +1909,7 @@ CREATE TABLE "api_fuelcard" (
   "assigned_employee_id" varchar(254) DEFAULT NULL,
   "business_unit_id" int DEFAULT NULL,
   "issuer_id" varchar(254) DEFAULT NULL,
-  PRIMARY KEY ("card_id"),
-  CONSTRAINT "api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai" FOREIGN KEY ("assigned_employee_id") REFERENCES "api_detaileduser" ("email"),
-  CONSTRAINT "api_fuelcard_business_unit_id_6843f63b_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id"),
-  CONSTRAINT "api_fuelcard_issuer_id_7a73ca8f_fk_api_detaileduser_email" FOREIGN KEY ("issuer_id") REFERENCES "api_detaileduser" ("email")
+  PRIMARY KEY ("card_id")
 );
 
 CREATE INDEX "api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai" ON "api_fuelcard" ("assigned_employee_id");
@@ -2141,13 +1941,7 @@ CREATE TABLE "api_fuelcost" (
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "flagged" boolean NOT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_fuelcost_created_by_id_9050c739_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_fuelcost_currency_id_4e73dab3_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id" FOREIGN KEY ("fuel_type_id") REFERENCES "api_fueltype" ("id"),
-  CONSTRAINT "api_fuelcost_location_id_3e8c907b_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_fuelcost_modified_by_id_f184d7f2_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_fuelcost_VIN_id_b79a526d_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id" ON "api_fuelcost" ("fuel_type_id");
@@ -2175,9 +1969,7 @@ CREATE TABLE "api_fuelcostcheck" (
   "cost_ratio_threshold" double precision NOT NULL,
   "cost_ratio_type_id" int DEFAULT NULL,
   "cost_ratio_units" varchar(50) DEFAULT NULL,
-  PRIMARY KEY ("fuel_cost_check_id"),
-  CONSTRAINT "api_fuelcostcheck_company_id_5deafa6a_fk_api_company_company_id" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id"),
-  CONSTRAINT "api_fuelcostcheck_cost_ratio_type_id_1805091a_fk_api_fueltype_id" FOREIGN KEY ("cost_ratio_type_id") REFERENCES "api_fueltype" ("id")
+  PRIMARY KEY ("fuel_cost_check_id")
 );
 
 CREATE INDEX "api_fuelcostcheck_company_id_5deafa6a_fk_api_company_company_id" ON "api_fuelcostcheck" ("company_id");
@@ -2206,13 +1998,7 @@ CREATE TABLE "api_fuelcostmodelhistory" (
   "fuel_type_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_fuelcostmodelhis_fuel_cost_id_4fb992ed_fk_api_fuelc" FOREIGN KEY ("fuel_cost_id") REFERENCES "api_fuelcost" ("id"),
-  CONSTRAINT "api_fuelcostmodelhis_fuel_type_id_1bb4b854_fk_api_fuelt" FOREIGN KEY ("fuel_type_id") REFERENCES "api_fueltype" ("id"),
-  CONSTRAINT "api_fuelcostmodelhis_location_id_bf6c4061_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_fuelcostmodelhis_modified_by_id_f59c2374_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_fuelcostmodelhistory_currency_id_8bdfe0d9_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN" ON "api_fuelcostmodelhistory" ("VIN_id");
@@ -2239,9 +2025,7 @@ CREATE TABLE "api_fueltype" (
   "date_updated" timestamp(6) NOT NULL,
   "created_by_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_fueltype_created_by_id_7ac2889b_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_fueltype_modified_by_id_22b884e4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_fueltype_created_by_id_7ac2889b_fk_api_detai" ON "api_fueltype" ("created_by_id");
@@ -2288,13 +2072,7 @@ CREATE TABLE "api_insurancecost" (
   "currency_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_insurancecost_accident_id_a2a7e128_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_insurancecost_created_by_id_faf2bae2_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_insurancecost_currency_id_8973d10c_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_insurancecost_location_id_db265a0a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_insurancecost_modified_by_id_061bb451_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_insurancecost_VIN_id_7e6d575e_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_insurancecost_location_id_db265a0a_fk_api_locat" ON "api_insurancecost" ("location_id");
@@ -2325,13 +2103,7 @@ CREATE TABLE "api_insurancecostmodelhistory" (
   "insurance_cost_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_insurancecostmod_accident_id_9a6dc962_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_insurancecostmod_currency_id_0a59edae_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_insurancecostmod_insurance_cost_id_9153c60e_fk_api_insur" FOREIGN KEY ("insurance_cost_id") REFERENCES "api_insurancecost" ("id"),
-  CONSTRAINT "api_insurancecostmod_location_id_268f5a48_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_insurancecostmod_modified_by_id_1edeba66_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_insurancecostmod_VIN_id_c804804e_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_insurancecostmod_VIN_id_c804804e_fk_api_asset" ON "api_insurancecostmodelhistory" ("VIN_id");
@@ -2367,11 +2139,7 @@ CREATE TABLE "api_inventory" (
   "modified_by_id" int DEFAULT NULL,
   PRIMARY KEY ("id"),
   CONSTRAINT "serial" UNIQUE ("serial"),
-  CONSTRAINT "custom_id" UNIQUE ("custom_id"),
-  CONSTRAINT "api_inventory_created_by_id_b84009f2_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_inventory_equipment_type_id_90bcccc7_fk_api_equip" FOREIGN KEY ("equipment_type_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id"),
-  CONSTRAINT "api_inventory_location_id_a4bcfa28_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_inventory_modified_by_id_f9495787_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  CONSTRAINT "custom_id" UNIQUE ("custom_id")
 );
 
 CREATE INDEX "api_inventory_created_by_id_b84009f2_fk_api_detai" ON "api_inventory" ("created_by_id");
@@ -2423,14 +2191,7 @@ CREATE TABLE "api_laborcost" (
   "location_id" int DEFAULT NULL,
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_laborcost_created_by_id_1a3ecd17_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_laborcost_currency_id_ced7edd3_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_laborcost_disposal_id_df44d769_fk_api_assetdisposalmodel_id" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_laborcost_issue_id_3b954f4a_fk_api_assetissuemodel_issue_id" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id"),
-  CONSTRAINT "api_laborcost_location_id_88ec229d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_laborcost_maintenance_id_366ad8b9_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_laborcost_modified_by_id_d6ec089d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_laborcost_location_id_88ec229d_fk_api_locat" ON "api_laborcost" ("location_id");
@@ -2467,14 +2228,7 @@ CREATE TABLE "api_laborcostmodelhistory" (
   "location_id" int DEFAULT NULL,
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_laborcostmodelhi_disposal_id_9c6f3528_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_laborcostmodelhi_issue_id_bb6a1afc_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id"),
-  CONSTRAINT "api_laborcostmodelhi_location_id_79ca8861_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_laborcostmodelhi_maintenance_id_e612f7a2_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_laborcostmodelhi_modified_by_id_3752372f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_laborcostmodelhistory_labor_id_2cc63593_fk_api_laborcost_id" FOREIGN KEY ("labor_id") REFERENCES "api_laborcost" ("id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre" ON "api_laborcostmodelhistory" ("currency_id");
@@ -2508,12 +2262,7 @@ CREATE TABLE "api_licensecost" (
   "currency_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_licensecost_created_by_id_b691722b_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_licensecost_currency_id_6eea48cf_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_licensecost_location_id_13de6a03_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_licensecost_modified_by_id_41820a9d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_licensecost_VIN_id_30492662_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_licensecost_location_id_13de6a03_fk_api_locat" ON "api_licensecost" ("location_id");
@@ -2544,12 +2293,7 @@ CREATE TABLE "api_licensecostmodelhistory" (
   "license_cost_id" int DEFAULT NULL,
   "location_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_licensecostmodel_currency_id_7162ca61_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_licensecostmodel_license_cost_id_6cdba7b2_fk_api_licen" FOREIGN KEY ("license_cost_id") REFERENCES "api_licensecost" ("id"),
-  CONSTRAINT "api_licensecostmodel_location_id_e8ea7596_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_licensecostmodel_modified_by_id_5d6e8b37_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset" ON "api_licensecostmodelhistory" ("VIN_id");
@@ -2602,13 +2346,7 @@ CREATE TABLE "api_maintenanceforecastrules" (
   "location_id" int NOT NULL,
   "modified_by_id" int DEFAULT NULL,
   "linked_engine_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_maintenanceforec_created_by_id_7b4190e3_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_maintenanceforec_inspection_type_id_4c2e50e0_fk_api_inspe" FOREIGN KEY ("inspection_type_id") REFERENCES "api_inspectiontypemodel" ("id"),
-  CONSTRAINT "api_maintenanceforec_linked_engine_id_e91b800b_fk_api_engin" FOREIGN KEY ("linked_engine_id") REFERENCES "api_enginemodel" ("engine_id"),
-  CONSTRAINT "api_maintenanceforec_location_id_7d1db767_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_maintenanceforec_modified_by_id_0cb09b5d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_maintenanceforec_VIN_id_43d27b29_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_maintenanceforec_VIN_id_43d27b29_fk_api_asset" ON "api_maintenanceforecastrules" ("VIN_id");
@@ -2638,10 +2376,7 @@ CREATE TABLE "api_maintenanceforecastruleshistory" (
   "maintenance_forecast_id" int NOT NULL,
   "modified_by_id" int DEFAULT NULL,
   "linked_engine_id" int DEFAULT NULL,
-  PRIMARY KEY ("maintenance_forecast_history_id"),
-  CONSTRAINT "api_maintenanceforec_linked_engine_id_a1c94f89_fk_api_engin" FOREIGN KEY ("linked_engine_id") REFERENCES "api_enginemodel" ("engine_id"),
-  CONSTRAINT "api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint" FOREIGN KEY ("maintenance_forecast_id") REFERENCES "api_maintenanceforecastrules" ("id"),
-  CONSTRAINT "api_maintenanceforec_modified_by_id_679c2f26_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("maintenance_forecast_history_id")
 );
 
 CREATE INDEX "api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint" ON "api_maintenanceforecastruleshistory" ("maintenance_forecast_id");
@@ -2670,10 +2405,7 @@ CREATE TABLE "api_maintenancerequestfile" (
   "created_by_id" int DEFAULT NULL,
   "maintenance_request_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_maintenancereque_maintenance_request__dfdeb7ab_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_maintenancereque_vendor_id_2d8ae218_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai" ON "api_maintenancerequestfile" ("created_by_id");
@@ -2716,13 +2448,7 @@ CREATE TABLE "api_maintenancerequestmodel" (
   "potential_vendor_ids" varchar(1000) DEFAULT NULL,
   "quote_deadline" timestamp(6) DEFAULT NULL,
   "vendor_delivery" boolean DEFAULT NULL,
-  PRIMARY KEY ("maintenance_id"),
-  CONSTRAINT "api_maintenancereque_assigned_vendor_id_02b819e7_fk_api_appro" FOREIGN KEY ("assigned_vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_maintenancereque_created_by_id_8181a9ca_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_maintenancereque_inspection_type_id_f5a6ad64_fk_api_inspe" FOREIGN KEY ("inspection_type_id") REFERENCES "api_inspectiontypemodel" ("id"),
-  CONSTRAINT "api_maintenancereque_location_id_945bb3c1_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_maintenancereque_modified_by_id_f7a66dc4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_maintenancereque_VIN_id_50b77888_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("maintenance_id")
 );
 
 CREATE INDEX "api_maintenancereque_VIN_id_50b77888_fk_api_asset" ON "api_maintenancerequestmodel" ("VIN_id");
@@ -2760,12 +2486,7 @@ CREATE TABLE "api_maintenancerequestmodelhistory" (
   "location_id" int DEFAULT NULL,
   "maintenance_id" int NOT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("maintenance_history_id"),
-  CONSTRAINT "api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro" FOREIGN KEY ("assigned_vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_maintenancereque_inspection_type_id_cbbfad63_fk_api_inspe" FOREIGN KEY ("inspection_type_id") REFERENCES "api_inspectiontypemodel" ("id"),
-  CONSTRAINT "api_maintenancereque_location_id_9de4fbdf_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_maintenancereque_maintenance_id_94b8ca43_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_maintenancereque_modified_by_id_8c9621ac_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("maintenance_history_id")
 );
 
 CREATE INDEX "api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro" ON "api_maintenancerequestmodelhistory" ("assigned_vendor_id");
@@ -2798,8 +2519,7 @@ CREATE TABLE "api_notificationconfiguration" (
   "roles" text,
   "date_modified" timestamp(6) NOT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai" ON "api_notificationconfiguration" ("modified_by_id");
@@ -2831,14 +2551,7 @@ CREATE TABLE "api_parts" (
   "location_id" int DEFAULT NULL,
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_parts_created_by_id_8d88feb8_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_parts_currency_id_31be192f_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_parts_disposal_id_8471b0ca_fk_api_assetdisposalmodel_id" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_parts_issue_id_75453a17_fk_api_assetissuemodel_issue_id" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id"),
-  CONSTRAINT "api_parts_location_id_675c79a9_fk_api_locationmodel_location_id" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_parts_maintenance_id_3be00de0_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_parts_modified_by_id_fc2414a8_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_parts_created_by_id_8d88feb8_fk_api_detai" ON "api_parts" ("created_by_id");
@@ -2876,14 +2589,7 @@ CREATE TABLE "api_partsmodelhistory" (
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "parts_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_partsmodelhistor_disposal_id_78da58e1_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_partsmodelhistor_issue_id_7708c488_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id"),
-  CONSTRAINT "api_partsmodelhistor_location_id_2c2991fe_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_partsmodelhistor_maintenance_id_cd17ac11_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_partsmodelhistor_modified_by_id_d6a9f159_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_partsmodelhistory_parts_id_ba93e01e_fk_api_parts_id" FOREIGN KEY ("parts_id") REFERENCES "api_parts" ("id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id" ON "api_partsmodelhistory" ("currency_id");
@@ -2917,15 +2623,7 @@ CREATE TABLE "api_rentalcost" (
   "maintenance_id" int DEFAULT NULL,
   "modified_by_id" int DEFAULT NULL,
   "repair_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_rentalcost_accident_id_87ebc25f_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_rentalcost_created_by_id_a458d221_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_rentalcost_currency_id_500e53df_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_rentalcost_location_id_1efbd134_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_rentalcost_maintenance_id_9237c325_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_rentalcost_modified_by_id_0a505810_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_rentalcost_VIN_id_70e51830_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id" ON "api_rentalcost" ("repair_id");
@@ -2959,15 +2657,7 @@ CREATE TABLE "api_rentalcostmodelhistory" (
   "modified_by_id" int DEFAULT NULL,
   "rental_cost_id" int DEFAULT NULL,
   "repair_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_rentalcostmodelh_accident_id_a69d45ed_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id"),
-  CONSTRAINT "api_rentalcostmodelh_currency_id_d08ff758_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id"),
-  CONSTRAINT "api_rentalcostmodelh_location_id_939da8fa_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_rentalcostmodelh_maintenance_id_e9f9565d_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_rentalcostmodelh_modified_by_id_3b0dbc48_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_rentalcostmodelh_rental_cost_id_794e94d2_fk_api_renta" FOREIGN KEY ("rental_cost_id") REFERENCES "api_rentalcost" ("id"),
-  CONSTRAINT "api_rentalcostmodelh_repair_id_bfb01785_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN" ON "api_rentalcostmodelhistory" ("VIN_id");
@@ -3001,10 +2691,7 @@ CREATE TABLE "api_repairfile" (
   "created_by_id" int DEFAULT NULL,
   "repair_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_repairfile_created_by_id_e6fffdd7_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_repairfile_repair_id_19d4f16c_fk_api_repairsmodel_repair_id" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_repairfile_vendor_id_70224070_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_repairfile_created_by_id_e6fffdd7_fk_api_detai" ON "api_repairfile" ("created_by_id");
@@ -3050,13 +2737,7 @@ CREATE TABLE "api_repairsmodel" (
   "potential_vendor_ids" varchar(1000) DEFAULT NULL,
   "quote_deadline" timestamp(6) DEFAULT NULL,
   "vendor_delivery" boolean DEFAULT NULL,
-  PRIMARY KEY ("repair_id"),
-  CONSTRAINT "api_repairsmodel_created_by_id_132af9d7_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_repairsmodel_disposal_id_c9f681ab_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_repairsmodel_location_id_baf19500_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_repairsmodel_modified_by_id_de30d9ec_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_repairsmodel_vendor_id_11d778d3_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id"),
-  CONSTRAINT "api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN")
+  PRIMARY KEY ("repair_id")
 );
 
 CREATE INDEX "api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN" ON "api_repairsmodel" ("VIN_id");
@@ -3095,11 +2776,7 @@ CREATE TABLE "api_repairsmodelhistory" (
   "modified_by_id" int DEFAULT NULL,
   "repair_id" int NOT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("repair_history_id"),
-  CONSTRAINT "api_repairsmodelhist_location_id_409ef7e3_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id"),
-  CONSTRAINT "api_repairsmodelhist_modified_by_id_a021000f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_repairsmodelhist_repair_id_34ccb561_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_repairsmodelhist_vendor_id_22ec1f3b_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("repair_history_id")
 );
 
 CREATE INDEX "api_repairsmodelhist_location_id_409ef7e3_fk_api_locat" ON "api_repairsmodelhistory" ("location_id");
@@ -3131,14 +2808,7 @@ CREATE TABLE "api_requestquote" (
   "repair_request_id" int DEFAULT NULL,
   "transfer_request_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_requestquote_approved_by_id_90433a46_fk_api_detai" FOREIGN KEY ("approved_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_requestquote_asset_request_id_e19b02a6_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id"),
-  CONSTRAINT "api_requestquote_disposal_request_id_ea75c564_fk_api_asset" FOREIGN KEY ("disposal_request_id") REFERENCES "api_assetdisposalmodel" ("id"),
-  CONSTRAINT "api_requestquote_maintenance_request__00583fc6_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id"),
-  CONSTRAINT "api_requestquote_repair_request_id_ea0c519b_fk_api_repai" FOREIGN KEY ("repair_request_id") REFERENCES "api_repairsmodel" ("repair_id"),
-  CONSTRAINT "api_requestquote_transfer_request_id_10604ee4_fk_api_asset" FOREIGN KEY ("transfer_request_id") REFERENCES "api_assettransfer" ("asset_transfer_id"),
-  CONSTRAINT "api_requestquote_vendor_id_2f3b5a52_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_requestquote_approved_by_id_90433a46_fk_api_detai" ON "api_requestquote" ("approved_by_id");
@@ -3299,8 +2969,7 @@ CREATE TABLE "api_snapshotdailycurrency" (
   "currency_value" double precision NOT NULL,
   "date_modified" timestamp(6) NOT NULL,
   "currency_id" int NOT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_snapshotdailycur_currency_id_2b593858_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_snapshotdailycur_currency_id_2b593858_fk_api_curre" ON "api_snapshotdailycurrency" ("currency_id");
@@ -3389,10 +3058,7 @@ CREATE TABLE "api_transferfile" (
   "created_by_id" int DEFAULT NULL,
   "transfer_id" int DEFAULT NULL,
   "vendor_id" int DEFAULT NULL,
-  PRIMARY KEY ("file_id"),
-  CONSTRAINT "api_transferfile_created_by_id_eb950b6f_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
-  CONSTRAINT "api_transferfile_transfer_id_93e2fc4e_fk_api_asset" FOREIGN KEY ("transfer_id") REFERENCES "api_assettransfer" ("asset_transfer_id"),
-  CONSTRAINT "api_transferfile_vendor_id_b1af16ff_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id")
+  PRIMARY KEY ("file_id")
 );
 
 CREATE INDEX "api_transferfile_created_by_id_eb950b6f_fk_api_detai" ON "api_transferfile" ("created_by_id");
@@ -3418,7 +3084,6 @@ CREATE TABLE "api_userconfiguration" (
   "table_filter" text,
   "user_id" int NOT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "api_userconfiguratio_user_id_0dd3d13f_fk_api_detai" FOREIGN KEY ("user_id") REFERENCES "api_detaileduser" ("detailed_user_id"),
   CONSTRAINT "api_userconfiguration_chk_1" CHECK (("sound_percentage" >= 0))
 );
 
@@ -3439,8 +3104,7 @@ CREATE TABLE "api_usertablelayoutmodel" (
   "key" varchar(100) NOT NULL,
   "value" text,
   "user_id" int NOT NULL,
-  PRIMARY KEY ("id"),
-  CONSTRAINT "api_usertablelayoutm_user_id_e9170365_fk_api_detai" FOREIGN KEY ("user_id") REFERENCES "api_detaileduser" ("detailed_user_id")
+  PRIMARY KEY ("id")
 );
 
 CREATE INDEX "api_usertablelayoutm_user_id_e9170365_fk_api_detai" ON "api_usertablelayoutmodel" ("user_id");
@@ -3471,3 +3135,341 @@ CREATE TABLE "django_migrations" (
 INSERT INTO "django_migrations" VALUES (1,'api','0001_initial','2024-05-15 21:11:11.140897'),(2,'api','0002_maintenancerequestmodel_description','2024-05-15 21:11:45.514521'),(3,'api','0003_auto_20231113_1734','2024-05-15 21:11:47.691350'),(4,'api','0004_auto_20231124_0245','2024-05-15 21:11:48.466923'),(5,'api','0005_detaileduser_cost_centre','2024-05-15 21:11:49.027736'),(6,'api','0006_assetrequestmodel_cost_centre','2024-05-15 21:11:49.651059'),(7,'api','0007_enginemodel','2024-05-15 21:11:50.034447'),(8,'api','0008_enginehistorymodel','2024-05-15 21:11:50.619832'),(9,'api','0009_enginehistorymodel_date','2024-05-15 21:11:51.113029'),(10,'api','0010_auto_20231204_2222','2024-05-15 21:11:52.046376'),(11,'api','0011_enginehistorymodel_responsible_daily_check','2024-05-15 21:11:52.403621'),(12,'api','0007_assetrequestfile_inventory_requestquote','2024-05-15 21:11:54.811288'),(13,'api','0012_merge_20231205_2040','2024-05-15 21:11:57.090002'),(14,'api','0013_usertablelayoutmodel','2024-05-15 21:11:57.494486'),(15,'api','0014_fuelcostcheck','2024-05-15 21:11:58.027563'),(16,'api','0015_auto_20240116_0352','2024-05-15 21:11:58.865819'),(17,'api','0016_annualreport','2024-05-15 21:12:00.794543'),(18,'api','0017_auto_20240118_1511','2024-05-15 21:12:02.357488'),(19,'api','0013_auto_20231211_2156','2024-05-15 21:12:02.995050'),(20,'api','0018_merge_20240118_1531','2024-05-15 21:12:03.093002'),(21,'api','0019_assetmodel_lifespan_years','2024-05-15 21:12:03.552465'),(22,'api','0020_enginemodel_daily_average_hours','2024-05-15 21:12:03.851653'),(23,'api','0021_auto_20240209_1546','2024-05-15 21:12:04.438235'),(24,'api','0022_auto_20240223_2012','2024-05-15 21:12:04.586742'),(25,'api','0023_auto_20240229_0825','2024-05-15 21:12:05.195118'),(26,'api','0024_auto_20240308_0751','2024-05-15 21:12:07.747729'),(27,'api','0025_auto_20240310_2306','2024-05-15 21:12:10.436986'),(28,'api','0026_auto_20240311_1058','2024-05-15 21:12:11.690159'),(29,'api','0027_auto_20240311_1459','2024-05-15 21:12:12.638687'),(30,'api','0028_auto_20240311_1706','2024-05-15 21:12:15.495218'),(31,'api','0024_auto_20240312_1949','2024-05-15 21:12:17.463309'),(32,'api','0024_auto_20240307_0536','2024-05-15 21:12:17.641769'),(33,'api','0029_merge_20240319_1232','2024-05-15 21:12:17.708310');
 
 
+
+-- Foreign key constraints
+ALTER TABLE "api_accidentfilemodel" ADD CONSTRAINT "api_accidentfilemode_accident_id_a356de30_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_created_by_id_3c566486_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_disposal_id_a16512ac_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_location_id_1b207e0d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_modified_by_id_ef02950f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_accidentmodel" ADD CONSTRAINT "api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_accidentmodelhistory" ADD CONSTRAINT "api_accidentmodelhis_accident_id_7eec054b_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_accidentmodelhistory" ADD CONSTRAINT "api_accidentmodelhis_location_id_9d5dc35c_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_accidentmodelhistory" ADD CONSTRAINT "api_accidentmodelhis_modified_by_id_d676ee67_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_created_by_id_2a71eeed_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_currency_id_e73277cd_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_location_id_5bd5e472_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_modified_by_id_1662932d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_acquisitioncost" ADD CONSTRAINT "api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostm_acquisition_cost_id_7094c72d_fk_api_acqui" FOREIGN KEY ("acquisition_cost_id") REFERENCES "api_acquisitioncost" ("id");
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostm_currency_id_4f614d77_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostm_location_id_fe5ae5a3_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostm_modified_by_id_ffbff6db_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_acquisitioncostmodelhistory" ADD CONSTRAINT "api_acquisitioncostm_VIN_id_943b3499_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_annualreport" ADD CONSTRAINT "api_annualreport_file_id_c90b0f55_fk_api_assetfile_file_id" FOREIGN KEY ("file_id") REFERENCES "api_assetfile" ("file_id");
+ALTER TABLE "api_annualreport" ADD CONSTRAINT "api_annualreport_VIN_id_3faed4f1_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_approving_user_id_42cad599_fk_api_detai" FOREIGN KEY ("approving_user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_asset_request_id_11278853_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_asset_transfer_reque_a51ddf9b_fk_api_asset" FOREIGN KEY ("asset_transfer_request_id") REFERENCES "api_assettransfer" ("asset_transfer_id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_disposal_request_id_028da8d1_fk_api_asset" FOREIGN KEY ("disposal_request_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_location_id_090f0b07_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_maintenance_request__2f0759c6_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_repair_request_id_2651d208_fk_api_repai" FOREIGN KEY ("repair_request_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_requesting_user_id_e6e018a6_fk_api_detai" FOREIGN KEY ("requesting_user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_approval" ADD CONSTRAINT "api_approval_VIN_id_867898b0_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro" FOREIGN KEY ("approval_id") REFERENCES "api_approval" ("approval_id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_approving_user_id_0f09aa8a_fk_api_detai" FOREIGN KEY ("approving_user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_asset_request_id_95a3e31b_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_asset_transfer_reque_58f1e105_fk_api_asset" FOREIGN KEY ("asset_transfer_request_id") REFERENCES "api_assettransfer" ("asset_transfer_id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_disposal_request_id_80638fac_fk_api_asset" FOREIGN KEY ("disposal_request_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_location_id_60640ac2_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_maintenance_request__e206156c_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_repair_request_id_6f14411b_fk_api_repai" FOREIGN KEY ("repair_request_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_approvalmodelhistory" ADD CONSTRAINT "api_approvalmodelhis_requesting_user_id_39c5af2f_fk_api_detai" FOREIGN KEY ("requesting_user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_approvedvendorrequest" ADD CONSTRAINT "api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro" FOREIGN KEY ("vendor_department_id") REFERENCES "api_approvedvendordepartments" ("id");
+ALTER TABLE "api_approvedvendorrequest" ADD CONSTRAINT "api_approvedvendorre_vendor_services_id_936d9ccf_fk_api_appro" FOREIGN KEY ("vendor_services_id") REFERENCES "api_approvedvendorservices" ("id");
+ALTER TABLE "api_approvedvendorsmodel" ADD CONSTRAINT "api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro" FOREIGN KEY ("vendor_department_id") REFERENCES "api_approvedvendordepartments" ("id");
+ALTER TABLE "api_approvedvendorsmodel_vendor_services" ADD CONSTRAINT "api_approvedvendorsm_approvedvendorservic_619bc4e9_fk_api_appro" FOREIGN KEY ("approvedvendorservices_id") REFERENCES "api_approvedvendorservices" ("id");
+ALTER TABLE "api_approvedvendorsmodel_vendor_services" ADD CONSTRAINT "api_approvedvendorsm_approvedvendorsmodel_5c335073_fk_api_appro" FOREIGN KEY ("approvedvendorsmodel_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetdailycheckscomment" ADD CONSTRAINT "api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset" FOREIGN KEY ("daily_check_id") REFERENCES "api_assetdailychecksmodel" ("daily_check_id");
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecks_created_by_id_029fc175_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecks_location_id_f76e3d5a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecks_modified_by_id_4fbf1c05_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdailychecksmodel" ADD CONSTRAINT "api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetdailychecksmodelhistory" ADD CONSTRAINT "api_assetdailychecks_daily_check_id_668316ed_fk_api_asset" FOREIGN KEY ("daily_check_id") REFERENCES "api_assetdailychecksmodel" ("daily_check_id");
+ALTER TABLE "api_assetdailychecksmodelhistory" ADD CONSTRAINT "api_assetdailychecks_location_id_21106c94_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetdailychecksmodelhistory" ADD CONSTRAINT "api_assetdailychecks_modified_by_id_107f412c_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdisposalfile" ADD CONSTRAINT "api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdisposalfile" ADD CONSTRAINT "api_assetdisposalfil_disposal_id_21e54a10_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_assetdisposalfile" ADD CONSTRAINT "api_assetdisposalfil_vendor_id_61f19a09_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmod_created_by_id_64abcd41_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmod_location_id_b2ebc3c6_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmod_modified_by_id_8e1214f6_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmod_vendor_id_ceb0fad4_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetdisposalmodel" ADD CONSTRAINT "api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmod_disposal_id_eab85920_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmod_location_id_b9df111d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmod_modified_by_id_77d46eb8_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetdisposalmodelhistory" ADD CONSTRAINT "api_assetdisposalmod_vendor_id_10c94a92_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetfile" ADD CONSTRAINT "api_assetfile_created_by_id_db646b2a_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetfile" ADD CONSTRAINT "api_assetfile_modified_by_id_8c9e37fc_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetfile" ADD CONSTRAINT "api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetissuecategory" ADD CONSTRAINT "api_assetissuecatego_created_by_id_ba655274_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetissuecategory" ADD CONSTRAINT "api_assetissuecatego_modified_by_id_c453ea4c_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetissuefilemodel" ADD CONSTRAINT "api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_accident_id_id_22653a0e_fk_api_accid" FOREIGN KEY ("accident_id_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_category_id_cd4c02f3_fk_api_asset" FOREIGN KEY ("category_id") REFERENCES "api_assetissuecategory" ("id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_created_by_id_0f5c0bd9_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_location_id_af14c6da_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_modified_by_id_9575934e_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_repair_id_id_4ca7bc53_fk_api_repai" FOREIGN KEY ("repair_id_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_assetissuemodel" ADD CONSTRAINT "api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelh_issue_id_405009a0_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id");
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelh_location_id_d302e45a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelh_modified_by_id_4ccfcbc4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetissuemodelhistory" ADD CONSTRAINT "api_assetissuemodelh_repair_id_177618a0_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_created_by_id_ca0ba384_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_location_id_d02de46b_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_modified_by_id_cf6e288f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetlog" ADD CONSTRAINT "api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetmanufacturermodel" ADD CONSTRAINT "api_assetmanufacture_created_by_id_4003f7de_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetmanufacturermodel" ADD CONSTRAINT "api_assetmanufacture_modified_by_id_752c0d40_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetmanufacturermodel_asset_type" ADD CONSTRAINT "api_assetmanufacture_assetmanufacturermod_c02f3a63_fk_api_asset" FOREIGN KEY ("assetmanufacturermodel_id") REFERENCES "api_assetmanufacturermodel" ("id");
+ALTER TABLE "api_assetmanufacturermodel_asset_type" ADD CONSTRAINT "api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset" FOREIGN KEY ("assettypemodel_id") REFERENCES "api_assettypemodel" ("id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_company_id_f122d18f_fk_api_company_company_id" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_cost_centre_id_a29a81e9_fk_api_costc" FOREIGN KEY ("cost_centre_id") REFERENCES "api_costcentremodel" ("cost_centre_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_created_by_id_d48a4bf8_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_currency_id_fa8254f2_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_current_location_id_f50c42e2_fk_api_locat" FOREIGN KEY ("current_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_department_id_95103181_fk_api_busin" FOREIGN KEY ("department_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_equipment_type_id_08bc551d_fk_api_equip" FOREIGN KEY ("equipment_type_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_fuel_id_90e7cb1a_fk_api_fueltype_id" FOREIGN KEY ("fuel_id") REFERENCES "api_fueltype" ("id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_job_specification_id_b5467ffd_fk_api_jobsp" FOREIGN KEY ("job_specification_id") REFERENCES "api_jobspecification" ("job_specification_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_modified_by_id_6826ae09_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_original_location_id_9d64c4f1_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetmodel" ADD CONSTRAINT "api_assetmodel_parent_id_9e5f5e9c_fk_api_assetmodel_VIN" FOREIGN KEY ("parent_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_company_id_f7bb1171_fk_api_compa" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_current_location_id_467d3a2f_fk_api_locat" FOREIGN KEY ("current_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_department_id_8fb917a8_fk_api_busin" FOREIGN KEY ("department_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_equipment_type_id_4b88b5ce_fk_api_equip" FOREIGN KEY ("equipment_type_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_job_specification_id_78ef1952_fk_api_jobsp" FOREIGN KEY ("job_specification_id") REFERENCES "api_jobspecification" ("job_specification_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_modified_by_id_77a2bcc7_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistor_original_location_id_6c04f79b_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_currency_id_ab3b9b7a_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_fuel_id_73ea8d75_fk_api_fueltype_id" FOREIGN KEY ("fuel_id") REFERENCES "api_fueltype" ("id");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_parent_id_1c81d2a0_fk_api_assetmodel_VIN" FOREIGN KEY ("parent_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetmodelhistory" ADD CONSTRAINT "api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetrequestfile" ADD CONSTRAINT "api_assetrequestfile_asset_request_id_c29ec116_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_assetrequestfile" ADD CONSTRAINT "api_assetrequestfile_created_by_id_83520cc2_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetrequestfile" ADD CONSTRAINT "api_assetrequestfile_vendor_id_725b6af9_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_cost_centre_id_77d6521a_fk_api_costc" FOREIGN KEY ("cost_centre_id") REFERENCES "api_costcentremodel" ("cost_centre_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_created_by_id_d8e64481_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_disposal_id_89a7a0e3_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_equipment_id_ace308f7_fk_api_equip" FOREIGN KEY ("equipment_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_justification_id_a448f514_fk_api_asset" FOREIGN KEY ("justification_id") REFERENCES "api_assetrequestjustificationmodel" ("justification_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_location_id_ed98707a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_modified_by_id_7f4fd728_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmode_vendor_id_6bd6d19d_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetrequestmodel" ADD CONSTRAINT "api_assetrequestmodel_VIN_id_a420f925_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_asset_request_id_eeb3776d_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_business_unit_id_5b84c75a_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_equipment_id_4f536288_fk_api_equip" FOREIGN KEY ("equipment_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_justification_id_cf624510_fk_api_asset" FOREIGN KEY ("justification_id") REFERENCES "api_assetrequestjustificationmodel" ("justification_id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_location_id_18ff3e40_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_modified_by_id_5c2c48c1_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_vendor_id_e6b31e09_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assetrequestmodelhistory" ADD CONSTRAINT "api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_created_by_id_ab9cdd92_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_destination_location_51514ea1_fk_api_locat" FOREIGN KEY ("destination_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_disposal_id_dbc94e0f_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_modified_by_id_b584b255_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_original_location_id_2bc14e49_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_vendor_id_8888ce28_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_assettransfer" ADD CONSTRAINT "api_assettransfer_VIN_id_12084905_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset" FOREIGN KEY ("asset_transfer_id") REFERENCES "api_assettransfer" ("asset_transfer_id");
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermod_destination_location_3ca950b2_fk_api_locat" FOREIGN KEY ("destination_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermod_disposal_id_01325a31_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermod_modified_by_id_eb45f7a7_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettransfermodelhistory" ADD CONSTRAINT "api_assettransfermod_original_location_id_d180fece_fk_api_locat" FOREIGN KEY ("original_location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_assettypechecks" ADD CONSTRAINT "api_assettypechecks_created_by_id_afdea472_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettypechecks" ADD CONSTRAINT "api_assettypechecks_modified_by_id_12ec3feb_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettypecheckshistory" ADD CONSTRAINT "api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset" FOREIGN KEY ("asset_type_checks_id") REFERENCES "api_assettypechecks" ("id");
+ALTER TABLE "api_assettypecheckshistory" ADD CONSTRAINT "api_assettypechecksh_modified_by_id_80f02d97_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettypemodel" ADD CONSTRAINT "api_assettypemodel_asset_type_checks_id_dd77b5e2_fk_api_asset" FOREIGN KEY ("asset_type_checks_id") REFERENCES "api_assettypechecks" ("id");
+ALTER TABLE "api_assettypemodel" ADD CONSTRAINT "api_assettypemodel_created_by_id_be41afef_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_assettypemodel" ADD CONSTRAINT "api_assettypemodel_modified_by_id_a7557b41_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_businessunitmodel" ADD CONSTRAINT "api_businessunitmode_location_id_1fdea960_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_company" ADD CONSTRAINT "api_company_standard_currency_id_7f70e121_fk_api_currency_id" FOREIGN KEY ("standard_currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_dailyinspection" ADD CONSTRAINT "api_dailyinspection_created_by_id_f033ed51_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_dailyinspection" ADD CONSTRAINT "api_dailyinspection_modified_by_id_ccd7e2b7_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_asset_request_id_4f0d9ded_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_created_by_id_c17f28d6_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_currency_id_91d26aab_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_disposal_id_9dc4f78b_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_location_id_4354d4fc_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_maintenance_id_418648c9_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_modified_by_id_5500cc05_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_deliverycost" ADD CONSTRAINT "api_deliverycost_repair_id_1ba17210_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_created_by_id_93a7f210_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_delivery_cost_id_06598be1_fk_api_deliv" FOREIGN KEY ("delivery_cost_id") REFERENCES "api_deliverycost" ("id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_disposal_id_b5de59a0_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_location_id_6956ae5d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_maintenance_id_142da7d7_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_modified_by_id_7fb448f4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthist_repair_id_7fef1a8d_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_deliverycosthistory" ADD CONSTRAINT "api_deliverycosthistory_currency_id_5506c51d_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_business_unit_id_7932adec_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_company_id_4d55f60a_fk_api_company_company_id" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id");
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_cost_centre_id_dbed5ea7_fk_api_costc" FOREIGN KEY ("cost_centre_id") REFERENCES "api_costcentremodel" ("cost_centre_id");
+ALTER TABLE "api_detaileduser" ADD CONSTRAINT "api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep" FOREIGN KEY ("role_permissions_id") REFERENCES "api_rolepermissions" ("id");
+ALTER TABLE "api_detaileduser_location" ADD CONSTRAINT "api_detaileduser_loc_detaileduser_id_e5cfc688_fk_api_detai" FOREIGN KEY ("detaileduser_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_detaileduser_location" ADD CONSTRAINT "api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat" FOREIGN KEY ("locationmodel_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermode_business_unit_id_c0219409_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermode_company_id_7c62abcc_fk_api_compa" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id");
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermode_role_permissions_id_f60796a1_fk_api_rolep" FOREIGN KEY ("role_permissions_id") REFERENCES "api_rolepermissions" ("id");
+ALTER TABLE "api_detailedusermodelhistory" ADD CONSTRAINT "api_detailedusermode_user_id_458862a4_fk_api_detai" FOREIGN KEY ("user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymod_engine_id_id_6dfadf2c_fk_api_engin" FOREIGN KEY ("engine_id_id") REFERENCES "api_enginemodel" ("engine_id");
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymod_responsible_daily_ch_08e0d8ff_fk_api_asset" FOREIGN KEY ("responsible_daily_check_id") REFERENCES "api_assetdailychecksmodel" ("daily_check_id");
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymod_responsible_maintena_9ddbea1a_fk_api_maint" FOREIGN KEY ("responsible_maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymod_responsible_repair_i_1b274ea4_fk_api_repai" FOREIGN KEY ("responsible_repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_enginehistorymodel" ADD CONSTRAINT "api_enginehistorymod_responsible_user_id_3e190328_fk_api_detai" FOREIGN KEY ("responsible_user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_enginemodel" ADD CONSTRAINT "api_enginemodel_VIN_id_93922063_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset" FOREIGN KEY ("asset_type_id") REFERENCES "api_assettypemodel" ("id");
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemod_created_by_id_c346a1e6_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemod_manufacturer_id_29668e7f_fk_api_asset" FOREIGN KEY ("manufacturer_id") REFERENCES "api_assetmanufacturermodel" ("id");
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemod_modified_by_id_da7eef15_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_equipmenttypemodel" ADD CONSTRAINT "api_equipmenttypemodel_fuel_id_cba9eff5_fk_api_fueltype_id" FOREIGN KEY ("fuel_id") REFERENCES "api_fueltype" ("id");
+ALTER TABLE "api_errorreport" ADD CONSTRAINT "api_errorreport_created_by_id_d3637fe3_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_errorreportfile" ADD CONSTRAINT "api_errorreportfile_error_report_id_ee964a4f_fk_api_error" FOREIGN KEY ("error_report_id") REFERENCES "api_errorreport" ("error_report_id");
+ALTER TABLE "api_fuelcard" ADD CONSTRAINT "api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai" FOREIGN KEY ("assigned_employee_id") REFERENCES "api_detaileduser" ("email");
+ALTER TABLE "api_fuelcard" ADD CONSTRAINT "api_fuelcard_business_unit_id_6843f63b_fk_api_busin" FOREIGN KEY ("business_unit_id") REFERENCES "api_businessunitmodel" ("business_unit_id");
+ALTER TABLE "api_fuelcard" ADD CONSTRAINT "api_fuelcard_issuer_id_7a73ca8f_fk_api_detaileduser_email" FOREIGN KEY ("issuer_id") REFERENCES "api_detaileduser" ("email");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_created_by_id_9050c739_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_currency_id_4e73dab3_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id" FOREIGN KEY ("fuel_type_id") REFERENCES "api_fueltype" ("id");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_location_id_3e8c907b_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_modified_by_id_f184d7f2_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_fuelcost" ADD CONSTRAINT "api_fuelcost_VIN_id_b79a526d_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_fuelcostcheck" ADD CONSTRAINT "api_fuelcostcheck_company_id_5deafa6a_fk_api_company_company_id" FOREIGN KEY ("company_id") REFERENCES "api_company" ("company_id");
+ALTER TABLE "api_fuelcostcheck" ADD CONSTRAINT "api_fuelcostcheck_cost_ratio_type_id_1805091a_fk_api_fueltype_id" FOREIGN KEY ("cost_ratio_type_id") REFERENCES "api_fueltype" ("id");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhis_fuel_cost_id_4fb992ed_fk_api_fuelc" FOREIGN KEY ("fuel_cost_id") REFERENCES "api_fuelcost" ("id");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhis_fuel_type_id_1bb4b854_fk_api_fuelt" FOREIGN KEY ("fuel_type_id") REFERENCES "api_fueltype" ("id");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhis_location_id_bf6c4061_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhis_modified_by_id_f59c2374_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_currency_id_8bdfe0d9_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_fuelcostmodelhistory" ADD CONSTRAINT "api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_fueltype" ADD CONSTRAINT "api_fueltype_created_by_id_7ac2889b_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_fueltype" ADD CONSTRAINT "api_fueltype_modified_by_id_22b884e4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_accident_id_a2a7e128_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_created_by_id_faf2bae2_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_currency_id_8973d10c_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_location_id_db265a0a_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_modified_by_id_061bb451_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_insurancecost" ADD CONSTRAINT "api_insurancecost_VIN_id_7e6d575e_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmod_accident_id_9a6dc962_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmod_currency_id_0a59edae_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmod_insurance_cost_id_9153c60e_fk_api_insur" FOREIGN KEY ("insurance_cost_id") REFERENCES "api_insurancecost" ("id");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmod_location_id_268f5a48_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmod_modified_by_id_1edeba66_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_insurancecostmodelhistory" ADD CONSTRAINT "api_insurancecostmod_VIN_id_c804804e_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_created_by_id_b84009f2_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_equipment_type_id_90bcccc7_fk_api_equip" FOREIGN KEY ("equipment_type_id") REFERENCES "api_equipmenttypemodel" ("equipment_type_id");
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_location_id_a4bcfa28_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_inventory" ADD CONSTRAINT "api_inventory_modified_by_id_f9495787_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_created_by_id_1a3ecd17_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_currency_id_ced7edd3_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_disposal_id_df44d769_fk_api_assetdisposalmodel_id" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_issue_id_3b954f4a_fk_api_assetissuemodel_issue_id" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_location_id_88ec229d_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_maintenance_id_366ad8b9_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_laborcost" ADD CONSTRAINT "api_laborcost_modified_by_id_d6ec089d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhi_disposal_id_9c6f3528_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhi_issue_id_bb6a1afc_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhi_location_id_79ca8861_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhi_maintenance_id_e612f7a2_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhi_modified_by_id_3752372f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_laborcostmodelhistory" ADD CONSTRAINT "api_laborcostmodelhistory_labor_id_2cc63593_fk_api_laborcost_id" FOREIGN KEY ("labor_id") REFERENCES "api_laborcost" ("id");
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_created_by_id_b691722b_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_currency_id_6eea48cf_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_location_id_13de6a03_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_modified_by_id_41820a9d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_licensecost" ADD CONSTRAINT "api_licensecost_VIN_id_30492662_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodel_currency_id_7162ca61_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodel_license_cost_id_6cdba7b2_fk_api_licen" FOREIGN KEY ("license_cost_id") REFERENCES "api_licensecost" ("id");
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodel_location_id_e8ea7596_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodel_modified_by_id_5d6e8b37_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_licensecostmodelhistory" ADD CONSTRAINT "api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforec_created_by_id_7b4190e3_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforec_inspection_type_id_4c2e50e0_fk_api_inspe" FOREIGN KEY ("inspection_type_id") REFERENCES "api_inspectiontypemodel" ("id");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforec_linked_engine_id_e91b800b_fk_api_engin" FOREIGN KEY ("linked_engine_id") REFERENCES "api_enginemodel" ("engine_id");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforec_location_id_7d1db767_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforec_modified_by_id_0cb09b5d_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_maintenanceforecastrules" ADD CONSTRAINT "api_maintenanceforec_VIN_id_43d27b29_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_maintenanceforecastruleshistory" ADD CONSTRAINT "api_maintenanceforec_linked_engine_id_a1c94f89_fk_api_engin" FOREIGN KEY ("linked_engine_id") REFERENCES "api_enginemodel" ("engine_id");
+ALTER TABLE "api_maintenanceforecastruleshistory" ADD CONSTRAINT "api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint" FOREIGN KEY ("maintenance_forecast_id") REFERENCES "api_maintenanceforecastrules" ("id");
+ALTER TABLE "api_maintenanceforecastruleshistory" ADD CONSTRAINT "api_maintenanceforec_modified_by_id_679c2f26_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_maintenancerequestfile" ADD CONSTRAINT "api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_maintenancerequestfile" ADD CONSTRAINT "api_maintenancereque_maintenance_request__dfdeb7ab_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_maintenancerequestfile" ADD CONSTRAINT "api_maintenancereque_vendor_id_2d8ae218_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancereque_assigned_vendor_id_02b819e7_fk_api_appro" FOREIGN KEY ("assigned_vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancereque_created_by_id_8181a9ca_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancereque_inspection_type_id_f5a6ad64_fk_api_inspe" FOREIGN KEY ("inspection_type_id") REFERENCES "api_inspectiontypemodel" ("id");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancereque_location_id_945bb3c1_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancereque_modified_by_id_f7a66dc4_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_maintenancerequestmodel" ADD CONSTRAINT "api_maintenancereque_VIN_id_50b77888_fk_api_asset" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro" FOREIGN KEY ("assigned_vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancereque_inspection_type_id_cbbfad63_fk_api_inspe" FOREIGN KEY ("inspection_type_id") REFERENCES "api_inspectiontypemodel" ("id");
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancereque_location_id_9de4fbdf_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancereque_maintenance_id_94b8ca43_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_maintenancerequestmodelhistory" ADD CONSTRAINT "api_maintenancereque_modified_by_id_8c9621ac_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_notificationconfiguration" ADD CONSTRAINT "api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_created_by_id_8d88feb8_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_currency_id_31be192f_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_disposal_id_8471b0ca_fk_api_assetdisposalmodel_id" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_issue_id_75453a17_fk_api_assetissuemodel_issue_id" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_location_id_675c79a9_fk_api_locationmodel_location_id" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_maintenance_id_3be00de0_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_parts" ADD CONSTRAINT "api_parts_modified_by_id_fc2414a8_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistor_disposal_id_78da58e1_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistor_issue_id_7708c488_fk_api_asset" FOREIGN KEY ("issue_id") REFERENCES "api_assetissuemodel" ("issue_id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistor_location_id_2c2991fe_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistor_maintenance_id_cd17ac11_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistor_modified_by_id_d6a9f159_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_partsmodelhistory" ADD CONSTRAINT "api_partsmodelhistory_parts_id_ba93e01e_fk_api_parts_id" FOREIGN KEY ("parts_id") REFERENCES "api_parts" ("id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_accident_id_87ebc25f_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_created_by_id_a458d221_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_currency_id_500e53df_fk_api_currency_id" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_location_id_1efbd134_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_maintenance_id_9237c325_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_modified_by_id_0a505810_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_rentalcost" ADD CONSTRAINT "api_rentalcost_VIN_id_70e51830_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_accident_id_a69d45ed_fk_api_accid" FOREIGN KEY ("accident_id") REFERENCES "api_accidentmodel" ("accident_id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_currency_id_d08ff758_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_location_id_939da8fa_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_maintenance_id_e9f9565d_fk_api_maint" FOREIGN KEY ("maintenance_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_modified_by_id_3b0dbc48_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_rental_cost_id_794e94d2_fk_api_renta" FOREIGN KEY ("rental_cost_id") REFERENCES "api_rentalcost" ("id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelh_repair_id_bfb01785_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_rentalcostmodelhistory" ADD CONSTRAINT "api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_repairfile" ADD CONSTRAINT "api_repairfile_created_by_id_e6fffdd7_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_repairfile" ADD CONSTRAINT "api_repairfile_repair_id_19d4f16c_fk_api_repairsmodel_repair_id" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_repairfile" ADD CONSTRAINT "api_repairfile_vendor_id_70224070_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_created_by_id_132af9d7_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_disposal_id_c9f681ab_fk_api_asset" FOREIGN KEY ("disposal_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_location_id_baf19500_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_modified_by_id_de30d9ec_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_vendor_id_11d778d3_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_repairsmodel" ADD CONSTRAINT "api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN" FOREIGN KEY ("VIN_id") REFERENCES "api_assetmodel" ("VIN");
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhist_location_id_409ef7e3_fk_api_locat" FOREIGN KEY ("location_id") REFERENCES "api_locationmodel" ("location_id");
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhist_modified_by_id_a021000f_fk_api_detai" FOREIGN KEY ("modified_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhist_repair_id_34ccb561_fk_api_repai" FOREIGN KEY ("repair_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_repairsmodelhistory" ADD CONSTRAINT "api_repairsmodelhist_vendor_id_22ec1f3b_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_approved_by_id_90433a46_fk_api_detai" FOREIGN KEY ("approved_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_asset_request_id_e19b02a6_fk_api_asset" FOREIGN KEY ("asset_request_id") REFERENCES "api_assetrequestmodel" ("id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_disposal_request_id_ea75c564_fk_api_asset" FOREIGN KEY ("disposal_request_id") REFERENCES "api_assetdisposalmodel" ("id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_maintenance_request__00583fc6_fk_api_maint" FOREIGN KEY ("maintenance_request_id") REFERENCES "api_maintenancerequestmodel" ("maintenance_id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_repair_request_id_ea0c519b_fk_api_repai" FOREIGN KEY ("repair_request_id") REFERENCES "api_repairsmodel" ("repair_id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_transfer_request_id_10604ee4_fk_api_asset" FOREIGN KEY ("transfer_request_id") REFERENCES "api_assettransfer" ("asset_transfer_id");
+ALTER TABLE "api_requestquote" ADD CONSTRAINT "api_requestquote_vendor_id_2f3b5a52_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_snapshotdailycurrency" ADD CONSTRAINT "api_snapshotdailycur_currency_id_2b593858_fk_api_curre" FOREIGN KEY ("currency_id") REFERENCES "api_currency" ("id");
+ALTER TABLE "api_transferfile" ADD CONSTRAINT "api_transferfile_created_by_id_eb950b6f_fk_api_detai" FOREIGN KEY ("created_by_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_transferfile" ADD CONSTRAINT "api_transferfile_transfer_id_93e2fc4e_fk_api_asset" FOREIGN KEY ("transfer_id") REFERENCES "api_assettransfer" ("asset_transfer_id");
+ALTER TABLE "api_transferfile" ADD CONSTRAINT "api_transferfile_vendor_id_b1af16ff_fk_api_appro" FOREIGN KEY ("vendor_id") REFERENCES "api_approvedvendorsmodel" ("vendor_id");
+ALTER TABLE "api_userconfiguration" ADD CONSTRAINT "api_userconfiguratio_user_id_0dd3d13f_fk_api_detai" FOREIGN KEY ("user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
+ALTER TABLE "api_usertablelayoutmodel" ADD CONSTRAINT "api_usertablelayoutm_user_id_e9170365_fk_api_detai" FOREIGN KEY ("user_id") REFERENCES "api_detaileduser" ("detailed_user_id");
