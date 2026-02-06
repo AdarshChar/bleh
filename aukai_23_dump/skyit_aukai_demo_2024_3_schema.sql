@@ -1,0 +1,4052 @@
+-- MySQL dump 10.13  Distrib 8.4.8, for Win64 (x86_64)
+--
+-- Host: aukai-prod-v6-23-db.mysql.database.azure.com    Database: skyit_aukai_demo_2024_3
+-- ------------------------------------------------------
+-- Server version	8.0.42-azure
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `api_accidentfilemodel`
+--
+
+DROP TABLE IF EXISTS `api_accidentfilemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_accidentfilemodel` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `accident_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_accidentfilemode_accident_id_a356de30_fk_api_accid` (`accident_id`),
+  CONSTRAINT `api_accidentfilemode_accident_id_a356de30_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_accidentfilemodel`
+--
+
+LOCK TABLES `api_accidentfilemodel` WRITE;
+/*!40000 ALTER TABLE `api_accidentfilemodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_accidentfilemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_accidentmodel`
+--
+
+DROP TABLE IF EXISTS `api_accidentmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_accidentmodel` (
+  `accident_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `estimated_return_date` datetime(6) DEFAULT NULL,
+  `accident_report_completed` tinyint(1) NOT NULL,
+  `is_equipment_failure` tinyint(1) NOT NULL,
+  `notification_ack` tinyint(1) NOT NULL,
+  `evaluation_required` tinyint(1) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `is_preventable` tinyint(1) NOT NULL,
+  `is_operational` tinyint(1) NOT NULL,
+  `date_returned_to_service` datetime(6) DEFAULT NULL,
+  `accident_summary` longtext,
+  `downtime_hours` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`accident_id`),
+  KEY `api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_accidentmodel_created_by_id_3c566486_fk_api_detai` (`created_by_id`),
+  KEY `api_accidentmodel_disposal_id_a16512ac_fk_api_asset` (`disposal_id`),
+  KEY `api_accidentmodel_location_id_1b207e0d_fk_api_locat` (`location_id`),
+  KEY `api_accidentmodel_modified_by_id_ef02950f_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_accidentmodel_created_by_id_3c566486_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_accidentmodel_disposal_id_a16512ac_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_accidentmodel_location_id_1b207e0d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_accidentmodel_modified_by_id_ef02950f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_accidentmodel`
+--
+
+LOCK TABLES `api_accidentmodel` WRITE;
+/*!40000 ALTER TABLE `api_accidentmodel` DISABLE KEYS */;
+INSERT INTO `api_accidentmodel` VALUES (1,'Camellia-Shipping-LLC-a-1',NULL,1,0,0,0,0,0,1,NULL,'Accident happened',0,'2024-09-06 20:28:19.578615','2024-09-06 20:28:19.594958','ASY18FRYQ987',1,NULL,3,1),(2,'Camellia-Shipping-LLC-a-2',NULL,1,0,0,0,0,1,1,NULL,'Had an issue',0,'2025-01-07 16:56:32.243722','2025-01-07 16:56:32.259372','BY2024YCHT289',1,NULL,4,1),(3,'Camellia-Shipping-LLC-a-3',NULL,1,0,0,0,1,0,1,NULL,'Incident',0,'2025-01-07 17:03:01.134068','2025-01-07 17:03:48.621530','HAP2024CARGO168',1,NULL,3,1),(4,'Camellia-Shipping-LLC-a-4',NULL,1,0,0,0,0,1,1,NULL,'issue',0,'2025-01-07 17:03:36.734881','2025-01-07 17:03:36.747122','UBOTT-1057-AS',1,NULL,3,1);
+/*!40000 ALTER TABLE `api_accidentmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_accidentmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_accidentmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_accidentmodelhistory` (
+  `accident_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `estimated_return_date` datetime(6) DEFAULT NULL,
+  `accident_report_completed` tinyint(1) NOT NULL,
+  `is_equipment_failure` tinyint(1) NOT NULL,
+  `notification_ack` tinyint(1) NOT NULL,
+  `evaluation_required` tinyint(1) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `is_preventable` tinyint(1) NOT NULL,
+  `is_operational` tinyint(1) NOT NULL,
+  `date_returned_to_service` datetime(6) DEFAULT NULL,
+  `accident_summary` longtext,
+  `downtime_hours` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `accident_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`accident_history_id`),
+  KEY `api_accidentmodelhis_accident_id_7eec054b_fk_api_accid` (`accident_id`),
+  KEY `api_accidentmodelhis_location_id_9d5dc35c_fk_api_locat` (`location_id`),
+  KEY `api_accidentmodelhis_modified_by_id_d676ee67_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_accidentmodelhis_accident_id_7eec054b_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_accidentmodelhis_location_id_9d5dc35c_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_accidentmodelhis_modified_by_id_d676ee67_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_accidentmodelhistory`
+--
+
+LOCK TABLES `api_accidentmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_accidentmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_accidentmodelhistory` VALUES (1,'Camellia-Shipping-LLC-a-1',NULL,1,0,0,0,0,0,1,NULL,'Accident happened',0,'2024-09-06 20:28:19.614470',1,3,1),(2,'Camellia-Shipping-LLC-a-2',NULL,1,0,0,0,0,1,1,NULL,'Had an issue',0,'2025-01-07 16:56:32.270727',2,4,1),(3,'Camellia-Shipping-LLC-a-3',NULL,1,0,0,0,0,0,1,NULL,'Incident',0,'2025-01-07 17:03:01.162280',3,3,1),(4,'Camellia-Shipping-LLC-a-4',NULL,1,0,0,0,0,1,1,NULL,'issue',0,'2025-01-07 17:03:36.771163',4,3,1),(5,'Camellia-Shipping-LLC-a-3',NULL,1,0,0,0,1,0,1,NULL,'Incident',0,'2025-01-07 17:03:48.649388',3,3,1);
+/*!40000 ALTER TABLE `api_accidentmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_acquisitioncost`
+--
+
+DROP TABLE IF EXISTS `api_acquisitioncost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_acquisitioncost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `administrative_cost` double NOT NULL,
+  `misc_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_acquisitioncost_created_by_id_2a71eeed_fk_api_detai` (`created_by_id`),
+  KEY `api_acquisitioncost_currency_id_e73277cd_fk_api_currency_id` (`currency_id`),
+  KEY `api_acquisitioncost_location_id_5bd5e472_fk_api_locat` (`location_id`),
+  KEY `api_acquisitioncost_modified_by_id_1662932d_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_acquisitioncost_created_by_id_2a71eeed_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_acquisitioncost_currency_id_e73277cd_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_acquisitioncost_location_id_5bd5e472_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_acquisitioncost_modified_by_id_1662932d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_acquisitioncost`
+--
+
+LOCK TABLES `api_acquisitioncost` WRITE;
+/*!40000 ALTER TABLE `api_acquisitioncost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_acquisitioncost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_acquisitioncostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_acquisitioncostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_acquisitioncostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `administrative_cost` double NOT NULL,
+  `misc_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `acquisition_cost_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_acquisitioncostm_VIN_id_943b3499_fk_api_asset` (`VIN_id`),
+  KEY `api_acquisitioncostm_acquisition_cost_id_7094c72d_fk_api_acqui` (`acquisition_cost_id`),
+  KEY `api_acquisitioncostm_currency_id_4f614d77_fk_api_curre` (`currency_id`),
+  KEY `api_acquisitioncostm_location_id_fe5ae5a3_fk_api_locat` (`location_id`),
+  KEY `api_acquisitioncostm_modified_by_id_ffbff6db_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_acquisitioncostm_acquisition_cost_id_7094c72d_fk_api_acqui` FOREIGN KEY (`acquisition_cost_id`) REFERENCES `api_acquisitioncost` (`id`),
+  CONSTRAINT `api_acquisitioncostm_currency_id_4f614d77_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_acquisitioncostm_location_id_fe5ae5a3_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_acquisitioncostm_modified_by_id_ffbff6db_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_acquisitioncostm_VIN_id_943b3499_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_acquisitioncostmodelhistory`
+--
+
+LOCK TABLES `api_acquisitioncostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_acquisitioncostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_acquisitioncostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_annualreport`
+--
+
+DROP TABLE IF EXISTS `api_annualreport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_annualreport` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `lifesaving_ok` tinyint(1) NOT NULL,
+  `lifesaving_notes` longtext NOT NULL,
+  `engine_ok` tinyint(1) NOT NULL,
+  `engine_notes` longtext NOT NULL,
+  `communications_ok` tinyint(1) NOT NULL,
+  `communications_notes` longtext NOT NULL,
+  `bilge_pump_ok` tinyint(1) NOT NULL,
+  `bilge_pump_notes` longtext NOT NULL,
+  `steering_controls_ok` tinyint(1) NOT NULL,
+  `steering_controls_notes` longtext NOT NULL,
+  `hatches_ok` tinyint(1) NOT NULL,
+  `hatches_notes` longtext NOT NULL,
+  `emergency_drills_ok` tinyint(1) NOT NULL,
+  `emergency_drills_notes` longtext NOT NULL,
+  `fire_extinguishers_ok` tinyint(1) NOT NULL,
+  `fire_extinguishers_notes` longtext NOT NULL,
+  `hull_ok` tinyint(1) NOT NULL,
+  `hull_notes` longtext NOT NULL,
+  `electrical_ok` tinyint(1) NOT NULL,
+  `electrical_notes` longtext NOT NULL,
+  `lights_ok` tinyint(1) NOT NULL,
+  `lights_notes` longtext NOT NULL,
+  `fuel_systems_ok` tinyint(1) NOT NULL,
+  `fuel_systems_notes` longtext NOT NULL,
+  `anchoring_ok` tinyint(1) NOT NULL,
+  `anchoring_notes` longtext NOT NULL,
+  `guard_rails_lines_ok` tinyint(1) NOT NULL,
+  `guard_rails_lines_notes` longtext NOT NULL,
+  `crew_qualifications_ok` tinyint(1) NOT NULL,
+  `crew_qualifications_notes` longtext NOT NULL,
+  `signature_name` varchar(100) DEFAULT NULL,
+  `signature_date` varchar(100) DEFAULT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `file_id` int NOT NULL,
+  `changed_this_year` tinyint(1) NOT NULL,
+  `damaged_this_year` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_annualreport_VIN_id_3faed4f1_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_annualreport_file_id_c90b0f55_fk_api_assetfile_file_id` (`file_id`),
+  CONSTRAINT `api_annualreport_file_id_c90b0f55_fk_api_assetfile_file_id` FOREIGN KEY (`file_id`) REFERENCES `api_assetfile` (`file_id`),
+  CONSTRAINT `api_annualreport_VIN_id_3faed4f1_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_annualreport`
+--
+
+LOCK TABLES `api_annualreport` WRITE;
+/*!40000 ALTER TABLE `api_annualreport` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_annualreport` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approval`
+--
+
+DROP TABLE IF EXISTS `api_approval`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approval` (
+  `approval_id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `description` longtext NOT NULL,
+  `deny_reason` varchar(10000) NOT NULL,
+  `is_approved` tinyint(1) DEFAULT NULL,
+  `date_created` date NOT NULL,
+  `date_modified` date NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `approving_user_id` int DEFAULT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `asset_transfer_request_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  `repair_request_id` int DEFAULT NULL,
+  `requesting_user_id` int DEFAULT NULL,
+  `disposal_request_id` int DEFAULT NULL,
+  PRIMARY KEY (`approval_id`),
+  KEY `api_approval_approving_user_id_42cad599_fk_api_detai` (`approving_user_id`),
+  KEY `api_approval_asset_request_id_11278853_fk_api_asset` (`asset_request_id`),
+  KEY `api_approval_asset_transfer_reque_a51ddf9b_fk_api_asset` (`asset_transfer_request_id`),
+  KEY `api_approval_location_id_090f0b07_fk_api_locat` (`location_id`),
+  KEY `api_approval_maintenance_request__2f0759c6_fk_api_maint` (`maintenance_request_id`),
+  KEY `api_approval_repair_request_id_2651d208_fk_api_repai` (`repair_request_id`),
+  KEY `api_approval_requesting_user_id_e6e018a6_fk_api_detai` (`requesting_user_id`),
+  KEY `api_approval_disposal_request_id_028da8d1_fk_api_asset` (`disposal_request_id`),
+  KEY `api_approval_VIN_id_867898b0_fk_api_assetmodel_VIN` (`VIN_id`),
+  CONSTRAINT `api_approval_approving_user_id_42cad599_fk_api_detai` FOREIGN KEY (`approving_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_approval_asset_request_id_11278853_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_approval_asset_transfer_reque_a51ddf9b_fk_api_asset` FOREIGN KEY (`asset_transfer_request_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_approval_disposal_request_id_028da8d1_fk_api_asset` FOREIGN KEY (`disposal_request_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_approval_location_id_090f0b07_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_approval_maintenance_request__2f0759c6_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_approval_repair_request_id_2651d208_fk_api_repai` FOREIGN KEY (`repair_request_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_approval_requesting_user_id_e6e018a6_fk_api_detai` FOREIGN KEY (`requesting_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_approval_VIN_id_867898b0_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approval`
+--
+
+LOCK TABLES `api_approval` WRITE;
+/*!40000 ALTER TABLE `api_approval` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approval` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvalmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_approvalmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvalmodelhistory` (
+  `approval_history_id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `description` longtext NOT NULL,
+  `deny_reason` longtext NOT NULL,
+  `is_approved` tinyint(1) DEFAULT NULL,
+  `accident_summary` longtext,
+  `date` datetime(6) NOT NULL,
+  `approval_id` int NOT NULL,
+  `approving_user_id` int DEFAULT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `asset_transfer_request_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  `repair_request_id` int DEFAULT NULL,
+  `requesting_user_id` int DEFAULT NULL,
+  `disposal_request_id` int DEFAULT NULL,
+  `estimated_cost` double DEFAULT NULL,
+  PRIMARY KEY (`approval_history_id`),
+  KEY `api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro` (`approval_id`),
+  KEY `api_approvalmodelhis_approving_user_id_0f09aa8a_fk_api_detai` (`approving_user_id`),
+  KEY `api_approvalmodelhis_asset_request_id_95a3e31b_fk_api_asset` (`asset_request_id`),
+  KEY `api_approvalmodelhis_asset_transfer_reque_58f1e105_fk_api_asset` (`asset_transfer_request_id`),
+  KEY `api_approvalmodelhis_location_id_60640ac2_fk_api_locat` (`location_id`),
+  KEY `api_approvalmodelhis_maintenance_request__e206156c_fk_api_maint` (`maintenance_request_id`),
+  KEY `api_approvalmodelhis_repair_request_id_6f14411b_fk_api_repai` (`repair_request_id`),
+  KEY `api_approvalmodelhis_requesting_user_id_39c5af2f_fk_api_detai` (`requesting_user_id`),
+  KEY `api_approvalmodelhis_disposal_request_id_80638fac_fk_api_asset` (`disposal_request_id`),
+  CONSTRAINT `api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro` FOREIGN KEY (`approval_id`) REFERENCES `api_approval` (`approval_id`),
+  CONSTRAINT `api_approvalmodelhis_approving_user_id_0f09aa8a_fk_api_detai` FOREIGN KEY (`approving_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_approvalmodelhis_asset_request_id_95a3e31b_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_approvalmodelhis_asset_transfer_reque_58f1e105_fk_api_asset` FOREIGN KEY (`asset_transfer_request_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_approvalmodelhis_disposal_request_id_80638fac_fk_api_asset` FOREIGN KEY (`disposal_request_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_approvalmodelhis_location_id_60640ac2_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_approvalmodelhis_maintenance_request__e206156c_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_approvalmodelhis_repair_request_id_6f14411b_fk_api_repai` FOREIGN KEY (`repair_request_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_approvalmodelhis_requesting_user_id_39c5af2f_fk_api_detai` FOREIGN KEY (`requesting_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvalmodelhistory`
+--
+
+LOCK TABLES `api_approvalmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_approvalmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvalmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendordepartments`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendordepartments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendordepartments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendordepartments`
+--
+
+LOCK TABLES `api_approvedvendordepartments` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendordepartments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvedvendordepartments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendorrequest`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendorrequest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendorrequest` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `vendor_department_id` int DEFAULT NULL,
+  `vendor_task_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro` (`vendor_department_id`),
+  KEY `api_approvedvendorre_vendor_task_id_ba536e79_fk_api_appro` (`vendor_task_id`),
+  CONSTRAINT `api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro` FOREIGN KEY (`vendor_department_id`) REFERENCES `api_approvedvendordepartments` (`id`),
+  CONSTRAINT `api_approvedvendorre_vendor_task_id_ba536e79_fk_api_appro` FOREIGN KEY (`vendor_task_id`) REFERENCES `api_approvedvendortasks` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendorrequest`
+--
+
+LOCK TABLES `api_approvedvendorrequest` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendorrequest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvedvendorrequest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendorsmodel`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendorsmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendorsmodel` (
+  `vendor_id` int NOT NULL AUTO_INCREMENT,
+  `vendor_name` varchar(100) NOT NULL,
+  `is_vendor_green` tinyint(1) NOT NULL,
+  `phone_number` varchar(50) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `website` varchar(1000) NOT NULL,
+  `primary_email` varchar(254) NOT NULL,
+  `vendor_department_id` int DEFAULT NULL,
+  `vendor_task_id` int DEFAULT NULL,
+  PRIMARY KEY (`vendor_id`),
+  KEY `api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro` (`vendor_department_id`),
+  KEY `api_approvedvendorsm_vendor_task_id_93aad341_fk_api_appro` (`vendor_task_id`),
+  CONSTRAINT `api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro` FOREIGN KEY (`vendor_department_id`) REFERENCES `api_approvedvendordepartments` (`id`),
+  CONSTRAINT `api_approvedvendorsm_vendor_task_id_93aad341_fk_api_appro` FOREIGN KEY (`vendor_task_id`) REFERENCES `api_approvedvendortasks` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendorsmodel`
+--
+
+LOCK TABLES `api_approvedvendorsmodel` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendorsmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvedvendorsmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendortasks`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendortasks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendortasks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendortasks`
+--
+
+LOCK TABLES `api_approvedvendortasks` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendortasks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvedvendortasks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdailycheckscomment`
+--
+
+DROP TABLE IF EXISTS `api_assetdailycheckscomment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdailycheckscomment` (
+  `daily_check_comment_id` int NOT NULL AUTO_INCREMENT,
+  `comment` longtext NOT NULL,
+  `check` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `daily_check_id` int DEFAULT NULL,
+  PRIMARY KEY (`daily_check_comment_id`),
+  KEY `api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset` (`daily_check_id`),
+  CONSTRAINT `api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset` FOREIGN KEY (`daily_check_id`) REFERENCES `api_assetdailychecksmodel` (`daily_check_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdailycheckscomment`
+--
+
+LOCK TABLES `api_assetdailycheckscomment` WRITE;
+/*!40000 ALTER TABLE `api_assetdailycheckscomment` DISABLE KEYS */;
+INSERT INTO `api_assetdailycheckscomment` VALUES (1,'','communication','2024-04-04 00:53:37.502768',1),(2,'Failing','electrical','2024-04-04 00:53:37.502810',1),(3,'Missing mirror','mirrors','2024-04-04 00:54:27.071361',2),(4,'Rust Anchor Chain','anchoring_system','2024-04-04 03:54:10.611050',3),(5,'Missing life jacket','lifesaving_equipments','2024-05-10 22:46:31.030910',6),(6,'Missing life vest','lifesaving_equipments','2024-05-10 22:48:23.462971',7),(7,'Missing life vest','lifesaving_equipments','2024-05-11 14:48:34.398225',8),(8,'Missing life vest','lifesaving_equipments','2024-05-11 15:04:28.186536',9),(9,'','steering_and_hydraulics','2024-05-15 13:43:55.074769',11);
+/*!40000 ALTER TABLE `api_assetdailycheckscomment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdailychecksmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetdailychecksmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdailychecksmodel` (
+  `daily_check_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `operable` tinyint(1) NOT NULL,
+  `mileage` double DEFAULT NULL,
+  `hours` double DEFAULT NULL,
+  `is_tagout` tinyint(1) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `tires` tinyint(1) DEFAULT NULL,
+  `wheels` tinyint(1) DEFAULT NULL,
+  `horn` tinyint(1) DEFAULT NULL,
+  `fuel` int DEFAULT NULL,
+  `mirrors` tinyint(1) DEFAULT NULL,
+  `glass` tinyint(1) DEFAULT NULL,
+  `overhead_guard` tinyint(1) DEFAULT NULL,
+  `steps` tinyint(1) DEFAULT NULL,
+  `forks` tinyint(1) DEFAULT NULL,
+  `operator_cab` tinyint(1) DEFAULT NULL,
+  `cosmetic_damage` tinyint(1) DEFAULT NULL,
+  `brakes` tinyint(1) DEFAULT NULL,
+  `steering` tinyint(1) DEFAULT NULL,
+  `attachments` tinyint(1) DEFAULT NULL,
+  `mud_flaps` tinyint(1) DEFAULT NULL,
+  `electrical_connectors` tinyint(1) DEFAULT NULL,
+  `air_pressure` tinyint(1) DEFAULT NULL,
+  `boom_extensions` tinyint(1) DEFAULT NULL,
+  `spreader_functions` tinyint(1) DEFAULT NULL,
+  `headlights` tinyint(1) DEFAULT NULL,
+  `backup_lights` tinyint(1) DEFAULT NULL,
+  `trailer_light_cord` tinyint(1) DEFAULT NULL,
+  `oil` tinyint(1) DEFAULT NULL,
+  `transmission_fluid` tinyint(1) DEFAULT NULL,
+  `steering_fluid` tinyint(1) DEFAULT NULL,
+  `hydraulic_fluid` tinyint(1) DEFAULT NULL,
+  `brake_fluid` tinyint(1) DEFAULT NULL,
+  `fire_extinguisher` tinyint(1) DEFAULT NULL,
+  `hydraulic_hoses` tinyint(1) DEFAULT NULL,
+  `trailer_air_lines` tinyint(1) DEFAULT NULL,
+  `other_leaks` tinyint(1) DEFAULT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `anchoring_system` tinyint(1) DEFAULT NULL,
+  `communication` tinyint(1) DEFAULT NULL,
+  `electrical` tinyint(1) DEFAULT NULL,
+  `engine_and_all_mechanical` tinyint(1) DEFAULT NULL,
+  `fuel_systems` tinyint(1) DEFAULT NULL,
+  `lifesaving_equipments` tinyint(1) DEFAULT NULL,
+  `navigation_and_strobe_lights` tinyint(1) DEFAULT NULL,
+  `steering_and_hydraulics` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`daily_check_id`),
+  KEY `api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetdailychecks_created_by_id_029fc175_fk_api_detai` (`created_by_id`),
+  KEY `api_assetdailychecks_location_id_f76e3d5a_fk_api_locat` (`location_id`),
+  KEY `api_assetdailychecks_modified_by_id_4fbf1c05_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetdailychecks_created_by_id_029fc175_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdailychecks_location_id_f76e3d5a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdailychecks_modified_by_id_4fbf1c05_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdailychecksmodel`
+--
+
+LOCK TABLES `api_assetdailychecksmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetdailychecksmodel` DISABLE KEYS */;
+INSERT INTO `api_assetdailychecksmodel` VALUES (1,'Camellia-Shipping-LLC-dc-1',1,-1,200,0,'2024-04-04 00:53:37.493783','2024-04-04 00:53:37.521312',NULL,NULL,NULL,0,NULL,NULL,1,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY18FRYQ987',1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'Camellia-Shipping-LLC-dc-2',1,-1,700,0,'2024-04-04 00:54:27.062291','2024-04-04 00:54:27.087521',NULL,NULL,1,50,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'SABAMR-9767-XR',1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'Camellia-Shipping-LLC-dc-3',1,-1,300,0,'2024-04-04 03:54:10.602292','2024-04-04 03:54:10.626361',NULL,NULL,1,25,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'SBM2024XK78',1,1,1,0,NULL,1,NULL,1,NULL,1,NULL),(4,'Camellia-Shipping-LLC-dc-4',1,-1,350,0,'2024-05-09 21:48:06.633865','2024-05-09 21:48:06.645680',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY18FRYQ987',1,1,1,NULL,1,1,NULL,1,1,NULL,1),(5,'Camellia-Shipping-LLC-dc-5',1,-1,650,0,'2024-05-10 22:32:37.699755','2024-05-10 22:32:37.711896',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY20FRYK456',1,1,1,NULL,1,1,NULL,1,1,NULL,1),(6,'Camellia-Shipping-LLC-dc-6',1,-1,650,0,'2024-05-10 22:46:31.021893','2024-05-10 22:46:31.045467',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY20FRYK456',1,1,1,NULL,1,1,NULL,1,0,NULL,1),(7,'Camellia-Shipping-LLC-dc-7',1,-1,650,0,'2024-05-10 22:48:23.453572','2024-05-10 22:48:23.480489',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY20FRYK456',1,1,1,NULL,1,1,NULL,1,0,NULL,1),(8,'Camellia-Shipping-LLC-dc-8',1,-1,350,0,'2024-05-11 14:48:34.388904','2024-05-11 14:48:34.413907',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY18FRYQ987',1,1,1,NULL,1,1,NULL,1,0,NULL,1),(9,'Camellia-Shipping-LLC-dc-9',1,-1,350,0,'2024-05-11 15:04:28.176022','2024-05-11 15:04:28.201680',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY18FRYQ987',1,1,1,NULL,1,1,NULL,1,0,NULL,1),(10,'Camellia-Shipping-LLC-dc-10',1,-1,350,0,'2024-05-13 03:21:25.383090','2024-05-13 03:21:25.397240',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY22FRYX123',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(11,'Camellia-Shipping-LLC-dc-11',1,-1,350,0,'2024-05-15 13:43:55.065643','2024-05-15 13:43:55.090623',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY18FRYQ987',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(12,'Camellia-Shipping-LLC-dc-12',1,-1,710,0,'2024-07-23 03:33:19.683986','2024-07-23 03:33:19.697774',NULL,NULL,NULL,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'SABAMR-9767-XR',1,4,1,1,NULL,1,1,1,NULL,1,1),(13,'Camellia-Shipping-LLC-dc-13',1,-1,700,0,'2024-07-23 03:37:44.931032','2024-07-23 03:37:44.946456',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'CMA2024SHIP597',1,4,1,1,NULL,1,1,NULL,1,1,1),(14,'Camellia-Shipping-LLC-dc-14',1,-1,200,0,'2024-07-23 03:38:32.256185','2024-07-23 03:38:32.269784',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT744',1,4,1,1,NULL,1,1,NULL,1,1,1),(15,'Camellia-Shipping-LLC-dc-15',1,-1,650,0,'2024-07-23 03:38:54.314430','2024-07-23 03:38:54.332442',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY20FRYK456',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(16,'Camellia-Shipping-LLC-dc-16',1,-1,580,0,'2024-09-06 20:29:19.999070','2024-09-06 20:29:20.016522',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT744',1,3,1,1,NULL,1,1,NULL,1,1,1),(17,'Camellia-Shipping-LLC-dc-17',1,-1,750,0,'2024-09-30 02:17:08.339429','2024-09-30 02:17:08.352728',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'HAP2024CARGO256',1,4,1,1,NULL,1,1,NULL,1,1,1),(18,'Camellia-Shipping-LLC-dc-18',1,-1,360,0,'2024-12-11 17:07:53.631143','2024-12-11 17:07:53.641714',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY22FRYX123',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(19,'Camellia-Shipping-LLC-dc-19',1,-1,310,0,'2025-01-07 16:25:22.201476','2025-01-07 16:25:22.211603',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT289',1,4,1,1,NULL,1,1,NULL,1,1,1),(20,'Camellia-Shipping-LLC-dc-20',1,-1,315,0,'2025-01-09 01:06:35.575593','2025-01-09 01:06:35.585862',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT289',1,4,1,1,NULL,1,1,NULL,1,1,1),(21,'Camellia-Shipping-LLC-dc-21',1,-1,315,0,'2025-01-09 01:10:52.357222','2025-01-09 01:10:52.366168',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT289',1,4,1,1,NULL,1,1,NULL,1,1,1),(22,'Camellia-Shipping-LLC-dc-22',1,-1,800,0,'2025-01-13 16:42:38.716348','2025-01-13 16:42:38.726184',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY20FRYK456',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(23,'Camellia-Shipping-LLC-dc-23',1,-1,370,0,'2025-01-14 14:48:40.332069','2025-01-14 14:48:40.342539',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY22FRYX123',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(24,'Camellia-Shipping-LLC-dc-24',1,-1,375,0,'2025-02-06 17:07:43.743073','2025-02-06 17:07:43.758627',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY22FRYX123',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(25,'Camellia-Shipping-LLC-dc-25',1,-1,385,0,'2025-02-06 17:10:07.919357','2025-02-06 17:10:07.929676',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY22FRYX123',1,4,1,NULL,1,1,NULL,1,1,NULL,1),(26,'Camellia-Shipping-LLC-dc-26',1,-1,590,0,'2025-02-06 17:33:34.355936','2025-02-06 17:33:34.366585',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT744',1,3,1,1,NULL,1,1,NULL,1,1,1),(27,'Camellia-Shipping-LLC-dc-27',1,-1,600,0,'2025-02-06 17:37:24.733451','2025-02-06 17:37:24.743855',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT744',1,3,1,1,NULL,1,1,NULL,1,1,1),(28,'Camellia-Shipping-LLC-dc-28',1,-1,600,0,'2025-02-06 17:43:07.067117','2025-02-06 17:43:07.083801',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'BY2024YCHT744',1,3,1,1,NULL,1,1,NULL,1,1,1),(29,'Camellia-Shipping-LLC-dc-29',1,-1,800,0,'2025-04-17 17:54:31.563950','2025-04-17 17:54:31.595230',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ASY20FRYK456',1,4,1,NULL,1,1,NULL,1,1,NULL,1);
+/*!40000 ALTER TABLE `api_assetdailychecksmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdailychecksmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetdailychecksmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdailychecksmodelhistory` (
+  `daily_check_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `operable` tinyint(1) NOT NULL,
+  `mileage` double DEFAULT NULL,
+  `hours` double DEFAULT NULL,
+  `is_tagout` tinyint(1) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `tires` tinyint(1) DEFAULT NULL,
+  `wheels` tinyint(1) DEFAULT NULL,
+  `horn` tinyint(1) DEFAULT NULL,
+  `fuel` int DEFAULT NULL,
+  `mirrors` tinyint(1) DEFAULT NULL,
+  `glass` tinyint(1) DEFAULT NULL,
+  `overhead_guard` tinyint(1) DEFAULT NULL,
+  `steps` tinyint(1) DEFAULT NULL,
+  `forks` tinyint(1) DEFAULT NULL,
+  `operator_cab` tinyint(1) DEFAULT NULL,
+  `cosmetic_damage` tinyint(1) DEFAULT NULL,
+  `brakes` tinyint(1) DEFAULT NULL,
+  `steering` tinyint(1) DEFAULT NULL,
+  `attachments` tinyint(1) DEFAULT NULL,
+  `mud_flaps` tinyint(1) DEFAULT NULL,
+  `electrical_connectors` tinyint(1) DEFAULT NULL,
+  `air_pressure` tinyint(1) DEFAULT NULL,
+  `boom_extensions` tinyint(1) DEFAULT NULL,
+  `spreader_functions` tinyint(1) DEFAULT NULL,
+  `headlights` tinyint(1) DEFAULT NULL,
+  `backup_lights` tinyint(1) DEFAULT NULL,
+  `trailer_light_cord` tinyint(1) DEFAULT NULL,
+  `oil` tinyint(1) DEFAULT NULL,
+  `transmission_fluid` tinyint(1) DEFAULT NULL,
+  `steering_fluid` tinyint(1) DEFAULT NULL,
+  `hydraulic_fluid` tinyint(1) DEFAULT NULL,
+  `brake_fluid` tinyint(1) DEFAULT NULL,
+  `fire_extinguisher` tinyint(1) DEFAULT NULL,
+  `hydraulic_hoses` tinyint(1) DEFAULT NULL,
+  `trailer_air_lines` tinyint(1) DEFAULT NULL,
+  `other_leaks` tinyint(1) DEFAULT NULL,
+  `daily_check_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`daily_check_history_id`),
+  KEY `api_assetdailychecks_daily_check_id_668316ed_fk_api_asset` (`daily_check_id`),
+  KEY `api_assetdailychecks_location_id_21106c94_fk_api_locat` (`location_id`),
+  KEY `api_assetdailychecks_modified_by_id_107f412c_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetdailychecks_daily_check_id_668316ed_fk_api_asset` FOREIGN KEY (`daily_check_id`) REFERENCES `api_assetdailychecksmodel` (`daily_check_id`),
+  CONSTRAINT `api_assetdailychecks_location_id_21106c94_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdailychecks_modified_by_id_107f412c_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdailychecksmodelhistory`
+--
+
+LOCK TABLES `api_assetdailychecksmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetdailychecksmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_assetdailychecksmodelhistory` VALUES (1,'Camellia-Shipping-LLC-dc-1',1,-1,200,0,'2024-04-04 00:53:37.541912',NULL,NULL,NULL,0,NULL,NULL,1,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1),(2,'Camellia-Shipping-LLC-dc-2',1,-1,700,0,'2024-04-04 00:54:27.101710',NULL,NULL,1,50,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2,1,1),(3,'Camellia-Shipping-LLC-dc-3',1,-1,300,0,'2024-04-04 03:54:10.639048',NULL,NULL,1,25,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,3,1,1),(4,'Camellia-Shipping-LLC-dc-4',1,-1,350,0,'2024-05-09 21:48:06.662835',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,1,1),(5,'Camellia-Shipping-LLC-dc-5',1,-1,650,0,'2024-05-10 22:32:37.724219',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,5,1,1),(6,'Camellia-Shipping-LLC-dc-6',1,-1,650,0,'2024-05-10 22:46:31.059509',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,6,1,1),(7,'Camellia-Shipping-LLC-dc-7',1,-1,650,0,'2024-05-10 22:48:23.493983',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,7,1,1),(8,'Camellia-Shipping-LLC-dc-8',1,-1,350,0,'2024-05-11 14:48:34.426117',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,8,1,1),(9,'Camellia-Shipping-LLC-dc-9',1,-1,350,0,'2024-05-11 15:04:28.214861',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9,1,1),(10,'Camellia-Shipping-LLC-dc-10',1,-1,350,0,'2024-05-13 03:21:25.411403',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10,4,1),(11,'Camellia-Shipping-LLC-dc-11',1,-1,350,0,'2024-05-15 13:43:55.104082',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,11,4,1),(12,'Camellia-Shipping-LLC-dc-12',1,-1,710,0,'2024-07-23 03:33:19.713487',NULL,NULL,NULL,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,12,4,1),(13,'Camellia-Shipping-LLC-dc-13',1,-1,700,0,'2024-07-23 03:37:44.972233',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,13,4,1),(14,'Camellia-Shipping-LLC-dc-14',1,-1,200,0,'2024-07-23 03:38:32.284016',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,14,4,1),(15,'Camellia-Shipping-LLC-dc-15',1,-1,650,0,'2024-07-23 03:38:54.350315',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,15,4,1),(16,'Camellia-Shipping-LLC-dc-16',1,-1,580,0,'2024-09-06 20:29:20.030164',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,16,3,1),(17,'Camellia-Shipping-LLC-dc-17',1,-1,750,0,'2024-09-30 02:17:08.366053',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,17,4,1),(18,'Camellia-Shipping-LLC-dc-18',1,-1,360,0,'2024-12-11 17:07:53.651386',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,18,4,1),(19,'Camellia-Shipping-LLC-dc-19',1,-1,310,0,'2025-01-07 16:25:22.221637',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,19,4,1),(20,'Camellia-Shipping-LLC-dc-20',1,-1,315,0,'2025-01-09 01:06:35.594787',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,20,4,1),(21,'Camellia-Shipping-LLC-dc-21',1,-1,315,0,'2025-01-09 01:10:52.376254',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,21,4,1),(22,'Camellia-Shipping-LLC-dc-22',1,-1,800,0,'2025-01-13 16:42:38.736933',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,22,4,1),(23,'Camellia-Shipping-LLC-dc-23',1,-1,370,0,'2025-01-14 14:48:40.352145',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,23,4,1),(24,'Camellia-Shipping-LLC-dc-24',1,-1,375,0,'2025-02-06 17:07:43.770146',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,24,4,1),(25,'Camellia-Shipping-LLC-dc-25',1,-1,385,0,'2025-02-06 17:10:07.939213',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,25,4,1),(26,'Camellia-Shipping-LLC-dc-26',1,-1,590,0,'2025-02-06 17:33:34.380669',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,26,3,1),(27,'Camellia-Shipping-LLC-dc-27',1,-1,600,0,'2025-02-06 17:37:24.771297',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,27,3,1),(28,'Camellia-Shipping-LLC-dc-28',1,-1,600,0,'2025-02-06 17:43:07.096629',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,28,3,1),(29,'Camellia-Shipping-LLC-dc-29',1,-1,800,0,'2025-04-17 17:54:31.614852',NULL,NULL,NULL,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,29,4,1);
+/*!40000 ALTER TABLE `api_assetdailychecksmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdisposalfile`
+--
+
+DROP TABLE IF EXISTS `api_assetdisposalfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdisposalfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai` (`created_by_id`),
+  KEY `api_assetdisposalfil_disposal_id_21e54a10_fk_api_asset` (`disposal_id`),
+  CONSTRAINT `api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalfil_disposal_id_21e54a10_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdisposalfile`
+--
+
+LOCK TABLES `api_assetdisposalfile` WRITE;
+/*!40000 ALTER TABLE `api_assetdisposalfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdisposalfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdisposalmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetdisposalmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdisposalmodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `disposal_type` varchar(50) NOT NULL,
+  `estimated_pickup_date` datetime(6) DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `accounting_contacted_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `interior_condition` varchar(50) NOT NULL,
+  `interior_condition_details` longtext NOT NULL,
+  `exterior_condition` varchar(50) NOT NULL,
+  `exterior_condition_details` longtext NOT NULL,
+  `disposal_reason` varchar(50) NOT NULL,
+  `replacement_reason` varchar(50) NOT NULL,
+  `is_stripped` tinyint(1) NOT NULL,
+  `refurbished` tinyint(1) NOT NULL,
+  `vendor_email` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetdisposalmod_created_by_id_64abcd41_fk_api_detai` (`created_by_id`),
+  KEY `api_assetdisposalmod_location_id_b2ebc3c6_fk_api_locat` (`location_id`),
+  KEY `api_assetdisposalmod_modified_by_id_8e1214f6_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetdisposalmod_vendor_id_ceb0fad4_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetdisposalmod_created_by_id_64abcd41_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalmod_location_id_b2ebc3c6_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdisposalmod_modified_by_id_8e1214f6_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalmod_vendor_id_ceb0fad4_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdisposalmodel`
+--
+
+LOCK TABLES `api_assetdisposalmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetdisposalmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdisposalmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdisposalmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetdisposalmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdisposalmodelhistory` (
+  `disposal_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `disposal_type` varchar(50) NOT NULL,
+  `estimated_pickup_date` datetime(6) DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `accounting_contacted_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `date` datetime(6) NOT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`disposal_history_id`),
+  KEY `api_assetdisposalmod_disposal_id_eab85920_fk_api_asset` (`disposal_id`),
+  KEY `api_assetdisposalmod_location_id_b9df111d_fk_api_locat` (`location_id`),
+  KEY `api_assetdisposalmod_modified_by_id_77d46eb8_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetdisposalmod_vendor_id_10c94a92_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetdisposalmod_disposal_id_eab85920_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assetdisposalmod_location_id_b9df111d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdisposalmod_modified_by_id_77d46eb8_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalmod_vendor_id_10c94a92_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdisposalmodelhistory`
+--
+
+LOCK TABLES `api_assetdisposalmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetdisposalmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdisposalmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetfile`
+--
+
+DROP TABLE IF EXISTS `api_assetfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` date NOT NULL,
+  `date_modified` date NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetfile_created_by_id_db646b2a_fk_api_detai` (`created_by_id`),
+  KEY `api_assetfile_modified_by_id_8c9e37fc_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetfile_created_by_id_db646b2a_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetfile_modified_by_id_8c9e37fc_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetfile`
+--
+
+LOCK TABLES `api_assetfile` WRITE;
+/*!40000 ALTER TABLE `api_assetfile` DISABLE KEYS */;
+INSERT INTO `api_assetfile` VALUES (1,'application/pdf','registration','GBCS Group Portfolio 2024.pdf','https://2023aukaiprodv6.blob.core.windows.net/asset/registration/8acc9bdc-4b46-40fb-a629-a6de37bff9ad_Camellia_Shipping_LLC_registration_ASY20FRYK456_20250206-000551',925793,'2025-02-06','2025-02-06','2025-02-26','ASY20FRYK456',1,1);
+/*!40000 ALTER TABLE `api_assetfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuecategory`
+--
+
+DROP TABLE IF EXISTS `api_assetissuecategory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuecategory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetissuecatego_created_by_id_ba655274_fk_api_detai` (`created_by_id`),
+  KEY `api_assetissuecatego_modified_by_id_c453ea4c_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetissuecatego_created_by_id_ba655274_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuecatego_modified_by_id_c453ea4c_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuecategory`
+--
+
+LOCK TABLES `api_assetissuecategory` WRITE;
+/*!40000 ALTER TABLE `api_assetissuecategory` DISABLE KEYS */;
+INSERT INTO `api_assetissuecategory` VALUES (1,'E','Engine','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1),(2,'H','Hydraulic','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1),(3,'E','Electrical','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1),(4,'EQ','Safety Equipment','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1),(5,'C','Communication','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1),(6,'N','Navigation System','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1),(7,'PDI','PDI Systems','2024-01-01 00:00:00.000000','2024-01-01 00:00:00.000000',1,1);
+/*!40000 ALTER TABLE `api_assetissuecategory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuefilemodel`
+--
+
+DROP TABLE IF EXISTS `api_assetissuefilemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuefilemodel` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `issue_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset` (`issue_id`),
+  CONSTRAINT `api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuefilemodel`
+--
+
+LOCK TABLES `api_assetissuefilemodel` WRITE;
+/*!40000 ALTER TABLE `api_assetissuefilemodel` DISABLE KEYS */;
+INSERT INTO `api_assetissuefilemodel` VALUES (1,'image/jpeg','broken_piston.jpg','https://2023aukaiprodv6.blob.core.windows.net/issues/05d99b88-987f-4792-ac05-0f9e646235c6_Camellia_Shipping_LLC_Issue_1_20240403-220019',71503,'2024-04-03 22:00:19.266871',1);
+/*!40000 ALTER TABLE `api_assetissuefilemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuemodel`
+--
+
+DROP TABLE IF EXISTS `api_assetissuemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuemodel` (
+  `issue_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `issue_details` longtext,
+  `issue_title` varchar(150) NOT NULL,
+  `issue_type` varchar(50) NOT NULL,
+  `issue_result` varchar(100) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `issue_created` datetime(6) NOT NULL,
+  `issue_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `accident_id_id` int DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id_id` int DEFAULT NULL,
+  PRIMARY KEY (`issue_id`),
+  KEY `api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetissuemodel_accident_id_id_22653a0e_fk_api_accid` (`accident_id_id`),
+  KEY `api_assetissuemodel_category_id_cd4c02f3_fk_api_asset` (`category_id`),
+  KEY `api_assetissuemodel_created_by_id_0f5c0bd9_fk_api_detai` (`created_by_id`),
+  KEY `api_assetissuemodel_location_id_af14c6da_fk_api_locat` (`location_id`),
+  KEY `api_assetissuemodel_modified_by_id_9575934e_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetissuemodel_repair_id_id_4ca7bc53_fk_api_repai` (`repair_id_id`),
+  CONSTRAINT `api_assetissuemodel_accident_id_id_22653a0e_fk_api_accid` FOREIGN KEY (`accident_id_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_assetissuemodel_category_id_cd4c02f3_fk_api_asset` FOREIGN KEY (`category_id`) REFERENCES `api_assetissuecategory` (`id`),
+  CONSTRAINT `api_assetissuemodel_created_by_id_0f5c0bd9_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuemodel_location_id_af14c6da_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetissuemodel_modified_by_id_9575934e_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuemodel_repair_id_id_4ca7bc53_fk_api_repai` FOREIGN KEY (`repair_id_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuemodel`
+--
+
+LOCK TABLES `api_assetissuemodel` WRITE;
+/*!40000 ALTER TABLE `api_assetissuemodel` DISABLE KEYS */;
+INSERT INTO `api_assetissuemodel` VALUES (1,'Camellia-Shipping-LLC-i-1','Engine has a broken piston.','Broken Piston','Critical','Other',0,'2024-04-03 22:00:19.171157','2024-04-03 22:00:20.390603','ASY18FRYQ987',NULL,1,1,1,1,1),(2,'Camellia-Shipping-LLC-i-2','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-09 21:39:40.627846','2024-05-09 21:39:41.878542','ASY18FRYQ987',NULL,1,1,1,1,2),(3,'Camellia-Shipping-LLC-i-3','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 21:41:48.696611','2024-05-10 21:41:49.904244','ASY18FRYQ987',NULL,1,1,1,1,3),(4,'Camellia-Shipping-LLC-i-4','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 21:47:52.799777','2024-05-10 21:47:53.899441','ASY18FRYQ987',NULL,1,1,1,1,4),(5,'Camellia-Shipping-LLC-i-5','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 22:02:03.044194','2024-05-10 22:02:04.115057','ASY18FRYQ987',NULL,1,1,1,1,5),(6,'Camellia-Shipping-LLC-i-6','Oil leaking from the back of the engine','Oil Leak','Non-Critical','Other',0,'2024-05-11 14:38:02.303739','2024-05-11 14:38:03.486078','ASY18FRYQ987',NULL,1,1,1,1,6),(7,'Camellia-Shipping-LLC-i-7','Oil leaking from rear of engine','Oil Leak','Non-Critical','Other',0,'2024-05-11 14:55:43.166340','2024-05-11 14:55:44.246921','ASY18FRYQ987',NULL,1,1,1,1,7),(8,'Camellia-Shipping-LLC-i-8','Engine is leaking','Engine is leaking','Critical','Other',1,'2024-05-13 03:16:45.180457','2024-05-13 03:18:45.099347','ASY22FRYX123',NULL,1,1,4,1,8),(9,'Camellia-Shipping-LLC-i-9','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-14 19:16:23.917783','2024-05-14 19:16:25.117909','ASY21FRYX589',NULL,1,1,4,1,13),(10,'Camellia-Shipping-LLC-i-10','Engine is leaking oil from the rear','Engine Oil Leak','Non-Critical','Other',0,'2024-05-15 13:29:09.889896','2024-05-15 13:29:11.045610','ASY21FRYX589',NULL,1,1,4,1,9),(11,'Camellia-Shipping-LLC-i-11','Oil leaking from rear of  engine.','Oil leak','Non-Critical','Other',0,'2024-06-05 15:08:12.748142','2024-06-05 15:08:14.393607','ASY18FRYQ987',NULL,1,1,4,1,11),(12,'Camellia-Shipping-LLC-i-12','Hyd Leak','Hyd Leak','Critical','Other',0,'2024-07-23 03:33:41.150994','2024-07-23 03:33:42.357880','SABAMR-9767-XR',NULL,2,1,4,1,10),(13,'Camellia-Shipping-LLC-i-13','Engine broken','Engine not running','Critical','Other',0,'2024-09-06 20:25:32.031149','2024-09-06 20:25:33.690985','ASY18FRYQ987',NULL,1,1,3,1,11),(14,'Camellia-Shipping-LLC-i-14','Engine stopped working.....','Engine does not work','Critical','Other',1,'2024-12-11 19:35:21.288135','2025-01-14 14:45:15.621530','ASY22FRYX123',NULL,1,1,4,1,14),(15,'Camellia-Shipping-LLC-i-15','Battery was found dead during start up','Dead Battery','Critical','Other',1,'2025-01-06 18:26:00.633809','2025-01-07 16:17:53.356457','BY2024YCHT289',NULL,3,1,4,1,12),(16,'Camellia-Shipping-LLC-i-16','Battery','Battery','Critical','Other',1,'2025-01-06 18:29:20.991615','2025-01-07 16:17:53.356485','BY2024YCHT289',NULL,3,1,4,1,12),(17,'Camellia-Shipping-LLC-i-17','Dead battery','Battery is Dead','Critical','Other',1,'2025-01-06 18:32:56.100730','2025-01-07 16:17:53.356510','BY2024YCHT289',NULL,3,1,4,1,12),(18,'Camellia-Shipping-LLC-i-18','Battery was found dead','Battery is dead','Critical','Other',1,'2025-01-06 18:48:53.181246','2025-01-07 16:17:53.356533','BY2024YCHT289',NULL,3,1,4,1,12),(19,'Camellia-Shipping-LLC-i-19','Dead battery','Battery is dead','Critical','Other',1,'2025-01-06 18:55:32.971776','2025-01-07 16:17:53.356555','BY2024YCHT289',NULL,3,1,4,1,12),(20,'Camellia-Shipping-LLC-i-20','Dead battery','Battery is dead','Critical','Other',1,'2025-01-07 16:14:15.272641','2025-01-07 16:17:53.356578','BY2024YCHT289',NULL,3,1,4,1,12),(21,'Camellia-Shipping-LLC-i-21','Battery found dead during inspection','Battery is dead','Critical','Other',0,'2025-01-14 16:29:09.142117','2025-01-14 16:29:10.266784','BY2024YCHT188',NULL,3,1,4,1,15),(22,'Camellia-Shipping-LLC-i-22','Dead engine','Engine is dead','Critical','Other',0,'2025-02-06 01:24:25.647213','2025-02-06 01:24:26.856017','ASY21FRYX589',NULL,1,1,3,1,NULL),(23,'Camellia-Shipping-LLC-i-23','Dead battery','Dead battery','Critical','Other',0,'2025-02-06 01:27:24.060832','2025-02-06 01:27:25.339069','ASY21FRYX589',NULL,3,1,3,1,NULL),(24,'Camellia-Shipping-LLC-i-24','Dead battery found','Battery is dead','Critical','Other',1,'2025-02-06 01:30:57.964857','2025-02-06 17:25:49.303214','BY2024YCHT744',NULL,3,1,3,1,16),(25,'Camellia-Shipping-LLC-i-25','dead engine','dead engine','Critical','Other',1,'2025-02-06 01:36:37.993569','2025-02-06 17:25:49.303247','BY2024YCHT744',NULL,1,1,3,1,16),(26,'Camellia-Shipping-LLC-i-26','Dead battery','Dead battery','Critical','Other',1,'2025-02-06 01:53:55.239046','2025-02-06 17:25:49.303274','BY2024YCHT744',NULL,3,1,3,1,16),(27,'Camellia-Shipping-LLC-i-27','Dead batt','Dead batter','Critical','Other',1,'2025-02-06 01:59:28.788996','2025-02-06 17:25:49.303456','BY2024YCHT744',NULL,3,1,3,1,16),(28,'Camellia-Shipping-LLC-i-28','Batt is dead','Dead battery','Critical','Other',1,'2025-02-06 17:19:21.520713','2025-02-06 17:25:49.303490','BY2024YCHT744',NULL,3,1,3,1,16),(29,'Camellia-Shipping-LLC-i-29','Dead','Batt is dead','Critical','Other',1,'2025-02-06 17:22:44.777976','2025-02-06 17:25:49.303518','BY2024YCHT744',NULL,3,1,3,1,16),(30,'Camellia-Shipping-LLC-i-30','Engine is not going through ignition','Engine won\'t start','Critical','Other',0,'2025-04-17 17:41:00.196275','2025-04-17 17:41:01.789979','BY2024YCHT289',NULL,1,1,4,1,17);
+/*!40000 ALTER TABLE `api_assetissuemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuemodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetissuemodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuemodelhistory` (
+  `issue_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `issue_details` longtext,
+  `issue_title` varchar(150) NOT NULL,
+  `issue_type` varchar(50) NOT NULL,
+  `issue_result` varchar(100) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `accident_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`issue_history_id`),
+  KEY `api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid` (`accident_id`),
+  KEY `api_assetissuemodelh_issue_id_405009a0_fk_api_asset` (`issue_id`),
+  KEY `api_assetissuemodelh_location_id_d302e45a_fk_api_locat` (`location_id`),
+  KEY `api_assetissuemodelh_modified_by_id_4ccfcbc4_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetissuemodelh_repair_id_177618a0_fk_api_repai` (`repair_id`),
+  CONSTRAINT `api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_assetissuemodelh_issue_id_405009a0_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_assetissuemodelh_location_id_d302e45a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetissuemodelh_modified_by_id_4ccfcbc4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuemodelh_repair_id_177618a0_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuemodelhistory`
+--
+
+LOCK TABLES `api_assetissuemodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetissuemodelhistory` DISABLE KEYS */;
+INSERT INTO `api_assetissuemodelhistory` VALUES (1,'Camellia-Shipping-LLC-i-1','Engine has a broken piston.','Broken Piston','Critical','Other',0,'2024-04-03 22:00:20.400704',NULL,1,1,1,NULL),(2,'Camellia-Shipping-LLC-i-1','Engine has a broken piston.','Broken Piston','Critical','Other',0,'2024-04-03 22:02:39.861851',NULL,1,1,1,1),(3,'Camellia-Shipping-LLC-i-2','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-09 21:39:41.888520',NULL,2,1,1,NULL),(4,'Camellia-Shipping-LLC-i-2','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-09 21:44:15.704493',NULL,2,1,1,2),(5,'Camellia-Shipping-LLC-i-3','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 21:41:49.915204',NULL,3,1,1,NULL),(6,'Camellia-Shipping-LLC-i-4','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 21:47:53.910298',NULL,4,1,1,NULL),(7,'Camellia-Shipping-LLC-i-3','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 21:52:38.752132',NULL,3,1,1,3),(8,'Camellia-Shipping-LLC-i-4','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 21:58:31.608798',NULL,4,1,1,4),(9,'Camellia-Shipping-LLC-i-5','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 22:02:04.126399',NULL,5,1,1,NULL),(10,'Camellia-Shipping-LLC-i-5','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-10 22:10:50.196315',NULL,5,1,1,5),(11,'Camellia-Shipping-LLC-i-6','Oil leaking from the back of the engine','Oil Leak','Non-Critical','Other',0,'2024-05-11 14:38:03.496761',NULL,6,1,1,NULL),(12,'Camellia-Shipping-LLC-i-6','Oil leaking from the back of the engine','Oil Leak','Non-Critical','Other',0,'2024-05-11 14:42:42.319526',NULL,6,1,1,6),(13,'Camellia-Shipping-LLC-i-7','Oil leaking from rear of engine','Oil Leak','Non-Critical','Other',0,'2024-05-11 14:55:44.257079',NULL,7,1,1,NULL),(14,'Camellia-Shipping-LLC-i-7','Oil leaking from rear of engine','Oil Leak','Non-Critical','Other',0,'2024-05-11 14:58:53.595257',NULL,7,1,1,7),(15,'Camellia-Shipping-LLC-i-8','Engine is leaking','Engine is leaking','Critical','Other',0,'2024-05-13 03:16:46.226945',NULL,8,4,1,NULL),(16,'Camellia-Shipping-LLC-i-8','Engine is leaking','Engine is leaking','Critical','Other',0,'2024-05-13 03:17:58.741961',NULL,8,4,1,8),(17,'Camellia-Shipping-LLC-i-9','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2024-05-14 19:16:25.128109',NULL,9,4,1,NULL),(18,'Camellia-Shipping-LLC-i-10','Engine is leaking oil from the rear','Engine Oil Leak','Non-Critical','Other',0,'2024-05-15 13:29:11.056138',NULL,10,4,1,NULL),(19,'Camellia-Shipping-LLC-i-10','Engine is leaking oil from the rear','Engine Oil Leak','Non-Critical','Other',0,'2024-05-15 13:34:42.559953',NULL,10,4,1,9),(20,'Camellia-Shipping-LLC-i-11','Oil leaking from rear of  engine.','Oil leak','Non-Critical','Other',0,'2024-06-05 15:08:14.403995',NULL,11,4,1,NULL),(21,'Camellia-Shipping-LLC-i-12','Hyd Leak','Hyd Leak','Critical','Other',0,'2024-07-23 03:33:42.370014',NULL,12,4,1,NULL),(22,'Camellia-Shipping-LLC-i-12','Hyd Leak','Hyd Leak','Critical','Other',0,'2024-07-23 03:34:10.632813',NULL,12,4,1,10),(23,'Camellia-Shipping-LLC-i-13','Engine broken','Engine not running','Critical','Other',0,'2024-09-06 20:25:33.702559',NULL,13,3,1,NULL),(24,'Camellia-Shipping-LLC-i-11','Oil leaking from rear of  engine.','Oil leak','Non-Critical','Other',0,'2024-09-06 20:26:28.391426',NULL,11,4,1,11),(25,'Camellia-Shipping-LLC-i-13','Engine broken','Engine not running','Critical','Other',0,'2024-09-06 20:26:28.429115',NULL,13,3,1,11),(26,'Camellia-Shipping-LLC-i-14','Engine stopped working.....','Engine does not work','Critical','Other',0,'2024-12-11 19:35:23.172534',NULL,14,4,1,NULL),(27,'Camellia-Shipping-LLC-i-15','Battery was found dead during start up','Dead Battery','Critical','Other',0,'2025-01-06 18:26:01.757084',NULL,15,4,1,NULL),(28,'Camellia-Shipping-LLC-i-16','Battery','Battery','Critical','Other',0,'2025-01-06 18:29:22.264638',NULL,16,4,1,NULL),(29,'Camellia-Shipping-LLC-i-17','Dead battery','Battery is Dead','Critical','Other',0,'2025-01-06 18:32:57.342081',NULL,17,4,1,NULL),(30,'Camellia-Shipping-LLC-i-18','Battery was found dead','Battery is dead','Critical','Other',0,'2025-01-06 18:48:54.223526',NULL,18,4,1,NULL),(31,'Camellia-Shipping-LLC-i-19','Dead battery','Battery is dead','Critical','Other',0,'2025-01-06 18:55:34.193866',NULL,19,4,1,NULL),(32,'Camellia-Shipping-LLC-i-20','Dead battery','Battery is dead','Critical','Other',0,'2025-01-07 16:14:16.471030',NULL,20,4,1,NULL),(33,'Camellia-Shipping-LLC-i-15','Battery was found dead during start up','Dead Battery','Critical','Other',0,'2025-01-07 16:16:46.127723',NULL,15,4,1,12),(34,'Camellia-Shipping-LLC-i-16','Battery','Battery','Critical','Other',0,'2025-01-07 16:16:46.156032',NULL,16,4,1,12),(35,'Camellia-Shipping-LLC-i-17','Dead battery','Battery is Dead','Critical','Other',0,'2025-01-07 16:16:46.192352',NULL,17,4,1,12),(36,'Camellia-Shipping-LLC-i-18','Battery was found dead','Battery is dead','Critical','Other',0,'2025-01-07 16:16:46.222587',NULL,18,4,1,12),(37,'Camellia-Shipping-LLC-i-19','Dead battery','Battery is dead','Critical','Other',0,'2025-01-07 16:16:46.258578',NULL,19,4,1,12),(38,'Camellia-Shipping-LLC-i-20','Dead battery','Battery is dead','Critical','Other',0,'2025-01-07 16:16:46.282909',NULL,20,4,1,12),(39,'Camellia-Shipping-LLC-i-9','Oil leaking from rear of engine','Oil leak','Non-Critical','Other',0,'2025-01-07 16:51:52.145274',NULL,9,4,1,13),(40,'Camellia-Shipping-LLC-i-14','Engine stopped working.....','Engine does not work','Critical','Other',0,'2025-01-14 14:43:29.197308',NULL,14,4,1,14),(41,'Camellia-Shipping-LLC-i-21','Battery found dead during inspection','Battery is dead','Critical','Other',0,'2025-01-14 16:29:10.276071',NULL,21,4,1,NULL),(42,'Camellia-Shipping-LLC-i-21','Battery found dead during inspection','Battery is dead','Critical','Other',0,'2025-01-14 16:35:17.379452',NULL,21,4,1,15),(43,'Camellia-Shipping-LLC-i-22','Dead engine','Engine is dead','Critical','Other',0,'2025-02-06 01:24:26.865238',NULL,22,3,1,NULL),(44,'Camellia-Shipping-LLC-i-23','Dead battery','Dead battery','Critical','Other',0,'2025-02-06 01:27:25.348111',NULL,23,3,1,NULL),(45,'Camellia-Shipping-LLC-i-24','Dead battery found','Battery is dead','Critical','Other',0,'2025-02-06 01:30:59.114184',NULL,24,3,1,NULL),(46,'Camellia-Shipping-LLC-i-25','dead engine','dead engine','Critical','Other',0,'2025-02-06 01:36:38.968870',NULL,25,3,1,NULL),(47,'Camellia-Shipping-LLC-i-26','Dead battery','Dead battery','Critical','Other',0,'2025-02-06 01:53:56.263861',NULL,26,3,1,NULL),(48,'Camellia-Shipping-LLC-i-27','Dead batt','Dead batter','Critical','Other',0,'2025-02-06 01:59:29.790313',NULL,27,3,1,NULL),(49,'Camellia-Shipping-LLC-i-28','Batt is dead','Dead battery','Critical','Other',0,'2025-02-06 17:19:22.549074',NULL,28,3,1,NULL),(50,'Camellia-Shipping-LLC-i-29','Dead','Batt is dead','Critical','Other',0,'2025-02-06 17:22:45.771958',NULL,29,3,1,NULL),(51,'Camellia-Shipping-LLC-i-24','Dead battery found','Battery is dead','Critical','Other',0,'2025-02-06 17:25:05.815614',NULL,24,3,1,16),(52,'Camellia-Shipping-LLC-i-25','dead engine','dead engine','Critical','Other',0,'2025-02-06 17:25:05.849800',NULL,25,3,1,16),(53,'Camellia-Shipping-LLC-i-26','Dead battery','Dead battery','Critical','Other',0,'2025-02-06 17:25:05.883690',NULL,26,3,1,16),(54,'Camellia-Shipping-LLC-i-27','Dead batt','Dead batter','Critical','Other',0,'2025-02-06 17:25:05.916565',NULL,27,3,1,16),(55,'Camellia-Shipping-LLC-i-28','Batt is dead','Dead battery','Critical','Other',0,'2025-02-06 17:25:05.951425',NULL,28,3,1,16),(56,'Camellia-Shipping-LLC-i-29','Dead','Batt is dead','Critical','Other',0,'2025-02-06 17:25:05.996338',NULL,29,3,1,16),(57,'Camellia-Shipping-LLC-i-30','Engine is not going through ignition','Engine won\'t start','Critical','Other',0,'2025-04-17 17:41:01.802888',NULL,30,4,1,NULL),(58,'Camellia-Shipping-LLC-i-30','Engine is not going through ignition','Engine won\'t start','Critical','Other',0,'2025-04-17 17:47:13.158685',NULL,30,4,1,17);
+/*!40000 ALTER TABLE `api_assetissuemodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetlog`
+--
+
+DROP TABLE IF EXISTS `api_assetlog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetlog` (
+  `asset_log_id` int NOT NULL AUTO_INCREMENT,
+  `log_type` varchar(50) NOT NULL,
+  `event_type` varchar(50) DEFAULT NULL,
+  `event_id` varchar(100) DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `asset_log_created` datetime(6) NOT NULL,
+  `asset_log_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_log_id`),
+  KEY `api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetlog_created_by_id_ca0ba384_fk_api_detai` (`created_by_id`),
+  KEY `api_assetlog_location_id_d02de46b_fk_api_locat` (`location_id`),
+  KEY `api_assetlog_modified_by_id_cf6e288f_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetlog_created_by_id_ca0ba384_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetlog_location_id_d02de46b_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetlog_modified_by_id_cf6e288f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetlog`
+--
+
+LOCK TABLES `api_assetlog` WRITE;
+/*!40000 ALTER TABLE `api_assetlog` DISABLE KEYS */;
+INSERT INTO `api_assetlog` VALUES (1,'event','issue','Camellia-Shipping-LLC-i-1','Event: Issue Camellia-Shipping-LLC-i-1 was added.','2024-04-03 22:00:20.530611','2024-04-03 22:00:20.530665','ASY18FRYQ987',1,1,1),(2,'event','issue','Camellia-Shipping-LLC-i-1','Event: Issue Camellia-Shipping-LLC-i-1 was added to repair Camellia-Shipping-LLC-r-1.','2024-04-03 22:02:39.868135','2024-04-03 22:02:39.868170','ASY18FRYQ987',1,1,1),(3,'event','repair','Camellia-Shipping-LLC-r-1','Event: Repair order Camellia-Shipping-LLC-r-1 was created.','2024-04-03 22:02:40.130050','2024-04-03 22:02:40.130086','ASY18FRYQ987',1,1,1),(4,'event','operator check','Camellia-Shipping-LLC-dc-1','Event: Operator check Camellia-Shipping-LLC-dc-1 was added. Asset hours were set to 200.0.','2024-04-04 00:53:37.710007','2024-04-04 00:53:37.710043','ASY18FRYQ987',1,1,1),(5,'event','operator check','Camellia-Shipping-LLC-dc-2','Event: Operator check Camellia-Shipping-LLC-dc-2 was added. Asset hours were set to 700.0.','2024-04-04 00:54:27.167739','2024-04-04 00:54:27.167776','SABAMR-9767-XR',1,1,1),(6,'event','maintenance','Camellia-Shipping-LLC-m-1','Event: Maintenance request Camellia-Shipping-LLC-m-1 was created.','2024-04-04 03:51:45.583068','2024-04-04 03:51:45.583109','SBM2024XK91',1,1,1),(7,'event','maintenance','Camellia-Shipping-LLC-m-1','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-1.','2024-04-04 03:51:45.635931','2024-04-04 03:51:45.635998','SBM2024XK91',1,1,1),(8,'event','operator check','Camellia-Shipping-LLC-dc-3','Event: Operator check Camellia-Shipping-LLC-dc-3 was added. Asset hours were set to 300.0.','2024-04-04 03:54:10.801242','2024-04-04 03:54:10.801278','SBM2024XK78',1,1,1),(9,'event','issue','Camellia-Shipping-LLC-i-2','Event: Issue Camellia-Shipping-LLC-i-2 was added.','2024-05-09 21:39:42.036561','2024-05-09 21:39:42.036617','ASY18FRYQ987',1,1,1),(10,'event','maintenance','Camellia-Shipping-LLC-m-1','Event: Maintenance Camellia-Shipping-LLC-m-1 was updated.','2024-05-09 21:41:17.912510','2024-05-09 21:41:17.912554','SBM2024XK91',1,1,1),(11,'event','issue','Camellia-Shipping-LLC-i-2','Event: Issue Camellia-Shipping-LLC-i-2 was added to repair Camellia-Shipping-LLC-r-2.','2024-05-09 21:44:15.712289','2024-05-09 21:44:15.712327','ASY18FRYQ987',1,1,1),(12,'event','repair','Camellia-Shipping-LLC-r-2','Event: Repair order Camellia-Shipping-LLC-r-2 was created.','2024-05-09 21:44:15.910729','2024-05-09 21:44:15.910766','ASY18FRYQ987',1,1,1),(13,'event','operator check','Camellia-Shipping-LLC-dc-4','Event: Operator check Camellia-Shipping-LLC-dc-4 was added. Asset hours were set to 350.0.','2024-05-09 21:48:06.829448','2024-05-09 21:48:06.829489','ASY18FRYQ987',1,1,1),(14,'event','issue','Camellia-Shipping-LLC-i-3','Event: Issue Camellia-Shipping-LLC-i-3 was added.','2024-05-10 21:41:50.046642','2024-05-10 21:41:50.046697','ASY18FRYQ987',1,1,1),(15,'event','issue','Camellia-Shipping-LLC-i-4','Event: Issue Camellia-Shipping-LLC-i-4 was added.','2024-05-10 21:47:54.066046','2024-05-10 21:47:54.066094','ASY18FRYQ987',1,1,1),(16,'event','issue','Camellia-Shipping-LLC-i-3','Event: Issue Camellia-Shipping-LLC-i-3 was added to repair Camellia-Shipping-LLC-r-3.','2024-05-10 21:52:38.758893','2024-05-10 21:52:38.758934','ASY18FRYQ987',1,1,1),(17,'event','repair','Camellia-Shipping-LLC-r-3','Event: Repair order Camellia-Shipping-LLC-r-3 was created.','2024-05-10 21:52:38.939732','2024-05-10 21:52:38.939788','ASY18FRYQ987',1,1,1),(18,'event','issue','Camellia-Shipping-LLC-i-4','Event: Issue Camellia-Shipping-LLC-i-4 was added to repair Camellia-Shipping-LLC-r-4.','2024-05-10 21:58:31.615462','2024-05-10 21:58:31.615507','ASY18FRYQ987',1,1,1),(19,'event','repair','Camellia-Shipping-LLC-r-4','Event: Repair order Camellia-Shipping-LLC-r-4 was created.','2024-05-10 21:58:31.780905','2024-05-10 21:58:31.780947','ASY18FRYQ987',1,1,1),(20,'event','issue','Camellia-Shipping-LLC-i-5','Event: Issue Camellia-Shipping-LLC-i-5 was added.','2024-05-10 22:02:04.266104','2024-05-10 22:02:04.266162','ASY18FRYQ987',1,1,1),(21,'event','issue','Camellia-Shipping-LLC-i-5','Event: Issue Camellia-Shipping-LLC-i-5 was added to repair Camellia-Shipping-LLC-r-5.','2024-05-10 22:10:50.204723','2024-05-10 22:10:50.204765','ASY18FRYQ987',1,1,1),(22,'event','repair','Camellia-Shipping-LLC-r-5','Event: Repair order Camellia-Shipping-LLC-r-5 was created.','2024-05-10 22:10:50.379821','2024-05-10 22:10:50.379857','ASY18FRYQ987',1,1,1),(23,'event','maintenance','Camellia-Shipping-LLC-m-2','Event: Maintenance request Camellia-Shipping-LLC-m-2 was created.','2024-05-10 22:13:06.340373','2024-05-10 22:13:06.340421','ASY20FRYK456',1,1,1),(24,'event','operator check','Camellia-Shipping-LLC-dc-5','Event: Operator check Camellia-Shipping-LLC-dc-5 was added. Asset hours were set to 650.0.','2024-05-10 22:32:37.891327','2024-05-10 22:32:37.891371','ASY20FRYK456',1,1,1),(25,'event','operator check','Camellia-Shipping-LLC-dc-6','Event: Operator check Camellia-Shipping-LLC-dc-6 was added. Asset hours were set to 650.0.','2024-05-10 22:46:31.216683','2024-05-10 22:46:31.216720','ASY20FRYK456',1,1,1),(26,'event','operator check','Camellia-Shipping-LLC-dc-7','Event: Operator check Camellia-Shipping-LLC-dc-7 was added. Asset hours were set to 650.0.','2024-05-10 22:48:23.657610','2024-05-10 22:48:23.657642','ASY20FRYK456',1,1,1),(27,'event','issue','Camellia-Shipping-LLC-i-6','Event: Issue Camellia-Shipping-LLC-i-6 was added.','2024-05-11 14:38:03.639755','2024-05-11 14:38:03.639811','ASY18FRYQ987',1,1,1),(28,'event','issue','Camellia-Shipping-LLC-i-6','Event: Issue Camellia-Shipping-LLC-i-6 was added to repair Camellia-Shipping-LLC-r-6.','2024-05-11 14:42:42.326584','2024-05-11 14:42:42.326631','ASY18FRYQ987',1,1,1),(29,'event','repair','Camellia-Shipping-LLC-r-6','Event: Repair order Camellia-Shipping-LLC-r-6 was created.','2024-05-11 14:42:42.490038','2024-05-11 14:42:42.490073','ASY18FRYQ987',1,1,1),(30,'event','operator check','Camellia-Shipping-LLC-dc-8','Event: Operator check Camellia-Shipping-LLC-dc-8 was added. Asset hours were set to 350.0.','2024-05-11 14:48:34.587618','2024-05-11 14:48:34.587660','ASY18FRYQ987',1,1,1),(31,'event','issue','Camellia-Shipping-LLC-i-7','Event: Issue Camellia-Shipping-LLC-i-7 was added.','2024-05-11 14:55:44.393580','2024-05-11 14:55:44.393638','ASY18FRYQ987',1,1,1),(32,'event','issue','Camellia-Shipping-LLC-i-7','Event: Issue Camellia-Shipping-LLC-i-7 was added to repair Camellia-Shipping-LLC-r-7.','2024-05-11 14:58:53.601927','2024-05-11 14:58:53.601968','ASY18FRYQ987',1,1,1),(33,'event','repair','Camellia-Shipping-LLC-r-7','Event: Repair order Camellia-Shipping-LLC-r-7 was created.','2024-05-11 14:58:53.771008','2024-05-11 14:58:53.771042','ASY18FRYQ987',1,1,1),(34,'event','operator check','Camellia-Shipping-LLC-dc-9','Event: Operator check Camellia-Shipping-LLC-dc-9 was added. Asset hours were set to 350.0.','2024-05-11 15:04:28.367005','2024-05-11 15:04:28.367047','ASY18FRYQ987',1,1,1),(35,'event','issue','Camellia-Shipping-LLC-i-8','Event: Issue Camellia-Shipping-LLC-i-8 was added.','2024-05-13 03:16:46.369213','2024-05-13 03:16:46.369261','ASY22FRYX123',1,4,1),(36,'event','issue','Camellia-Shipping-LLC-i-8','Event: Issue Camellia-Shipping-LLC-i-8 was added to repair Camellia-Shipping-LLC-r-8.','2024-05-13 03:17:58.749048','2024-05-13 03:17:58.749081','ASY22FRYX123',1,4,1),(37,'event','repair','Camellia-Shipping-LLC-r-8','Event: Repair order Camellia-Shipping-LLC-r-8 was created.','2024-05-13 03:17:58.910906','2024-05-13 03:17:58.910941','ASY22FRYX123',1,4,1),(38,'event','repair','Camellia-Shipping-LLC-r-8','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-8.','2024-05-13 03:17:58.937031','2024-05-13 03:17:58.937068','ASY22FRYX123',1,4,1),(39,'event','repair','Camellia-Shipping-LLC-r-8','Event: Asset was set to active due to repair Camellia-Shipping-LLC-r-8 completion and delivery.','2024-05-13 03:18:45.046658','2024-05-13 03:18:45.046702','ASY22FRYX123',1,4,1),(40,'event','repair','Camellia-Shipping-LLC-r-8','Event: Repair Camellia-Shipping-LLC-r-8 status was set to delivered.','2024-05-13 03:18:45.123048','2024-05-13 03:18:45.123090','ASY22FRYX123',1,4,1),(41,'event','maintenance','Camellia-Shipping-LLC-m-3','Event: Maintenance request Camellia-Shipping-LLC-m-3 was created.','2024-05-13 03:19:29.501526','2024-05-13 03:19:29.501564','ASY22FRYX123',1,4,1),(42,'event','maintenance','Camellia-Shipping-LLC-m-3','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-3.','2024-05-13 03:19:29.557329','2024-05-13 03:19:29.557391','ASY22FRYX123',1,4,1),(43,'event','maintenance','Camellia-Shipping-LLC-m-3','Event: Asset was set to active due to maintenance Camellia-Shipping-LLC-m-3 completion and delivery.','2024-05-13 03:20:12.129278','2024-05-13 03:20:12.129321','ASY22FRYX123',1,4,1),(44,'event','maintenance','Camellia-Shipping-LLC-m-3','Event: Maintenance Camellia-Shipping-LLC-m-3 status was set to delivered.','2024-05-13 03:20:12.152718','2024-05-13 03:20:12.152758','ASY22FRYX123',1,4,1),(45,'event','operator check','Camellia-Shipping-LLC-dc-10','Event: Operator check Camellia-Shipping-LLC-dc-10 was added. Asset hours were set to 350.0.','2024-05-13 03:21:25.560602','2024-05-13 03:21:25.560637','ASY22FRYX123',1,4,1),(46,'event','issue','Camellia-Shipping-LLC-i-9','Event: Issue Camellia-Shipping-LLC-i-9 was added.','2024-05-14 19:16:25.272943','2024-05-14 19:16:25.272997','ASY21FRYX589',1,4,1),(47,'event','maintenance','Camellia-Shipping-LLC-m-4','Event: Maintenance request Camellia-Shipping-LLC-m-4 was created.','2024-05-14 19:42:10.095470','2024-05-14 19:42:10.095530','ASY21FRYX589',1,4,1),(48,'event','issue','Camellia-Shipping-LLC-i-10','Event: Issue Camellia-Shipping-LLC-i-10 was added.','2024-05-15 13:29:11.187805','2024-05-15 13:29:11.187857','ASY21FRYX589',1,4,1),(49,'event','issue','Camellia-Shipping-LLC-i-10','Event: Issue Camellia-Shipping-LLC-i-10 was added to repair Camellia-Shipping-LLC-r-9.','2024-05-15 13:34:42.568680','2024-05-15 13:34:42.568748','ASY21FRYX589',1,4,1),(50,'event','repair','Camellia-Shipping-LLC-r-9','Event: Repair order Camellia-Shipping-LLC-r-9 was created.','2024-05-15 13:34:42.735517','2024-05-15 13:34:42.735552','ASY21FRYX589',1,4,1),(51,'event','repair','Camellia-Shipping-LLC-r-9','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-9.','2024-05-15 13:34:42.759849','2024-05-15 13:34:42.759887','ASY21FRYX589',1,4,1),(52,'event','maintenance','Camellia-Shipping-LLC-m-5','Event: Maintenance request Camellia-Shipping-LLC-m-5 was created.','2024-05-15 13:40:12.219342','2024-05-15 13:40:12.219390','ASY21FRYX589',1,4,1),(53,'event','maintenance','Camellia-Shipping-LLC-m-5','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-5.','2024-05-15 13:40:12.269754','2024-05-15 13:40:12.269804','ASY21FRYX589',1,4,1),(54,'event','operator check','Camellia-Shipping-LLC-dc-11','Event: Operator check Camellia-Shipping-LLC-dc-11 was added. Asset hours were set to 350.0.','2024-05-15 13:43:55.254164','2024-05-15 13:43:55.254201','ASY18FRYQ987',1,4,1),(55,'event','issue','Camellia-Shipping-LLC-i-11','Event: Issue Camellia-Shipping-LLC-i-11 was added.','2024-06-05 15:08:14.550726','2024-06-05 15:08:14.550785','ASY18FRYQ987',1,4,1),(56,'event','operator check','Camellia-Shipping-LLC-dc-12','Event: Operator check Camellia-Shipping-LLC-dc-12 was added. Asset hours were set to 710.0.','2024-07-23 03:33:19.888383','2024-07-23 03:33:19.888423','SABAMR-9767-XR',1,4,1),(57,'event','issue','Camellia-Shipping-LLC-i-12','Event: Issue Camellia-Shipping-LLC-i-12 was added.','2024-07-23 03:33:42.409456','2024-07-23 03:33:42.409554','SABAMR-9767-XR',1,4,1),(58,'event','issue','Camellia-Shipping-LLC-i-12','Event: Issue Camellia-Shipping-LLC-i-12 was added to repair Camellia-Shipping-LLC-r-10.','2024-07-23 03:34:10.639786','2024-07-23 03:34:10.639829','SABAMR-9767-XR',1,4,1),(59,'event','repair','Camellia-Shipping-LLC-r-10','Event: Repair order Camellia-Shipping-LLC-r-10 was created.','2024-07-23 03:34:10.724177','2024-07-23 03:34:10.724230','SABAMR-9767-XR',1,4,1),(60,'event','repair','Camellia-Shipping-LLC-r-10','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-10.','2024-07-23 03:34:10.750450','2024-07-23 03:34:10.750495','SABAMR-9767-XR',1,4,1),(61,'event','maintenance','Camellia-Shipping-LLC-m-6','Event: Maintenance request Camellia-Shipping-LLC-m-6 was created.','2024-07-23 03:34:38.234018','2024-07-23 03:34:38.234074','SABAMR-9767-XR',1,4,1),(62,'event','maintenance','Camellia-Shipping-LLC-m-6','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-6.','2024-07-23 03:34:38.286254','2024-07-23 03:34:38.286328','SABAMR-9767-XR',1,4,1),(63,'event','maintenance','Camellia-Shipping-LLC-m-6','Event: Asset was set to active due to maintenance Camellia-Shipping-LLC-m-6 completion and delivery.','2024-07-23 03:35:03.979129','2024-07-23 03:35:03.979176','SABAMR-9767-XR',1,4,1),(64,'event','maintenance','Camellia-Shipping-LLC-m-6','Event: Maintenance Camellia-Shipping-LLC-m-6 status was set to delivered.','2024-07-23 03:35:04.010094','2024-07-23 03:35:04.010161','SABAMR-9767-XR',1,4,1),(65,'event','maintenance rule','Camellia-Shipping-LLC-mfr-1','Event: Maintenance rule Camellia-Shipping-LLC-mfr-1 was added for this asset.','2024-07-23 03:35:24.060038','2024-07-23 03:35:24.060102','SABAMR-9767-XR',1,4,1),(66,'event','operator check','Camellia-Shipping-LLC-dc-13','Event: Operator check Camellia-Shipping-LLC-dc-13 was added. Asset hours were set to 700.0.','2024-07-23 03:37:45.146038','2024-07-23 03:37:45.146078','CMA2024SHIP597',1,4,1),(67,'event','operator check','Camellia-Shipping-LLC-dc-14','Event: Operator check Camellia-Shipping-LLC-dc-14 was added. Asset hours were set to 200.0.','2024-07-23 03:38:32.350788','2024-07-23 03:38:32.350843','BY2024YCHT744',1,4,1),(68,'event','operator check','Camellia-Shipping-LLC-dc-15','Event: Operator check Camellia-Shipping-LLC-dc-15 was added. Asset hours were set to 650.0.','2024-07-23 03:38:54.413262','2024-07-23 03:38:54.413303','ASY20FRYK456',1,4,1),(69,'event','issue','Camellia-Shipping-LLC-i-13','Event: Issue Camellia-Shipping-LLC-i-13 was added.','2024-09-06 20:25:33.888911','2024-09-06 20:25:33.889010','ASY18FRYQ987',1,3,1),(70,'event','issue','Camellia-Shipping-LLC-i-11','Event: Issue Camellia-Shipping-LLC-i-11 was added to repair Camellia-Shipping-LLC-r-11.','2024-09-06 20:26:28.401437','2024-09-06 20:26:28.401564','ASY18FRYQ987',1,4,1),(71,'event','issue','Camellia-Shipping-LLC-i-13','Event: Issue Camellia-Shipping-LLC-i-13 was added to repair Camellia-Shipping-LLC-r-11.','2024-09-06 20:26:28.436185','2024-09-06 20:26:28.436274','ASY18FRYQ987',1,3,1),(72,'event','repair','Camellia-Shipping-LLC-r-11','Event: Repair order Camellia-Shipping-LLC-r-11 was created.','2024-09-06 20:26:28.638511','2024-09-06 20:26:28.638569','ASY18FRYQ987',1,3,1),(73,'event','repair','Camellia-Shipping-LLC-r-11','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-11.','2024-09-06 20:26:28.666334','2024-09-06 20:26:28.666383','ASY18FRYQ987',1,3,1),(74,'event','maintenance','Camellia-Shipping-LLC-m-7','Event: Maintenance request Camellia-Shipping-LLC-m-7 was created.','2024-09-06 20:27:52.636124','2024-09-06 20:27:52.636171','ASY18FRYQ987',1,3,1),(75,'event','maintenance','Camellia-Shipping-LLC-m-7','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-7.','2024-09-06 20:27:52.691620','2024-09-06 20:27:52.691681','ASY18FRYQ987',1,3,1),(76,'event','accident','Camellia-Shipping-LLC-a-1','Event: Accident Camellia-Shipping-LLC-a-1 was reported.','2024-09-06 20:28:19.651702','2024-09-06 20:28:19.651762','ASY18FRYQ987',1,3,1),(77,'event','operator check','Camellia-Shipping-LLC-dc-16','Event: Operator check Camellia-Shipping-LLC-dc-16 was added. Asset hours were set to 580.0.','2024-09-06 20:29:20.223447','2024-09-06 20:29:20.223498','BY2024YCHT744',1,3,1),(78,'event','operator check','Camellia-Shipping-LLC-dc-17','Event: Operator check Camellia-Shipping-LLC-dc-17 was added. Asset hours were set to 750.0.','2024-09-30 02:17:08.547934','2024-09-30 02:17:08.547971','HAP2024CARGO256',1,4,1),(79,'event','operator check','Camellia-Shipping-LLC-dc-18','Event: Operator check Camellia-Shipping-LLC-dc-18 was added. Asset hours were set to 360.0.','2024-12-11 17:07:53.835762','2024-12-11 17:07:53.835812','ASY22FRYX123',1,4,1),(80,'event','issue','Camellia-Shipping-LLC-i-14','Event: Issue Camellia-Shipping-LLC-i-14 was added.','2024-12-11 19:35:23.318382','2024-12-11 19:35:23.318436','ASY22FRYX123',1,4,1),(81,'event','issue','Camellia-Shipping-LLC-i-15','Event: Issue Camellia-Shipping-LLC-i-15 was added.','2025-01-06 18:26:01.939267','2025-01-06 18:26:01.939320','BY2024YCHT289',1,4,1),(82,'event','issue','Camellia-Shipping-LLC-i-16','Event: Issue Camellia-Shipping-LLC-i-16 was added.','2025-01-06 18:29:22.438150','2025-01-06 18:29:22.438206','BY2024YCHT289',1,4,1),(83,'event','issue','Camellia-Shipping-LLC-i-17','Event: Issue Camellia-Shipping-LLC-i-17 was added.','2025-01-06 18:32:57.502978','2025-01-06 18:32:57.503034','BY2024YCHT289',1,4,1),(84,'event','issue','Camellia-Shipping-LLC-i-18','Event: Issue Camellia-Shipping-LLC-i-18 was added.','2025-01-06 18:48:54.387218','2025-01-06 18:48:54.387278','BY2024YCHT289',1,4,1),(85,'event','issue','Camellia-Shipping-LLC-i-19','Event: Issue Camellia-Shipping-LLC-i-19 was added.','2025-01-06 18:55:34.344683','2025-01-06 18:55:34.344743','BY2024YCHT289',1,4,1),(86,'event','issue','Camellia-Shipping-LLC-i-20','Event: Issue Camellia-Shipping-LLC-i-20 was added.','2025-01-07 16:14:16.695973','2025-01-07 16:14:16.696033','BY2024YCHT289',1,4,1),(87,'event','issue','Camellia-Shipping-LLC-i-15','Event: Issue Camellia-Shipping-LLC-i-15 was added to repair Camellia-Shipping-LLC-r-12.','2025-01-07 16:16:46.133703','2025-01-07 16:16:46.133749','BY2024YCHT289',1,4,1),(88,'event','issue','Camellia-Shipping-LLC-i-16','Event: Issue Camellia-Shipping-LLC-i-16 was added to repair Camellia-Shipping-LLC-r-12.','2025-01-07 16:16:46.164190','2025-01-07 16:16:46.164247','BY2024YCHT289',1,4,1),(89,'event','issue','Camellia-Shipping-LLC-i-17','Event: Issue Camellia-Shipping-LLC-i-17 was added to repair Camellia-Shipping-LLC-r-12.','2025-01-07 16:16:46.197797','2025-01-07 16:16:46.197841','BY2024YCHT289',1,4,1),(90,'event','issue','Camellia-Shipping-LLC-i-18','Event: Issue Camellia-Shipping-LLC-i-18 was added to repair Camellia-Shipping-LLC-r-12.','2025-01-07 16:16:46.228270','2025-01-07 16:16:46.228333','BY2024YCHT289',1,4,1),(91,'event','issue','Camellia-Shipping-LLC-i-19','Event: Issue Camellia-Shipping-LLC-i-19 was added to repair Camellia-Shipping-LLC-r-12.','2025-01-07 16:16:46.264763','2025-01-07 16:16:46.264813','BY2024YCHT289',1,4,1),(92,'event','issue','Camellia-Shipping-LLC-i-20','Event: Issue Camellia-Shipping-LLC-i-20 was added to repair Camellia-Shipping-LLC-r-12.','2025-01-07 16:16:46.288238','2025-01-07 16:16:46.288281','BY2024YCHT289',1,4,1),(93,'event','repair','Camellia-Shipping-LLC-r-12','Event: Repair order Camellia-Shipping-LLC-r-12 was created.','2025-01-07 16:16:46.471210','2025-01-07 16:16:46.471261','BY2024YCHT289',1,4,1),(94,'event','repair','Camellia-Shipping-LLC-r-12','Event: Asset was set to active due to repair Camellia-Shipping-LLC-r-12 completion and delivery.','2025-01-07 16:17:53.312502','2025-01-07 16:17:53.312544','BY2024YCHT289',1,4,1),(95,'event','repair','Camellia-Shipping-LLC-r-12','Event: Repair Camellia-Shipping-LLC-r-12 status was set to delivered.','2025-01-07 16:17:53.376472','2025-01-07 16:17:53.376508','BY2024YCHT289',1,4,1),(96,'event','operator check','Camellia-Shipping-LLC-dc-19','Event: Operator check Camellia-Shipping-LLC-dc-19 was added. Asset hours were set to 310.0.','2025-01-07 16:25:22.441003','2025-01-07 16:25:22.441054','BY2024YCHT289',1,4,1),(97,'event','issue','Camellia-Shipping-LLC-i-9','Event: Issue Camellia-Shipping-LLC-i-9 was added to repair Camellia-Shipping-LLC-r-13.','2025-01-07 16:51:52.155227','2025-01-07 16:51:52.155276','ASY21FRYX589',1,4,1),(98,'event','repair','Camellia-Shipping-LLC-r-13','Event: Repair order Camellia-Shipping-LLC-r-13 was created.','2025-01-07 16:51:52.358014','2025-01-07 16:51:52.358058','ASY21FRYX589',1,3,1),(99,'event','repair','Camellia-Shipping-LLC-r-13','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-13.','2025-01-07 16:51:52.376434','2025-01-07 16:51:52.376478','ASY21FRYX589',1,3,1),(100,'event','maintenance','Camellia-Shipping-LLC-m-1','Event: Asset was set to active due to maintenance Camellia-Shipping-LLC-m-1 completion and delivery.','2025-01-07 16:52:46.367971','2025-01-07 16:52:46.368017','SBM2024XK91',1,1,1),(101,'event','maintenance','Camellia-Shipping-LLC-m-1','Event: Maintenance Camellia-Shipping-LLC-m-1 status was set to delivered.','2025-01-07 16:52:46.386782','2025-01-07 16:52:46.386817','SBM2024XK91',1,1,1),(102,'event','maintenance','Camellia-Shipping-LLC-m-2','Event: Asset was set to active due to maintenance Camellia-Shipping-LLC-m-2 completion and delivery.','2025-01-07 16:54:35.837923','2025-01-07 16:54:35.837975','ASY20FRYK456',1,1,1),(103,'event','maintenance','Camellia-Shipping-LLC-m-2','Event: Maintenance Camellia-Shipping-LLC-m-2 status was set to delivered.','2025-01-07 16:54:35.865047','2025-01-07 16:54:35.865106','ASY20FRYK456',1,1,1),(104,'event','accident','Camellia-Shipping-LLC-a-2','Event: Accident Camellia-Shipping-LLC-a-2 was reported.','2025-01-07 16:56:32.436451','2025-01-07 16:56:32.436504','BY2024YCHT289',1,4,1),(105,'event','accident','Camellia-Shipping-LLC-a-3','Event: Accident Camellia-Shipping-LLC-a-3 was reported.','2025-01-07 17:03:01.325969','2025-01-07 17:03:01.326026','HAP2024CARGO168',1,3,1),(106,'event','accident','Camellia-Shipping-LLC-a-4','Event: Accident Camellia-Shipping-LLC-a-4 was reported.','2025-01-07 17:03:36.805232','2025-01-07 17:03:36.805284','UBOTT-1057-AS',1,3,1),(107,'event','accident','Camellia-Shipping-LLC-a-3','Event: Accident Camellia-Shipping-LLC-a-3 was resolved.','2025-01-07 17:03:48.686637','2025-01-07 17:03:48.686692','HAP2024CARGO168',1,3,1),(108,'event','maintenance','Camellia-Shipping-LLC-m-8','Event: Maintenance request Camellia-Shipping-LLC-m-8 was created.','2025-01-07 17:04:39.332847','2025-01-07 17:04:39.332904','UBOTT-1057-AS',1,3,1),(109,'event','maintenance','Camellia-Shipping-LLC-m-8','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-8.','2025-01-07 17:04:39.378477','2025-01-07 17:04:39.378541','UBOTT-1057-AS',1,3,1),(110,'event','maintenance','Camellia-Shipping-LLC-m-9','Event: Maintenance request Camellia-Shipping-LLC-m-9 was created.','2025-01-07 17:05:11.898848','2025-01-07 17:05:11.898908','CMA2024SHIP156',1,4,1),(111,'event','maintenance','Camellia-Shipping-LLC-m-9','Event: Asset was set to inoperative and last proccess was set to maintenance Camellia-Shipping-LLC-m-9.','2025-01-07 17:05:11.939059','2025-01-07 17:05:11.939126','CMA2024SHIP156',1,4,1),(112,'event','maintenance','Camellia-Shipping-LLC-m-8','Event: Asset was set to active due to maintenance Camellia-Shipping-LLC-m-8 completion and delivery.','2025-01-07 17:06:12.185894','2025-01-07 17:06:12.185941','UBOTT-1057-AS',1,3,1),(113,'event','maintenance','Camellia-Shipping-LLC-m-8','Event: Maintenance Camellia-Shipping-LLC-m-8 status was set to delivered.','2025-01-07 17:06:12.204765','2025-01-07 17:06:12.204803','UBOTT-1057-AS',1,3,1),(114,'event','operator check','Camellia-Shipping-LLC-dc-20','Event: Operator check Camellia-Shipping-LLC-dc-20 was added. Asset hours were set to 315.0.','2025-01-09 01:06:35.773546','2025-01-09 01:06:35.773596','BY2024YCHT289',1,4,1),(115,'event','operator check','Camellia-Shipping-LLC-dc-21','Event: Operator check Camellia-Shipping-LLC-dc-21 was added. Asset hours were set to 315.0.','2025-01-09 01:10:52.546267','2025-01-09 01:10:52.546310','BY2024YCHT289',1,4,1),(116,'event','operator check','Camellia-Shipping-LLC-dc-22','Event: Operator check Camellia-Shipping-LLC-dc-22 was added. Asset hours were set to 800.0.','2025-01-13 16:42:38.932833','2025-01-13 16:42:38.932880','ASY20FRYK456',1,4,1),(117,'event','issue','Camellia-Shipping-LLC-i-14','Event: Issue Camellia-Shipping-LLC-i-14 was added to repair Camellia-Shipping-LLC-r-14.','2025-01-14 14:43:29.202919','2025-01-14 14:43:29.202960','ASY22FRYX123',1,4,1),(118,'event','repair','Camellia-Shipping-LLC-r-14','Event: Repair order Camellia-Shipping-LLC-r-14 was created.','2025-01-14 14:43:29.392758','2025-01-14 14:43:29.392795','ASY22FRYX123',1,4,1),(119,'event','repair','Camellia-Shipping-LLC-r-14','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-14.','2025-01-14 14:43:29.412931','2025-01-14 14:43:29.412964','ASY22FRYX123',1,4,1),(120,'event','repair','Camellia-Shipping-LLC-r-14','Event: Asset was set to active due to repair Camellia-Shipping-LLC-r-14 completion and delivery.','2025-01-14 14:45:15.576708','2025-01-14 14:45:15.576754','ASY22FRYX123',1,4,1),(121,'event','repair','Camellia-Shipping-LLC-r-14','Event: Repair Camellia-Shipping-LLC-r-14 status was set to delivered.','2025-01-14 14:45:15.635586','2025-01-14 14:45:15.635619','ASY22FRYX123',1,4,1),(122,'event','operator check','Camellia-Shipping-LLC-dc-23','Event: Operator check Camellia-Shipping-LLC-dc-23 was added. Asset hours were set to 370.0.','2025-01-14 14:48:40.522535','2025-01-14 14:48:40.522578','ASY22FRYX123',1,4,1),(123,'event','issue','Camellia-Shipping-LLC-i-21','Event: Issue Camellia-Shipping-LLC-i-21 was added.','2025-01-14 16:29:10.448899','2025-01-14 16:29:10.448954','BY2024YCHT188',1,4,1),(124,'event','issue','Camellia-Shipping-LLC-i-21','Event: Issue Camellia-Shipping-LLC-i-21 was added to repair Camellia-Shipping-LLC-r-15.','2025-01-14 16:35:17.385417','2025-01-14 16:35:17.385463','BY2024YCHT188',1,4,1),(125,'event','repair','Camellia-Shipping-LLC-r-15','Event: Repair order Camellia-Shipping-LLC-r-15 was created.','2025-01-14 16:35:17.552043','2025-01-14 16:35:17.552091','BY2024YCHT188',1,4,1),(126,'event','repair','Camellia-Shipping-LLC-r-15','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-15.','2025-01-14 16:35:17.581856','2025-01-14 16:35:17.581906','BY2024YCHT188',1,4,1),(127,'event','issue','Camellia-Shipping-LLC-i-22','Event: Issue Camellia-Shipping-LLC-i-22 was added.','2025-02-06 01:24:27.032513','2025-02-06 01:24:27.032567','ASY21FRYX589',1,3,1),(128,'event','issue','Camellia-Shipping-LLC-i-23','Event: Issue Camellia-Shipping-LLC-i-23 was added.','2025-02-06 01:27:25.506483','2025-02-06 01:27:25.506540','ASY21FRYX589',1,3,1),(129,'event','issue','Camellia-Shipping-LLC-i-24','Event: Issue Camellia-Shipping-LLC-i-24 was added.','2025-02-06 01:30:59.288245','2025-02-06 01:30:59.288297','BY2024YCHT744',1,3,1),(130,'event','issue','Camellia-Shipping-LLC-i-25','Event: Issue Camellia-Shipping-LLC-i-25 was added.','2025-02-06 01:36:39.126757','2025-02-06 01:36:39.126813','BY2024YCHT744',1,3,1),(131,'event','issue','Camellia-Shipping-LLC-i-26','Event: Issue Camellia-Shipping-LLC-i-26 was added.','2025-02-06 01:53:56.430064','2025-02-06 01:53:56.430121','BY2024YCHT744',1,3,1),(132,'event','issue','Camellia-Shipping-LLC-i-27','Event: Issue Camellia-Shipping-LLC-i-27 was added.','2025-02-06 01:59:29.968494','2025-02-06 01:59:29.968552','BY2024YCHT744',1,3,1),(133,'event','operator check','Camellia-Shipping-LLC-dc-24','Event: Operator check Camellia-Shipping-LLC-dc-24 was added. Asset hours were set to 375.0.','2025-02-06 17:07:43.942497','2025-02-06 17:07:43.942546','ASY22FRYX123',1,4,1),(134,'event','operator check','Camellia-Shipping-LLC-dc-25','Event: Operator check Camellia-Shipping-LLC-dc-25 was added. Asset hours were set to 385.0.','2025-02-06 17:10:08.135358','2025-02-06 17:10:08.135400','ASY22FRYX123',1,4,1),(135,'event','issue','Camellia-Shipping-LLC-i-28','Event: Issue Camellia-Shipping-LLC-i-28 was added.','2025-02-06 17:19:22.743242','2025-02-06 17:19:22.743293','BY2024YCHT744',1,3,1),(136,'event','issue','Camellia-Shipping-LLC-i-29','Event: Issue Camellia-Shipping-LLC-i-29 was added.','2025-02-06 17:22:45.949706','2025-02-06 17:22:45.949762','BY2024YCHT744',1,3,1),(137,'event','issue','Camellia-Shipping-LLC-i-24','Event: Issue Camellia-Shipping-LLC-i-24 was added to repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:05.821832','2025-02-06 17:25:05.821873','BY2024YCHT744',1,3,1),(138,'event','issue','Camellia-Shipping-LLC-i-25','Event: Issue Camellia-Shipping-LLC-i-25 was added to repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:05.857935','2025-02-06 17:25:05.857980','BY2024YCHT744',1,3,1),(139,'event','issue','Camellia-Shipping-LLC-i-26','Event: Issue Camellia-Shipping-LLC-i-26 was added to repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:05.890710','2025-02-06 17:25:05.890751','BY2024YCHT744',1,3,1),(140,'event','issue','Camellia-Shipping-LLC-i-27','Event: Issue Camellia-Shipping-LLC-i-27 was added to repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:05.923508','2025-02-06 17:25:05.923565','BY2024YCHT744',1,3,1),(141,'event','issue','Camellia-Shipping-LLC-i-28','Event: Issue Camellia-Shipping-LLC-i-28 was added to repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:05.975546','2025-02-06 17:25:05.975604','BY2024YCHT744',1,3,1),(142,'event','issue','Camellia-Shipping-LLC-i-29','Event: Issue Camellia-Shipping-LLC-i-29 was added to repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:06.002673','2025-02-06 17:25:06.002718','BY2024YCHT744',1,3,1),(143,'event','repair','Camellia-Shipping-LLC-r-16','Event: Repair order Camellia-Shipping-LLC-r-16 was created.','2025-02-06 17:25:06.217861','2025-02-06 17:25:06.217923','BY2024YCHT744',1,3,1),(144,'event','repair','Camellia-Shipping-LLC-r-16','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-16.','2025-02-06 17:25:06.240690','2025-02-06 17:25:06.240742','BY2024YCHT744',1,3,1),(145,'event','repair','Camellia-Shipping-LLC-r-16','Event: Asset was set to active due to repair Camellia-Shipping-LLC-r-16 completion and delivery.','2025-02-06 17:25:49.245730','2025-02-06 17:25:49.245780','BY2024YCHT744',1,3,1),(146,'event','repair','Camellia-Shipping-LLC-r-16','Event: Repair Camellia-Shipping-LLC-r-16 status was set to delivered.','2025-02-06 17:25:49.329410','2025-02-06 17:25:49.329453','BY2024YCHT744',1,3,1),(147,'event','operator check','Camellia-Shipping-LLC-dc-26','Event: Operator check Camellia-Shipping-LLC-dc-26 was added. Asset hours were set to 590.0.','2025-02-06 17:33:34.569882','2025-02-06 17:33:34.569932','BY2024YCHT744',1,3,1),(148,'event','operator check','Camellia-Shipping-LLC-dc-27','Event: Operator check Camellia-Shipping-LLC-dc-27 was added. Asset hours were set to 600.0.','2025-02-06 17:37:24.954581','2025-02-06 17:37:24.954620','BY2024YCHT744',1,3,1),(149,'event','operator check','Camellia-Shipping-LLC-dc-28','Event: Operator check Camellia-Shipping-LLC-dc-28 was added. Asset hours were set to 600.0.','2025-02-06 17:43:07.278199','2025-02-06 17:43:07.278250','BY2024YCHT744',1,3,1),(150,'event','issue','Camellia-Shipping-LLC-i-30','Event: Issue Camellia-Shipping-LLC-i-30 was added.','2025-04-17 17:41:02.045633','2025-04-17 17:41:02.045691','BY2024YCHT289',1,4,1),(151,'event','issue','Camellia-Shipping-LLC-i-30','Event: Issue Camellia-Shipping-LLC-i-30 was added to repair Camellia-Shipping-LLC-r-17.','2025-04-17 17:47:13.175831','2025-04-17 17:47:13.175883','BY2024YCHT289',1,4,1),(152,'event','repair','Camellia-Shipping-LLC-r-17','Event: Repair order Camellia-Shipping-LLC-r-17 was created.','2025-04-17 17:47:13.421524','2025-04-17 17:47:13.421578','BY2024YCHT289',1,4,1),(153,'event','repair','Camellia-Shipping-LLC-r-17','Event: Asset was set to inoperative and last proccess was set to Repair Camellia-Shipping-LLC-r-17.','2025-04-17 17:47:13.452861','2025-04-17 17:47:13.452918','BY2024YCHT289',1,4,1),(154,'event','operator check','Camellia-Shipping-LLC-dc-29','Event: Operator check Camellia-Shipping-LLC-dc-29 was added. Asset hours were set to 800.0.','2025-04-17 17:54:31.881146','2025-04-17 17:54:31.881195','ASY20FRYK456',1,4,1);
+/*!40000 ALTER TABLE `api_assetlog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmanufacturermodel`
+--
+
+DROP TABLE IF EXISTS `api_assetmanufacturermodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmanufacturermodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetmanufacture_created_by_id_4003f7de_fk_api_detai` (`created_by_id`),
+  KEY `api_assetmanufacture_modified_by_id_752c0d40_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetmanufacture_created_by_id_4003f7de_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmanufacture_modified_by_id_752c0d40_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmanufacturermodel`
+--
+
+LOCK TABLES `api_assetmanufacturermodel` WRITE;
+/*!40000 ALTER TABLE `api_assetmanufacturermodel` DISABLE KEYS */;
+INSERT INTO `api_assetmanufacturermodel` VALUES (1,'General Dynamics','2024-03-14 16:15:34.270254','2024-03-14 16:15:34.270909',1,1),(2,'CMA CGM','2024-03-14 16:17:23.789556','2024-03-14 16:17:23.789622',1,1),(3,'Hapag-Lloyd','2024-03-14 16:17:57.823876','2024-03-14 16:17:57.823934',1,1),(4,'Baltic Yachts','2024-03-14 16:24:32.375982','2024-03-14 16:24:32.376071',1,1),(5,'Sea-Doo','2024-03-14 16:26:51.685898','2024-03-14 16:26:51.685965',1,1),(6,'Yamaha','2024-03-14 16:27:46.453841','2024-03-14 16:27:46.453900',1,1),(7,'Aresa Shipyard','2024-03-14 16:28:47.013648','2024-03-14 16:28:47.013711',1,1);
+/*!40000 ALTER TABLE `api_assetmanufacturermodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmanufacturermodel_asset_type`
+--
+
+DROP TABLE IF EXISTS `api_assetmanufacturermodel_asset_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmanufacturermodel_asset_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `assetmanufacturermodel_id` int NOT NULL,
+  `assettypemodel_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_assetmanufacturermod_assetmanufacturermodel_i_065ca3a4_uniq` (`assetmanufacturermodel_id`,`assettypemodel_id`),
+  KEY `api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset` (`assettypemodel_id`),
+  CONSTRAINT `api_assetmanufacture_assetmanufacturermod_c02f3a63_fk_api_asset` FOREIGN KEY (`assetmanufacturermodel_id`) REFERENCES `api_assetmanufacturermodel` (`id`),
+  CONSTRAINT `api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset` FOREIGN KEY (`assettypemodel_id`) REFERENCES `api_assettypemodel` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmanufacturermodel_asset_type`
+--
+
+LOCK TABLES `api_assetmanufacturermodel_asset_type` WRITE;
+/*!40000 ALTER TABLE `api_assetmanufacturermodel_asset_type` DISABLE KEYS */;
+INSERT INTO `api_assetmanufacturermodel_asset_type` VALUES (1,1,1),(2,2,2),(3,3,2),(4,4,3),(5,5,4),(6,6,4),(7,7,5);
+/*!40000 ALTER TABLE `api_assetmanufacturermodel_asset_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmodel` (
+  `VIN` varchar(100) NOT NULL,
+  `jde_department` varchar(100) DEFAULT NULL,
+  `status` varchar(50) NOT NULL,
+  `aircraft_compatability` varchar(100) DEFAULT NULL,
+  `unit_number` varchar(100) DEFAULT NULL,
+  `license_plate` varchar(100) DEFAULT NULL,
+  `date_of_manufacture` date DEFAULT NULL,
+  `fire_extinguisher_quantity` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_inspection_date` date DEFAULT NULL,
+  `path` varchar(300) DEFAULT NULL,
+  `last_process` varchar(50) NOT NULL,
+  `hours_or_mileage` varchar(50) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `mileage_unit` varchar(50) DEFAULT NULL,
+  `date_in_service` date DEFAULT NULL,
+  `total_cost` double NOT NULL,
+  `daily_average_hours` double NOT NULL,
+  `daily_average_mileage` double NOT NULL,
+  `replacement_hours` double DEFAULT NULL,
+  `replacement_mileage` double DEFAULT NULL,
+  `insurance_renewal_date` date DEFAULT NULL,
+  `registration_renewal_date` date DEFAULT NULL,
+  `load_capacity` double DEFAULT NULL,
+  `load_capacity_unit` varchar(50) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `colour` varchar(50) NOT NULL,
+  `date_created` date NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `is_rental` tinyint(1) DEFAULT NULL,
+  `monthly_subscription_cost` double DEFAULT NULL,
+  `class_code` varchar(50) DEFAULT NULL,
+  `asset_description` longtext,
+  `custom_fields` longtext,
+  `overdue_date_variance` int NOT NULL,
+  `due_soon_date_variance` int NOT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `current_location_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `equipment_type_id` int DEFAULT NULL,
+  `fuel_id` int DEFAULT NULL,
+  `job_specification_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  `parent_id` varchar(100) DEFAULT NULL,
+  `cost_centre_id` int DEFAULT NULL,
+  `lifespan_years` int NOT NULL,
+  PRIMARY KEY (`VIN`),
+  KEY `api_assetmodel_company_id_f122d18f_fk_api_company_company_id` (`company_id`),
+  KEY `api_assetmodel_created_by_id_d48a4bf8_fk_api_detai` (`created_by_id`),
+  KEY `api_assetmodel_currency_id_fa8254f2_fk_api_currency_id` (`currency_id`),
+  KEY `api_assetmodel_current_location_id_f50c42e2_fk_api_locat` (`current_location_id`),
+  KEY `api_assetmodel_department_id_95103181_fk_api_busin` (`department_id`),
+  KEY `api_assetmodel_equipment_type_id_08bc551d_fk_api_equip` (`equipment_type_id`),
+  KEY `api_assetmodel_fuel_id_90e7cb1a_fk_api_fueltype_id` (`fuel_id`),
+  KEY `api_assetmodel_job_specification_id_b5467ffd_fk_api_jobsp` (`job_specification_id`),
+  KEY `api_assetmodel_modified_by_id_6826ae09_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetmodel_original_location_id_9d64c4f1_fk_api_locat` (`original_location_id`),
+  KEY `api_assetmodel_parent_id_9e5f5e9c_fk_api_assetmodel_VIN` (`parent_id`),
+  KEY `api_assetmodel_cost_centre_id_a29a81e9_fk_api_costc` (`cost_centre_id`),
+  CONSTRAINT `api_assetmodel_company_id_f122d18f_fk_api_company_company_id` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_assetmodel_cost_centre_id_a29a81e9_fk_api_costc` FOREIGN KEY (`cost_centre_id`) REFERENCES `api_costcentremodel` (`cost_centre_id`),
+  CONSTRAINT `api_assetmodel_created_by_id_d48a4bf8_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmodel_currency_id_fa8254f2_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_assetmodel_current_location_id_f50c42e2_fk_api_locat` FOREIGN KEY (`current_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodel_department_id_95103181_fk_api_busin` FOREIGN KEY (`department_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetmodel_equipment_type_id_08bc551d_fk_api_equip` FOREIGN KEY (`equipment_type_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetmodel_fuel_id_90e7cb1a_fk_api_fueltype_id` FOREIGN KEY (`fuel_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_assetmodel_job_specification_id_b5467ffd_fk_api_jobsp` FOREIGN KEY (`job_specification_id`) REFERENCES `api_jobspecification` (`job_specification_id`),
+  CONSTRAINT `api_assetmodel_modified_by_id_6826ae09_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmodel_original_location_id_9d64c4f1_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodel_parent_id_9e5f5e9c_fk_api_assetmodel_VIN` FOREIGN KEY (`parent_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmodel`
+--
+
+LOCK TABLES `api_assetmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetmodel` DISABLE KEYS */;
+INSERT INTO `api_assetmodel` VALUES ('ASY18FRYQ987',NULL,'Inoperative',NULL,'N1028AB',NULL,'2016-01-01',NULL,NULL,NULL,'Accident','hours',-1,380,NULL,NULL,6661482.766,30,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-14 14:41:16.059270',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,9,5,7,1,1,NULL,1,15),('ASY20FRYK456',NULL,'Active',NULL,'N1028AC',NULL,'2013-01-01',NULL,NULL,NULL,'Repair','hours',-1,800,NULL,NULL,5740427.638439454,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-02-06 00:05:22.755904',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,9,5,7,1,1,NULL,1,15),('ASY21FRYX589',NULL,'Inoperative',NULL,'N1028GG',NULL,'2018-01-01',NULL,NULL,NULL,'Repair','hours',-1,350,NULL,NULL,8100106.909609864,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-07 16:51:52.369803',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,9,5,7,1,1,NULL,1,15),('ASY22FRYX123',NULL,'Active',NULL,'N1028ER',NULL,'2016-01-01',NULL,NULL,NULL,'Repair','hours',-1,385,NULL,NULL,5804288.722538075,0.43859649122807015,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-14 14:45:16.080258',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,9,5,7,1,1,NULL,1,15),('BY2024YCHT188',NULL,'Inoperative',NULL,'N1028PL',NULL,'2016-01-01',NULL,NULL,NULL,'Repair','hours',-1,650,NULL,NULL,2400000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-14 16:35:17.572227',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,6,3,7,1,1,NULL,1,15),('BY2024YCHT289',NULL,'Inoperative',NULL,'N1028KJ',NULL,'2017-01-01',NULL,NULL,NULL,'Repair','hours',-1,315,NULL,NULL,1985362.5,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-04-17 17:47:13.443457',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,6,3,7,1,1,NULL,1,15),('BY2024YCHT744',NULL,'Active',NULL,'N1028UY',NULL,'2014-01-01',NULL,NULL,NULL,'Repair','hours',-1,600,NULL,NULL,3090272.0575,10,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-02-06 17:25:39.069017',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,6,3,7,1,1,NULL,1,15),('BY2024YCHT978',NULL,'Active',NULL,'N1028PA',NULL,'2016-01-01',NULL,NULL,NULL,'Repair','hours',-1,700,NULL,NULL,1570000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:43:23.388012',NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,6,3,7,1,1,NULL,1,15),('CMA2024SHIP156',NULL,'Inoperative',NULL,'N1028LK',NULL,'2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,NULL,14035736.8,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-07 17:05:54.219557',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,4,2,7,1,1,NULL,1,15),('CMA2024SHIP597',NULL,'Active',NULL,'N1028HG',NULL,'2016-01-01',NULL,NULL,NULL,'Repair','hours',-1,700,NULL,NULL,12800000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:41:47.829691',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,4,2,7,1,1,NULL,1,15),('HAP2024CARGO168',NULL,'Active',NULL,'N1028MA',NULL,'2014-01-01',NULL,NULL,NULL,'Accident','hours',-1,300,NULL,NULL,9800000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-07 17:03:01.335462',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,5,2,7,1,1,NULL,1,15),('HAP2024CARGO256',NULL,'Active',NULL,'N1028YD',NULL,'2019-01-01',NULL,NULL,NULL,'Repair','hours',-1,750,NULL,NULL,3009000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:42:25.560091',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,5,2,7,1,1,NULL,1,15),('SABAMR-9767-XR',NULL,'Active',NULL,'N1028NW',NULL,'2018-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,720,NULL,NULL,4901599,10,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-07-23 03:34:54.541026',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,3,1,7,1,1,NULL,1,15),('SBM2024XK78',NULL,'Active',NULL,'N1028MM',NULL,'2014-01-01',NULL,NULL,NULL,'Repair','hours',-1,300,NULL,NULL,1250000,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:27:02.625124',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,1,1,7,1,1,NULL,1,15),('SBM2024XK91',NULL,'Active',NULL,'N1028LD',NULL,'2016-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,NULL,8850804.782411274,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-05-09 21:46:18.938094',NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,1,1,7,1,1,NULL,1,15),('SDJ2024-456R',NULL,'Active',NULL,'N1028NT',NULL,'2013-01-01',NULL,NULL,NULL,'Repair','hours',-1,10,NULL,NULL,8600000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:45:58.099008',NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,7,4,7,1,1,NULL,1,15),('SDJ2024-789A',NULL,'Active',NULL,'N1028VO',NULL,'2016-01-01',NULL,NULL,NULL,'Repair','hours',-1,300,NULL,NULL,5300000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:45:41.105428',NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,7,4,7,1,1,NULL,1,15),('UBOTT-1056-NA',NULL,'Active',NULL,'N1028XP',NULL,'2017-01-01',NULL,NULL,NULL,'Repair','hours',-1,700,NULL,NULL,9800000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:29:49.653286',NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,2,1,7,1,1,NULL,1,15),('UBOTT-1057-AS',NULL,'Active',NULL,'N1028ZP',NULL,'2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,NULL,11000000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2025-01-07 17:03:36.814080',NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,3,1,2,1,7,1,1,NULL,1,15),('YMH2024WTRC689',NULL,'Active',NULL,'N1028VE',NULL,'2018-01-01',NULL,NULL,NULL,'Repair','hours',-1,200,NULL,NULL,7000000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:46:14.605177',NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,8,4,7,1,1,NULL,1,15),('YMH2024WTRC987',NULL,'Active',NULL,'N1028CY',NULL,'2017-01-01',NULL,NULL,NULL,'Repair','hours',-1,650,NULL,NULL,3400000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,'White','2024-03-14','2024-03-14 17:46:33.001228',NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',1,NULL,4,1,8,4,7,1,1,NULL,1,15);
+/*!40000 ALTER TABLE `api_assetmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmodelhistory` (
+  `asset_history_id` int NOT NULL AUTO_INCREMENT,
+  `date` datetime(6) NOT NULL,
+  `jde_department` varchar(100) DEFAULT NULL,
+  `status` varchar(50) NOT NULL,
+  `unit_number` varchar(100) DEFAULT NULL,
+  `license_plate` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_quantity` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_inspection_date` varchar(100) DEFAULT NULL,
+  `path` varchar(300) DEFAULT NULL,
+  `last_process` varchar(50) NOT NULL,
+  `hours_or_mileage` varchar(50) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `mileage_unit` varchar(50) DEFAULT NULL,
+  `total_cost` double NOT NULL,
+  `daily_average_hours` double NOT NULL,
+  `daily_average_mileage` double NOT NULL,
+  `replacement_hours` double DEFAULT NULL,
+  `replacement_mileage` double DEFAULT NULL,
+  `load_capacity` double DEFAULT NULL,
+  `load_capacity_unit` varchar(50) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `is_rental` tinyint(1) DEFAULT NULL,
+  `monthly_subscription_cost` double DEFAULT NULL,
+  `class_code` varchar(50) DEFAULT NULL,
+  `asset_description` longtext,
+  `custom_fields` longtext,
+  `overdue_date_variance` int NOT NULL,
+  `due_soon_date_variance` int NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `current_location_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `equipment_type_id` int DEFAULT NULL,
+  `fuel_id` int DEFAULT NULL,
+  `job_specification_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  `parent_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`asset_history_id`),
+  KEY `api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetmodelhistor_company_id_f7bb1171_fk_api_compa` (`company_id`),
+  KEY `api_assetmodelhistory_currency_id_ab3b9b7a_fk_api_currency_id` (`currency_id`),
+  KEY `api_assetmodelhistor_current_location_id_467d3a2f_fk_api_locat` (`current_location_id`),
+  KEY `api_assetmodelhistor_department_id_8fb917a8_fk_api_busin` (`department_id`),
+  KEY `api_assetmodelhistor_equipment_type_id_4b88b5ce_fk_api_equip` (`equipment_type_id`),
+  KEY `api_assetmodelhistory_fuel_id_73ea8d75_fk_api_fueltype_id` (`fuel_id`),
+  KEY `api_assetmodelhistor_job_specification_id_78ef1952_fk_api_jobsp` (`job_specification_id`),
+  KEY `api_assetmodelhistor_modified_by_id_77a2bcc7_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetmodelhistor_original_location_id_6c04f79b_fk_api_locat` (`original_location_id`),
+  KEY `api_assetmodelhistory_parent_id_1c81d2a0_fk_api_assetmodel_VIN` (`parent_id`),
+  CONSTRAINT `api_assetmodelhistor_company_id_f7bb1171_fk_api_compa` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_assetmodelhistor_current_location_id_467d3a2f_fk_api_locat` FOREIGN KEY (`current_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodelhistor_department_id_8fb917a8_fk_api_busin` FOREIGN KEY (`department_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetmodelhistor_equipment_type_id_4b88b5ce_fk_api_equip` FOREIGN KEY (`equipment_type_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetmodelhistor_job_specification_id_78ef1952_fk_api_jobsp` FOREIGN KEY (`job_specification_id`) REFERENCES `api_jobspecification` (`job_specification_id`),
+  CONSTRAINT `api_assetmodelhistor_modified_by_id_77a2bcc7_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmodelhistor_original_location_id_6c04f79b_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodelhistory_currency_id_ab3b9b7a_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_assetmodelhistory_fuel_id_73ea8d75_fk_api_fueltype_id` FOREIGN KEY (`fuel_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_assetmodelhistory_parent_id_1c81d2a0_fk_api_assetmodel_VIN` FOREIGN KEY (`parent_id`) REFERENCES `api_assetmodel` (`VIN`),
+  CONSTRAINT `api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmodelhistory`
+--
+
+LOCK TABLES `api_assetmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_assetmodelhistory` VALUES (1,'2024-03-14 17:27:02.636939',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK78',NULL,NULL,1,1,1,NULL,7,1,1,NULL),(2,'2024-03-14 17:29:49.665269',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'UBOTT-1056-NA',NULL,NULL,1,1,2,NULL,7,1,1,NULL),(3,'2024-03-14 17:38:59.109192',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK91',NULL,NULL,1,1,1,NULL,7,1,1,NULL),(4,'2024-03-14 17:39:54.887318',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SABAMR-9767-XR',NULL,NULL,1,1,3,NULL,7,1,1,NULL),(5,'2024-03-14 17:40:12.599300',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'UBOTT-1057-AS',NULL,NULL,1,1,2,NULL,7,1,1,NULL),(6,'2024-03-14 17:41:22.476128',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'CMA2024SHIP156',NULL,NULL,1,1,4,NULL,7,1,1,NULL),(7,'2024-03-14 17:41:47.837987',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'CMA2024SHIP597',NULL,NULL,1,1,4,NULL,7,1,1,NULL),(8,'2024-03-14 17:42:06.479124',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'HAP2024CARGO168',NULL,NULL,1,1,5,NULL,7,1,1,NULL),(9,'2024-03-14 17:42:25.597423',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'HAP2024CARGO256',NULL,NULL,1,1,5,NULL,7,1,1,NULL),(10,'2024-03-14 17:43:23.397557',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'BY2024YCHT978',NULL,NULL,1,1,6,NULL,7,1,1,NULL),(11,'2024-03-14 17:43:42.193661',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'BY2024YCHT289',NULL,NULL,1,1,6,NULL,7,1,1,NULL),(12,'2024-03-14 17:44:18.256857',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'BY2024YCHT188',NULL,NULL,1,1,6,NULL,7,1,1,NULL),(13,'2024-03-14 17:44:33.843730',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'BY2024YCHT744',NULL,NULL,1,1,6,NULL,7,1,1,NULL),(14,'2024-03-14 17:45:41.123644',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SDJ2024-789A',NULL,NULL,1,1,7,NULL,7,1,1,NULL),(15,'2024-03-14 17:45:58.108976',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SDJ2024-456R',NULL,NULL,1,1,7,NULL,7,1,1,NULL),(16,'2024-03-14 17:46:14.612640',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'YMH2024WTRC689',NULL,NULL,1,1,8,NULL,7,1,1,NULL),(17,'2024-03-14 17:46:33.013271',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'YMH2024WTRC987',NULL,NULL,1,1,8,NULL,7,1,1,NULL),(18,'2024-03-14 17:48:19.771300',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123',NULL,NULL,1,1,9,NULL,7,1,1,NULL),(19,'2024-03-14 17:48:36.231626',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987',NULL,NULL,1,1,9,NULL,7,1,1,NULL),(20,'2024-03-14 17:48:51.869818',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456',NULL,NULL,1,1,9,NULL,7,1,1,NULL),(21,'2024-03-14 17:49:08.156832',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','neither',-1,-1,NULL,0,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY21FRYX589',NULL,NULL,1,1,9,NULL,7,1,1,NULL),(22,'2024-04-03 22:02:40.158897',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','hours',-1,200,NULL,6500000,10.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(23,'2024-04-04 00:53:37.744616',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','hours',-1,200,NULL,6500000,10.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(24,'2024-04-04 00:54:27.201694',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','hours',-1,700,NULL,4900000,35.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SABAMR-9767-XR','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,3,1,7,1,1,NULL),(25,'2024-04-04 03:51:45.666386',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,8850000,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK91','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,1,1,7,1,1,NULL),(26,'2024-04-04 03:54:10.830941',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','hours',-1,300,NULL,1250000,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK78','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,1,1,7,1,1,NULL),(27,'2024-04-04 04:02:57.064373',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','hours',-1,200,NULL,6500644.52,10.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(28,'2024-04-04 04:03:47.850883',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Null','hours',-1,200,NULL,6500731.22,10.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(29,'2024-04-04 04:04:22.657459',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,8850644.52,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK91','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,1,1,7,1,1,NULL),(30,'2024-04-04 04:04:39.767813',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,8850682.6,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK91','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,1,1,7,1,1,NULL),(31,'2024-05-09 21:44:15.940656',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.267857142857143,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(32,'2024-05-09 21:45:45.935186',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,8850713.145602819,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK91','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,1,1,7,1,1,NULL),(33,'2024-05-09 21:46:18.965691',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,8850804.782411274,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'SBM2024XK91','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,1,1,7,1,1,NULL),(34,'2024-05-09 21:48:06.859306',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.267857142857143,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(35,'2024-05-10 21:52:38.970177',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(36,'2024-05-10 21:58:31.811764',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(37,'2024-05-10 22:10:50.410314',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(38,'2024-05-10 22:13:06.424832',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740000,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(39,'2024-05-10 22:23:19.944075',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740106.909609864,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(40,'2024-05-10 22:32:37.920655',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740106.909609864,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(41,'2024-05-10 22:43:07.016664',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740213.819219727,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(42,'2024-05-10 22:46:31.247050',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740213.819219727,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(43,'2024-05-10 22:48:23.690941',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740213.819219727,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(44,'2024-05-11 14:42:42.520037',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(45,'2024-05-11 14:45:11.820835',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740320.728829591,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(46,'2024-05-11 14:46:28.809954',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740427.638439454,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(47,'2024-05-11 14:48:34.618683',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(48,'2024-05-11 14:58:53.800761',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(49,'2024-05-11 15:01:02.291583',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740534.548049318,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(50,'2024-05-11 15:02:34.418860',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740427.638439454,11.421052631578947,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(51,'2024-05-11 15:04:28.398870',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,6.157894736842105,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,1,1,9,5,7,1,1,NULL),(52,'2024-05-13 03:17:58.967001',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,250,NULL,5690000,4.254237288135593,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(53,'2024-05-13 03:18:32.101874',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,250,NULL,5696217.246591323,4.254237288135593,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(54,'2024-05-13 03:18:45.034005',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Repair','hours',-1,250,NULL,5696217.246591323,4.254237288135593,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(55,'2024-05-13 03:19:29.589030',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,5696217.246591323,4.762711864406779,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(56,'2024-05-13 03:20:02.119094',NULL,'Inoperative',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,5798078.722538075,4.762711864406779,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(57,'2024-05-13 03:20:12.117013',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,5798078.722538075,4.762711864406779,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(58,'2024-05-13 03:21:25.592305',NULL,'Active',NULL,NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,5798078.722538075,5.9491525423728815,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(59,'2024-05-14 19:42:10.169650',NULL,'Active','N1028GG',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,8100000,5.754098360655738,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY21FRYX589','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(60,'2024-05-14 19:44:47.912136',NULL,'Active','N1028GG',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,8100106.909609864,5.754098360655738,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY21FRYX589','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(61,'2024-05-15 13:34:42.792908',NULL,'Inoperative','N1028GG',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,8100106.909609864,5.754098360655738,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY21FRYX589','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(62,'2024-05-15 13:40:12.304358',NULL,'Inoperative','N1028GG',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,8100106.909609864,5.754098360655738,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY21FRYX589','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(63,'2024-05-15 13:43:55.289360',NULL,'Active','N1028AB',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,5.754098360655738,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(64,'2024-07-23 03:33:19.930721',NULL,'Active','N1028NW',NULL,NULL,NULL,NULL,'Repair','hours',-1,710,NULL,4900000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'SABAMR-9767-XR','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,3,1,7,1,1,NULL),(65,'2024-07-23 03:34:10.791537',NULL,'Inoperative','N1028NW',NULL,NULL,NULL,NULL,'Repair','hours',-1,720,NULL,4900000,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'SABAMR-9767-XR','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,3,1,7,1,1,NULL),(66,'2024-07-23 03:34:38.322567',NULL,'Inoperative','N1028NW',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,720,NULL,4900000,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'SABAMR-9767-XR','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,3,1,7,1,1,NULL),(67,'2024-07-23 03:34:54.581577',NULL,'Inoperative','N1028NW',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,720,NULL,4901599,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'SABAMR-9767-XR','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,3,1,7,1,1,NULL),(68,'2024-07-23 03:35:03.965658',NULL,'Active','N1028NW',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,720,NULL,4901599,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'SABAMR-9767-XR','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,3,1,7,1,1,NULL),(69,'2024-07-23 03:37:45.183375',NULL,'Active','N1028HG',NULL,NULL,NULL,NULL,'Repair','hours',-1,700,NULL,12800000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'CMA2024SHIP597','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,4,2,7,1,1,NULL),(70,'2024-07-23 03:38:32.388443',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,200,NULL,3000000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(71,'2024-07-23 03:38:54.450652',NULL,'Active','N1028AC',NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740427.638439454,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(72,'2024-09-06 20:26:28.702551',NULL,'Inoperative','N1028AB',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6500731.22,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,9,5,7,1,1,NULL),(73,'2024-09-06 20:27:06.362904',NULL,'Inoperative','N1028AB',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,6656084.926,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,9,5,7,1,1,NULL),(74,'2024-09-06 20:27:52.724543',NULL,'Inoperative','N1028AB',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,380,NULL,6656084.926,30,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,9,5,7,1,1,NULL),(75,'2024-09-06 20:29:20.269273',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,580,NULL,3000000,8.444444444444445,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(76,'2024-09-06 20:29:46.468801',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,580,NULL,3006000,8.444444444444445,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(77,'2024-09-30 02:17:08.583784',NULL,'Active','N1028YD',NULL,NULL,NULL,NULL,'Repair','hours',-1,750,NULL,3009000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'HAP2024CARGO256','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,5,2,7,1,1,NULL),(78,'2024-12-11 17:07:53.858503',NULL,'Active','N1028ER',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,360,NULL,5798078.722538075,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(79,'2025-01-07 16:16:46.505593',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Repair','hours',-1,300,NULL,1980000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(80,'2025-01-07 16:17:20.444067',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Repair','hours',-1,300,NULL,1982750,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(81,'2025-01-07 16:17:37.030653',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Repair','hours',-1,300,NULL,1985362.5,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(82,'2025-01-07 16:17:53.303698',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Repair','hours',-1,300,NULL,1985362.5,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(83,'2025-01-07 16:25:22.471012',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Repair','hours',-1,310,NULL,1985362.5,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(84,'2025-01-07 16:51:52.410502',NULL,'Inoperative','N1028GG',NULL,NULL,NULL,NULL,'Repair','hours',-1,350,NULL,8100106.909609864,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY21FRYX589','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,9,5,7,1,1,NULL),(85,'2025-01-07 16:52:46.353901',NULL,'Active','N1028LD',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,300,NULL,8850804.782411274,15.05,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'SBM2024XK91','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,1,1,7,1,1,NULL),(86,'2025-01-07 16:54:35.821486',NULL,'Active','N1028AC',NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,5740427.638439454,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(87,'2025-01-07 17:04:39.426615',NULL,'Inoperative','N1028ZP',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,11000000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'UBOTT-1057-AS','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,2,1,7,1,1,NULL),(88,'2025-01-07 17:05:11.971164',NULL,'Inoperative','N1028LK',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,14000000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'CMA2024SHIP156','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,4,2,7,1,1,NULL),(89,'2025-01-07 17:05:40.829537',NULL,'Inoperative','N1028LK',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,14016641.9,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'CMA2024SHIP156','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,4,2,7,1,1,NULL),(90,'2025-01-07 17:05:54.246780',NULL,'Inoperative','N1028LK',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,14035736.8,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'C66',NULL,NULL,0,-7,'CMA2024SHIP156','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,4,2,7,1,1,NULL),(91,'2025-01-07 17:06:12.176302',NULL,'Active','N1028ZP',NULL,NULL,NULL,NULL,'Maintenance','hours',-1,350,NULL,11000000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'D99',NULL,NULL,0,-7,'UBOTT-1057-AS','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,2,1,7,1,1,NULL),(92,'2025-01-09 01:06:35.798838',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Accident','hours',-1,315,NULL,1985362.5,15,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(93,'2025-01-09 01:10:52.569911',NULL,'Active','N1028KJ',NULL,NULL,NULL,NULL,'Accident','hours',-1,315,NULL,1985362.5,15,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(94,'2025-01-13 16:42:38.972765',NULL,'Active','N1028AC',NULL,NULL,NULL,NULL,'Repair','hours',-1,800,NULL,5740427.638439454,30,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(95,'2025-01-14 14:41:01.061594',NULL,'Inoperative','N1028AB',NULL,NULL,NULL,NULL,'Accident','hours',-1,380,NULL,6659058.226,30,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,9,5,7,1,1,NULL),(96,'2025-01-14 14:41:16.081023',NULL,'Inoperative','N1028AB',NULL,NULL,NULL,NULL,'Accident','hours',-1,380,NULL,6661482.766,30,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY18FRYQ987','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,9,5,7,1,1,NULL),(97,'2025-01-14 14:43:29.435778',NULL,'Inoperative','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,365,NULL,5798078.722538075,0.15151515151515152,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(98,'2025-01-14 14:44:36.492128',NULL,'Inoperative','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,365,NULL,5800118.722538075,0.15151515151515152,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(99,'2025-01-14 14:44:49.612315',NULL,'Inoperative','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,365,NULL,5801438.722538075,0.15151515151515152,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(100,'2025-01-14 14:45:15.553328',NULL,'Active','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,365,NULL,5801438.722538075,0.15151515151515152,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(101,'2025-01-14 14:45:16.102736',NULL,'Active','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,365,NULL,5804288.722538075,0.15151515151515152,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(102,'2025-01-14 14:48:40.555763',NULL,'Active','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,370,NULL,5804288.722538075,0.30303030303030304,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(103,'2025-01-14 16:35:17.613126',NULL,'Inoperative','N1028PL',NULL,NULL,NULL,NULL,'Repair','hours',-1,650,NULL,2400000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT188','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(104,'2025-02-06 00:05:22.776950',NULL,'Active','N1028AC',NULL,NULL,NULL,NULL,'Repair','hours',-1,800,NULL,5740427.638439454,30,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(105,'2025-02-06 17:07:43.972526',NULL,'Active','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,375,NULL,5804288.722538075,0.26785714285714285,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(106,'2025-02-06 17:10:08.165604',NULL,'Active','N1028ER',NULL,NULL,NULL,NULL,'Repair','hours',-1,385,NULL,5804288.722538075,0.43859649122807015,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY22FRYX123','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL),(107,'2025-02-06 17:25:06.269255',NULL,'Inoperative','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,590,NULL,3006000,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(108,'2025-02-06 17:25:39.091229',NULL,'Inoperative','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,590,NULL,3090272.0575,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(109,'2025-02-06 17:25:49.235967',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,590,NULL,3090272.0575,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(110,'2025-02-06 17:33:34.593562',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,590,NULL,3090272.0575,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(111,'2025-02-06 17:37:24.977380',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,600,NULL,3090272.0575,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(112,'2025-02-06 17:43:07.313578',NULL,'Active','N1028UY',NULL,NULL,NULL,NULL,'Repair','hours',-1,600,NULL,3090272.0575,10,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT744','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,3,1,6,3,7,1,1,NULL),(113,'2025-04-17 17:47:13.488852',NULL,'Inoperative','N1028KJ',NULL,NULL,NULL,NULL,'Repair','hours',-1,315,NULL,1985362.5,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'BY2024YCHT289','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,6,3,7,1,1,NULL),(114,'2025-04-17 17:54:31.920949',NULL,'Active','N1028AC',NULL,NULL,NULL,NULL,'Repair','hours',-1,800,NULL,5740427.638439454,0,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'B23',NULL,NULL,0,-7,'ASY20FRYK456','aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',NULL,4,1,9,5,7,1,1,NULL);
+/*!40000 ALTER TABLE `api_assetmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestfile`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetrequestfile_asset_request_id_c29ec116_fk_api_asset` (`asset_request_id`),
+  KEY `api_assetrequestfile_created_by_id_83520cc2_fk_api_detai` (`created_by_id`),
+  KEY `api_assetrequestfile_vendor_id_725b6af9_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetrequestfile_asset_request_id_c29ec116_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_assetrequestfile_created_by_id_83520cc2_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestfile_vendor_id_725b6af9_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestfile`
+--
+
+LOCK TABLES `api_assetrequestfile` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetrequestfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestjustificationmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestjustificationmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestjustificationmodel` (
+  `justification_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`justification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestjustificationmodel`
+--
+
+LOCK TABLES `api_assetrequestjustificationmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestjustificationmodel` DISABLE KEYS */;
+INSERT INTO `api_assetrequestjustificationmodel` VALUES (1,'New Operation'),(2,'Life Cycle Replacement'),(3,'Operational Change'),(4,'Equipment Failure'),(5,'Accident'),(6,'Unexpected');
+/*!40000 ALTER TABLE `api_assetrequestjustificationmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestmodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date_required` datetime(6) NOT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `nonstandard_description` longtext,
+  `vendor_email` varchar(100) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `quantity` int NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `business_unit_id` int NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `equipment_id` int NOT NULL,
+  `justification_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  `cost_centre_id` int DEFAULT NULL,
+  `date_delivered` datetime(6) DEFAULT NULL,
+  `estimated_cost` double DEFAULT NULL,
+  `quote_deadline` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin` (`business_unit_id`),
+  KEY `api_assetrequestmode_created_by_id_d8e64481_fk_api_detai` (`created_by_id`),
+  KEY `api_assetrequestmode_disposal_id_89a7a0e3_fk_api_asset` (`disposal_id`),
+  KEY `api_assetrequestmode_equipment_id_ace308f7_fk_api_equip` (`equipment_id`),
+  KEY `api_assetrequestmode_justification_id_a448f514_fk_api_asset` (`justification_id`),
+  KEY `api_assetrequestmode_location_id_ed98707a_fk_api_locat` (`location_id`),
+  KEY `api_assetrequestmode_modified_by_id_7f4fd728_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetrequestmode_vendor_id_6bd6d19d_fk_api_appro` (`vendor_id`),
+  KEY `api_assetrequestmodel_VIN_id_a420f925_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetrequestmode_cost_centre_id_77d6521a_fk_api_costc` (`cost_centre_id`),
+  CONSTRAINT `api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetrequestmode_cost_centre_id_77d6521a_fk_api_costc` FOREIGN KEY (`cost_centre_id`) REFERENCES `api_costcentremodel` (`cost_centre_id`),
+  CONSTRAINT `api_assetrequestmode_created_by_id_d8e64481_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestmode_disposal_id_89a7a0e3_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assetrequestmode_equipment_id_ace308f7_fk_api_equip` FOREIGN KEY (`equipment_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetrequestmode_justification_id_a448f514_fk_api_asset` FOREIGN KEY (`justification_id`) REFERENCES `api_assetrequestjustificationmodel` (`justification_id`),
+  CONSTRAINT `api_assetrequestmode_location_id_ed98707a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetrequestmode_modified_by_id_7f4fd728_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestmode_vendor_id_6bd6d19d_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_assetrequestmodel_VIN_id_a420f925_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestmodel`
+--
+
+LOCK TABLES `api_assetrequestmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestmodel` DISABLE KEYS */;
+INSERT INTO `api_assetrequestmodel` VALUES (1,'Camellia-Shipping-LLC-ar-1','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 16:57:02.228365','2024-03-14 17:38:59.258860',1,'SBM2024XK91',1,1,NULL,1,1,1,1,NULL,1,NULL,NULL,NULL),(2,'Camellia-Shipping-LLC-ar-2','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 16:58:47.746969','2024-03-14 17:29:49.813257',1,'UBOTT-1056-NA',1,1,NULL,2,3,1,1,NULL,1,NULL,NULL,NULL),(3,'Camellia-Shipping-LLC-ar-3','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 16:59:52.893420','2024-03-14 17:39:55.010415',1,'SABAMR-9767-XR',1,1,NULL,3,2,1,1,NULL,1,NULL,NULL,NULL),(4,'Camellia-Shipping-LLC-ar-4','2024-03-14 17:00:37.700000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:00:46.300017','2024-03-14 17:41:22.682569',1,'CMA2024SHIP156',1,1,NULL,4,6,1,1,NULL,1,NULL,NULL,NULL),(5,'Camellia-Shipping-LLC-ar-5','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:13:22.577709','2024-03-14 17:40:12.745773',1,'UBOTT-1057-AS',1,1,NULL,2,1,1,1,NULL,1,NULL,NULL,NULL),(6,'Camellia-Shipping-LLC-ar-6','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:14:07.844806','2024-03-14 17:41:48.010780',1,'CMA2024SHIP597',1,1,NULL,4,5,1,1,NULL,1,NULL,NULL,NULL),(7,'Camellia-Shipping-LLC-ar-7','2024-03-14 17:14:31.802000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:14:37.290532','2024-03-14 17:42:06.734772',1,'HAP2024CARGO168',1,1,NULL,5,4,1,1,NULL,1,NULL,NULL,NULL),(8,'Camellia-Shipping-LLC-ar-8','2024-03-24 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:15:02.625759','2024-03-14 17:42:25.908936',1,'HAP2024CARGO256',1,1,NULL,5,1,1,1,NULL,1,NULL,NULL,NULL),(9,'Camellia-Shipping-LLC-ar-9','2024-03-19 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:15:29.091414','2024-03-14 17:43:23.757512',1,'BY2024YCHT978',1,1,NULL,6,3,1,1,NULL,1,NULL,NULL,NULL),(10,'Camellia-Shipping-LLC-ar-10','2024-03-30 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:15:59.897544','2024-03-14 17:43:42.330405',1,'BY2024YCHT289',1,1,NULL,6,2,1,1,NULL,1,NULL,NULL,NULL),(11,'Camellia-Shipping-LLC-ar-11','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:16:25.281775','2024-03-14 17:44:18.510829',1,'BY2024YCHT188',1,1,NULL,6,1,1,1,NULL,1,NULL,NULL,NULL),(12,'Camellia-Shipping-LLC-ar-12','2024-03-28 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:16:55.942411','2024-03-14 17:44:34.001135',1,'BY2024YCHT744',1,1,NULL,6,6,1,1,NULL,1,NULL,NULL,NULL),(13,'Camellia-Shipping-LLC-ar-13','2024-03-28 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:17:22.567311','2024-03-14 17:45:41.329352',1,'SDJ2024-789A',1,1,NULL,7,1,1,1,NULL,1,NULL,NULL,NULL),(14,'Camellia-Shipping-LLC-ar-14','2024-03-27 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:17:53.843185','2024-03-14 17:45:58.258145',1,'SDJ2024-456R',1,1,NULL,7,4,1,1,NULL,1,NULL,NULL,NULL),(15,'Camellia-Shipping-LLC-ar-15','2024-03-14 17:18:38.157000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:18:44.313130','2024-03-14 17:46:14.754520',1,'YMH2024WTRC689',1,1,NULL,8,1,1,1,NULL,1,NULL,NULL,NULL),(16,'Camellia-Shipping-LLC-ar-16','2024-04-02 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:19:13.094343','2024-03-14 17:48:19.962178',1,'ASY22FRYX123',1,1,NULL,9,2,1,1,NULL,1,NULL,NULL,NULL),(17,'Camellia-Shipping-LLC-ar-17','2024-03-14 17:19:30.684000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:19:37.996955','2024-03-14 17:48:36.454411',1,'ASY18FRYQ987',1,1,NULL,9,1,1,1,NULL,1,NULL,NULL,NULL),(18,'Camellia-Shipping-LLC-ar-18','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:20:11.670472','2024-03-14 17:48:52.015691',1,'ASY20FRYK456',1,1,NULL,9,3,1,1,NULL,1,NULL,NULL,NULL),(19,'Camellia-Shipping-LLC-ar-19','2024-03-27 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:21:51.077596','2024-03-14 17:49:08.303912',1,'ASY21FRYX589',1,1,NULL,9,6,1,1,NULL,1,NULL,NULL,NULL),(20,'Camellia-Shipping-LLC-ar-20','2024-03-14 17:22:18.262000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:22:24.153501','2024-03-14 17:46:33.164671',1,'YMH2024WTRC987',1,1,NULL,8,2,1,1,NULL,1,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `api_assetrequestmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestmodelhistory` (
+  `asset_request_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date_required` datetime(6) NOT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `nonstandard_description` longtext,
+  `vendor_email` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `quantity` int NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `asset_request_id` int NOT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `equipment_id` int DEFAULT NULL,
+  `justification_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_request_history_id`),
+  KEY `api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset` (`VIN_id`),
+  KEY `api_assetrequestmode_asset_request_id_eeb3776d_fk_api_asset` (`asset_request_id`),
+  KEY `api_assetrequestmode_business_unit_id_5b84c75a_fk_api_busin` (`business_unit_id`),
+  KEY `api_assetrequestmode_equipment_id_4f536288_fk_api_equip` (`equipment_id`),
+  KEY `api_assetrequestmode_justification_id_cf624510_fk_api_asset` (`justification_id`),
+  KEY `api_assetrequestmode_location_id_18ff3e40_fk_api_locat` (`location_id`),
+  KEY `api_assetrequestmode_modified_by_id_5c2c48c1_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetrequestmode_vendor_id_e6b31e09_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetrequestmode_asset_request_id_eeb3776d_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_assetrequestmode_business_unit_id_5b84c75a_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetrequestmode_equipment_id_4f536288_fk_api_equip` FOREIGN KEY (`equipment_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetrequestmode_justification_id_cf624510_fk_api_asset` FOREIGN KEY (`justification_id`) REFERENCES `api_assetrequestjustificationmodel` (`justification_id`),
+  CONSTRAINT `api_assetrequestmode_location_id_18ff3e40_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetrequestmode_modified_by_id_5c2c48c1_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestmode_vendor_id_e6b31e09_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestmodelhistory`
+--
+
+LOCK TABLES `api_assetrequestmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_assetrequestmodelhistory` VALUES (1,'Camellia-Shipping-LLC-ar-1','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 16:57:02.267950',2,NULL,1,1,1,1,1,1,NULL),(2,'Camellia-Shipping-LLC-ar-2','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 16:58:47.775869',1,NULL,2,1,2,3,1,1,NULL),(3,'Camellia-Shipping-LLC-ar-3','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 16:59:52.914355',1,NULL,3,1,3,2,1,1,NULL),(4,'Camellia-Shipping-LLC-ar-4','2024-03-14 17:00:37.700000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:00:46.321951',1,NULL,4,1,4,6,1,1,NULL),(5,'Camellia-Shipping-LLC-ar-1','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','in transit','2024-03-14 17:02:47.517343',2,NULL,1,1,1,1,1,1,NULL),(6,'Camellia-Shipping-LLC-ar-5','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:13:22.599695',1,NULL,5,1,2,1,1,1,NULL),(7,'Camellia-Shipping-LLC-ar-6','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:14:07.871477',1,NULL,6,1,4,5,1,1,NULL),(8,'Camellia-Shipping-LLC-ar-7','2024-03-14 17:14:31.802000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:14:37.396438',1,NULL,7,1,5,4,1,1,NULL),(9,'Camellia-Shipping-LLC-ar-8','2024-03-24 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:15:02.648509',1,NULL,8,1,5,1,1,1,NULL),(10,'Camellia-Shipping-LLC-ar-9','2024-03-19 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:15:29.114114',1,NULL,9,1,6,3,1,1,NULL),(11,'Camellia-Shipping-LLC-ar-10','2024-03-30 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:15:59.923250',1,NULL,10,1,6,2,1,1,NULL),(12,'Camellia-Shipping-LLC-ar-11','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:16:25.308712',1,NULL,11,1,6,1,1,1,NULL),(13,'Camellia-Shipping-LLC-ar-12','2024-03-28 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:16:55.981006',1,NULL,12,1,6,6,1,1,NULL),(14,'Camellia-Shipping-LLC-ar-13','2024-03-28 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:17:22.611721',1,NULL,13,1,7,1,1,1,NULL),(15,'Camellia-Shipping-LLC-ar-14','2024-03-27 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:17:53.911455',1,NULL,14,1,7,4,1,1,NULL),(16,'Camellia-Shipping-LLC-ar-15','2024-03-14 17:18:38.157000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:18:44.338565',1,NULL,15,1,8,1,1,1,NULL),(17,'Camellia-Shipping-LLC-ar-16','2024-04-02 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:19:13.120220',1,NULL,16,1,9,2,1,1,NULL),(18,'Camellia-Shipping-LLC-ar-17','2024-03-14 17:19:30.684000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:19:38.021240',1,NULL,17,1,9,1,1,1,NULL),(19,'Camellia-Shipping-LLC-ar-18','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:20:11.695296',1,NULL,18,1,9,3,1,1,NULL),(20,'Camellia-Shipping-LLC-ar-19','2024-03-27 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:21:51.116016',1,NULL,19,1,9,6,1,1,NULL),(21,'Camellia-Shipping-LLC-ar-20','2024-03-14 17:22:18.262000',NULL,NULL,'fmanzoor@skyit.services','awaiting approval','2024-03-14 17:22:24.181662',1,NULL,20,1,8,2,1,1,NULL),(22,'Camellia-Shipping-LLC-ar-1','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','in transit','2024-03-14 17:27:04.252931',1,NULL,1,1,1,1,1,1,NULL),(23,'Camellia-Shipping-LLC-ar-2','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:29:49.829763',1,'UBOTT-1056-NA',2,1,2,3,1,1,NULL),(24,'Camellia-Shipping-LLC-ar-1','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:38:59.276380',1,'SBM2024XK91',1,1,1,1,1,1,NULL),(25,'Camellia-Shipping-LLC-ar-3','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:39:55.026917',1,'SABAMR-9767-XR',3,1,3,2,1,1,NULL),(26,'Camellia-Shipping-LLC-ar-5','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:40:12.765041',1,'UBOTT-1057-AS',5,1,2,1,1,1,NULL),(27,'Camellia-Shipping-LLC-ar-4','2024-03-14 17:00:37.700000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:41:22.705317',1,'CMA2024SHIP156',4,1,4,6,1,1,NULL),(28,'Camellia-Shipping-LLC-ar-6','2024-03-21 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:41:48.065966',1,'CMA2024SHIP597',6,1,4,5,1,1,NULL),(29,'Camellia-Shipping-LLC-ar-7','2024-03-14 17:14:31.802000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:42:06.768703',1,'HAP2024CARGO168',7,1,5,4,1,1,NULL),(30,'Camellia-Shipping-LLC-ar-8','2024-03-24 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:42:25.936809',1,'HAP2024CARGO256',8,1,5,1,1,1,NULL),(31,'Camellia-Shipping-LLC-ar-9','2024-03-19 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:43:23.802603',1,'BY2024YCHT978',9,1,6,3,1,1,NULL),(32,'Camellia-Shipping-LLC-ar-10','2024-03-30 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:43:42.349570',1,'BY2024YCHT289',10,1,6,2,1,1,NULL),(33,'Camellia-Shipping-LLC-ar-11','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','approved','2024-03-14 17:43:51.926493',1,NULL,11,1,6,1,1,1,NULL),(34,'Camellia-Shipping-LLC-ar-11','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','in transit','2024-03-14 17:44:00.498677',1,NULL,11,1,6,1,1,1,NULL),(35,'Camellia-Shipping-LLC-ar-11','2024-03-15 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:44:18.528889',1,'BY2024YCHT188',11,1,6,1,1,1,NULL),(36,'Camellia-Shipping-LLC-ar-12','2024-03-28 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:44:34.025570',1,'BY2024YCHT744',12,1,6,6,1,1,NULL),(37,'Camellia-Shipping-LLC-ar-13','2024-03-28 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:45:41.365274',1,'SDJ2024-789A',13,1,7,1,1,1,NULL),(38,'Camellia-Shipping-LLC-ar-14','2024-03-27 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:45:58.277011',1,'SDJ2024-456R',14,1,7,4,1,1,NULL),(39,'Camellia-Shipping-LLC-ar-15','2024-03-14 17:18:38.157000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:46:14.776088',1,'YMH2024WTRC689',15,1,8,1,1,1,NULL),(40,'Camellia-Shipping-LLC-ar-20','2024-03-14 17:22:18.262000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:46:33.186300',1,'YMH2024WTRC987',20,1,8,2,1,1,NULL),(41,'Camellia-Shipping-LLC-ar-16','2024-04-02 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:48:20.001209',1,'ASY22FRYX123',16,1,9,2,1,1,NULL),(42,'Camellia-Shipping-LLC-ar-17','2024-03-14 17:19:30.684000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:48:36.476245',1,'ASY18FRYQ987',17,1,9,1,1,1,NULL),(43,'Camellia-Shipping-LLC-ar-18','2024-03-22 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:48:52.032846',1,'ASY20FRYK456',18,1,9,3,1,1,NULL),(44,'Camellia-Shipping-LLC-ar-19','2024-03-27 04:00:00.000000',NULL,NULL,'fmanzoor@skyit.services','delivered','2024-03-14 17:49:08.323820',1,'ASY21FRYX589',19,1,9,6,1,1,NULL);
+/*!40000 ALTER TABLE `api_assetrequestmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettransfer`
+--
+
+DROP TABLE IF EXISTS `api_assettransfer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettransfer` (
+  `asset_transfer_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `justification` longtext NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `pickup_date` date DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `interior_condition` varchar(50) NOT NULL,
+  `interior_condition_details` longtext,
+  `exterior_condition` varchar(50) NOT NULL,
+  `exterior_condition_details` longtext,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `destination_location_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_transfer_id`),
+  KEY `api_assettransfer_created_by_id_ab9cdd92_fk_api_detai` (`created_by_id`),
+  KEY `api_assettransfer_destination_location_51514ea1_fk_api_locat` (`destination_location_id`),
+  KEY `api_assettransfer_disposal_id_dbc94e0f_fk_api_asset` (`disposal_id`),
+  KEY `api_assettransfer_modified_by_id_b584b255_fk_api_detai` (`modified_by_id`),
+  KEY `api_assettransfer_original_location_id_2bc14e49_fk_api_locat` (`original_location_id`),
+  KEY `api_assettransfer_VIN_id_12084905_fk_api_assetmodel_VIN` (`VIN_id`),
+  CONSTRAINT `api_assettransfer_created_by_id_ab9cdd92_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettransfer_destination_location_51514ea1_fk_api_locat` FOREIGN KEY (`destination_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assettransfer_disposal_id_dbc94e0f_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assettransfer_modified_by_id_b584b255_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettransfer_original_location_id_2bc14e49_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assettransfer_VIN_id_12084905_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettransfer`
+--
+
+LOCK TABLES `api_assettransfer` WRITE;
+/*!40000 ALTER TABLE `api_assettransfer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assettransfer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettransfermodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assettransfermodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettransfermodelhistory` (
+  `asset_transfer_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `justification` longtext NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `pickup_date` date DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `interior_condition` varchar(50) DEFAULT NULL,
+  `interior_condition_details` longtext,
+  `exterior_condition` varchar(50) DEFAULT NULL,
+  `exterior_condition_details` longtext,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `asset_transfer_id` int NOT NULL,
+  `destination_location_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_transfer_history_id`),
+  KEY `api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset` (`asset_transfer_id`),
+  KEY `api_assettransfermod_destination_location_3ca950b2_fk_api_locat` (`destination_location_id`),
+  KEY `api_assettransfermod_disposal_id_01325a31_fk_api_asset` (`disposal_id`),
+  KEY `api_assettransfermod_modified_by_id_eb45f7a7_fk_api_detai` (`modified_by_id`),
+  KEY `api_assettransfermod_original_location_id_d180fece_fk_api_locat` (`original_location_id`),
+  CONSTRAINT `api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset` FOREIGN KEY (`asset_transfer_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_assettransfermod_destination_location_3ca950b2_fk_api_locat` FOREIGN KEY (`destination_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assettransfermod_disposal_id_01325a31_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assettransfermod_modified_by_id_eb45f7a7_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettransfermod_original_location_id_d180fece_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettransfermodelhistory`
+--
+
+LOCK TABLES `api_assettransfermodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assettransfermodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assettransfermodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettypechecks`
+--
+
+DROP TABLE IF EXISTS `api_assettypechecks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettypechecks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `asset_type_name` varchar(100) NOT NULL,
+  `tires` tinyint(1) NOT NULL,
+  `wheels` tinyint(1) NOT NULL,
+  `horn` tinyint(1) NOT NULL,
+  `fuel` tinyint(1) NOT NULL,
+  `mirrors` tinyint(1) NOT NULL,
+  `glass` tinyint(1) NOT NULL,
+  `overhead_guard` tinyint(1) NOT NULL,
+  `steps` tinyint(1) NOT NULL,
+  `forks` tinyint(1) NOT NULL,
+  `operator_cab` tinyint(1) NOT NULL,
+  `cosmetic_damage` tinyint(1) NOT NULL,
+  `brakes` tinyint(1) NOT NULL,
+  `steering` tinyint(1) NOT NULL,
+  `attachments` tinyint(1) NOT NULL,
+  `mud_flaps` tinyint(1) NOT NULL,
+  `electrical_connectors` tinyint(1) NOT NULL,
+  `air_pressure` tinyint(1) NOT NULL,
+  `boom_extensions` tinyint(1) NOT NULL,
+  `spreader_functions` tinyint(1) NOT NULL,
+  `lights` tinyint(1) NOT NULL,
+  `headlights` tinyint(1) NOT NULL,
+  `backup_lights` tinyint(1) NOT NULL,
+  `trailer_light_cord` tinyint(1) NOT NULL,
+  `fluids` tinyint(1) NOT NULL,
+  `oil` tinyint(1) NOT NULL,
+  `transmission_fluid` tinyint(1) NOT NULL,
+  `steering_fluid` tinyint(1) NOT NULL,
+  `hydraulic_fluid` tinyint(1) NOT NULL,
+  `brake_fluid` tinyint(1) NOT NULL,
+  `safety_equipment` tinyint(1) NOT NULL,
+  `fire_extinguisher` tinyint(1) NOT NULL,
+  `leaks` tinyint(1) NOT NULL,
+  `hydraulic_hoses` tinyint(1) NOT NULL,
+  `trailer_air_lines` tinyint(1) NOT NULL,
+  `other_leaks` tinyint(1) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `anchoring_system` tinyint(1) NOT NULL,
+  `communication` tinyint(1) NOT NULL,
+  `electrical` tinyint(1) NOT NULL,
+  `engine_and_all_mechanical` tinyint(1) NOT NULL,
+  `fuel_systems` tinyint(1) NOT NULL,
+  `lifesaving_equipments` tinyint(1) NOT NULL,
+  `navigation_and_strobe_lights` tinyint(1) NOT NULL,
+  `steering_and_hydraulics` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `asset_type_name` (`asset_type_name`),
+  KEY `api_assettypechecks_created_by_id_afdea472_fk_api_detai` (`created_by_id`),
+  KEY `api_assettypechecks_modified_by_id_12ec3feb_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assettypechecks_created_by_id_afdea472_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettypechecks_modified_by_id_12ec3feb_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettypechecks`
+--
+
+LOCK TABLES `api_assettypechecks` WRITE;
+/*!40000 ALTER TABLE `api_assettypechecks` DISABLE KEYS */;
+INSERT INTO `api_assettypechecks` VALUES (1,'submarine',0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 00:47:51.338606','2024-04-04 16:46:29.621878',1,1,1,0,1,1,1,0,1,1),(2,'Ferry',0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 00:52:54.173618','2024-04-04 16:46:07.177799',1,1,0,1,1,0,1,1,0,1),(3,'Cargo Ship',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-07-23 03:37:22.970113','2024-07-23 03:37:22.977668',1,1,1,0,1,1,0,1,1,1),(4,'Yacht',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-07-23 03:38:08.836544','2024-07-23 03:38:08.843623',1,1,1,0,1,1,0,1,1,1);
+/*!40000 ALTER TABLE `api_assettypechecks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettypecheckshistory`
+--
+
+DROP TABLE IF EXISTS `api_assettypecheckshistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettypecheckshistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `asset_type_name` varchar(100) NOT NULL,
+  `tires` tinyint(1) NOT NULL,
+  `wheels` tinyint(1) NOT NULL,
+  `horn` tinyint(1) NOT NULL,
+  `fuel` tinyint(1) NOT NULL,
+  `mirrors` tinyint(1) NOT NULL,
+  `glass` tinyint(1) NOT NULL,
+  `overhead_guard` tinyint(1) NOT NULL,
+  `steps` tinyint(1) NOT NULL,
+  `forks` tinyint(1) NOT NULL,
+  `operator_cab` tinyint(1) NOT NULL,
+  `cosmetic_damage` tinyint(1) NOT NULL,
+  `brakes` tinyint(1) NOT NULL,
+  `steering` tinyint(1) NOT NULL,
+  `attachments` tinyint(1) NOT NULL,
+  `mud_flaps` tinyint(1) NOT NULL,
+  `electrical_connectors` tinyint(1) NOT NULL,
+  `air_pressure` tinyint(1) NOT NULL,
+  `boom_extensions` tinyint(1) NOT NULL,
+  `spreader_functions` tinyint(1) NOT NULL,
+  `lights` tinyint(1) NOT NULL,
+  `headlights` tinyint(1) NOT NULL,
+  `backup_lights` tinyint(1) NOT NULL,
+  `trailer_light_cord` tinyint(1) NOT NULL,
+  `fluids` tinyint(1) NOT NULL,
+  `oil` tinyint(1) NOT NULL,
+  `transmission_fluid` tinyint(1) NOT NULL,
+  `steering_fluid` tinyint(1) NOT NULL,
+  `hydraulic_fluid` tinyint(1) NOT NULL,
+  `brake_fluid` tinyint(1) NOT NULL,
+  `safety_equipment` tinyint(1) NOT NULL,
+  `fire_extinguisher` tinyint(1) NOT NULL,
+  `leaks` tinyint(1) NOT NULL,
+  `hydraulic_hoses` tinyint(1) NOT NULL,
+  `trailer_air_lines` tinyint(1) NOT NULL,
+  `other_leaks` tinyint(1) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `asset_type_checks_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset` (`asset_type_checks_id`),
+  KEY `api_assettypechecksh_modified_by_id_80f02d97_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset` FOREIGN KEY (`asset_type_checks_id`) REFERENCES `api_assettypechecks` (`id`),
+  CONSTRAINT `api_assettypechecksh_modified_by_id_80f02d97_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettypecheckshistory`
+--
+
+LOCK TABLES `api_assettypecheckshistory` WRITE;
+/*!40000 ALTER TABLE `api_assettypecheckshistory` DISABLE KEYS */;
+INSERT INTO `api_assettypecheckshistory` VALUES (1,'submarine',0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 00:47:51.666722',1,1),(2,'submarine',0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 00:52:14.661099',1,1),(3,'Ferry',0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 00:52:54.202904',2,1),(4,'submarine',0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 03:53:38.983654',1,1),(5,'Ferry',0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 16:46:07.192699',2,1),(6,'submarine',0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-04-04 16:46:29.638188',1,1),(7,'Cargo Ship',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-07-23 03:37:23.008114',3,1),(8,'Yacht',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'2024-07-23 03:38:08.868410',4,1);
+/*!40000 ALTER TABLE `api_assettypecheckshistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettypemodel`
+--
+
+DROP TABLE IF EXISTS `api_assettypemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettypemodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `overdue_date_variance` int NOT NULL,
+  `due_soon_date_variance` int NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `custom_fields` longtext,
+  `asset_type_checks_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assettypemodel_created_by_id_be41afef_fk_api_detai` (`created_by_id`),
+  KEY `api_assettypemodel_modified_by_id_a7557b41_fk_api_detai` (`modified_by_id`),
+  KEY `api_assettypemodel_asset_type_checks_id_dd77b5e2_fk_api_asset` (`asset_type_checks_id`),
+  CONSTRAINT `api_assettypemodel_asset_type_checks_id_dd77b5e2_fk_api_asset` FOREIGN KEY (`asset_type_checks_id`) REFERENCES `api_assettypechecks` (`id`),
+  CONSTRAINT `api_assettypemodel_created_by_id_be41afef_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettypemodel_modified_by_id_a7557b41_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettypemodel`
+--
+
+LOCK TABLES `api_assettypemodel` WRITE;
+/*!40000 ALTER TABLE `api_assettypemodel` DISABLE KEYS */;
+INSERT INTO `api_assettypemodel` VALUES (1,'Submarine',0,-7,'2024-03-14 16:15:34.290571','2024-04-04 00:47:51.469514',NULL,1,1,1),(2,'Cargo Ship',0,-7,'2024-03-14 16:17:23.826894','2024-07-23 03:37:22.985030',NULL,3,1,1),(3,'Yacht',0,-7,'2024-03-14 16:24:32.414544','2024-07-23 03:38:08.850806',NULL,4,1,1),(4,'Jet Ski',0,-7,'2024-03-14 16:26:51.753560','2024-03-14 16:26:51.753722',NULL,NULL,1,1),(5,'Ferry',0,-7,'2024-03-14 16:28:47.070128','2024-04-04 00:52:54.188629',NULL,2,1,1);
+/*!40000 ALTER TABLE `api_assettypemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_businessunitmodel`
+--
+
+DROP TABLE IF EXISTS `api_businessunitmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_businessunitmodel` (
+  `business_unit_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `accounting_email` varchar(254) NOT NULL,
+  `location_id` int NOT NULL,
+  PRIMARY KEY (`business_unit_id`),
+  KEY `api_businessunitmode_location_id_1fdea960_fk_api_locat` (`location_id`),
+  CONSTRAINT `api_businessunitmode_location_id_1fdea960_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_businessunitmodel`
+--
+
+LOCK TABLES `api_businessunitmodel` WRITE;
+/*!40000 ALTER TABLE `api_businessunitmodel` DISABLE KEYS */;
+INSERT INTO `api_businessunitmodel` VALUES (1,'Fleet Operations','aukai_demo_2024_3@skyit.services',4);
+/*!40000 ALTER TABLE `api_businessunitmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_company`
+--
+
+DROP TABLE IF EXISTS `api_company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_company` (
+  `company_id` char(32) NOT NULL,
+  `company_name` varchar(150) NOT NULL,
+  `company_address` varchar(150) NOT NULL,
+  `company_phone` varchar(50) NOT NULL,
+  `accounting_email` varchar(254) NOT NULL,
+  `software_logo` varchar(1000) NOT NULL,
+  `software_name` varchar(50) NOT NULL,
+  `standard_currency_id` int DEFAULT NULL,
+  PRIMARY KEY (`company_id`),
+  UNIQUE KEY `accounting_email` (`accounting_email`),
+  KEY `api_company_standard_currency_id_7f70e121_fk_api_currency_id` (`standard_currency_id`),
+  CONSTRAINT `api_company_standard_currency_id_7f70e121_fk_api_currency_id` FOREIGN KEY (`standard_currency_id`) REFERENCES `api_currency` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_company`
+--
+
+LOCK TABLES `api_company` WRITE;
+/*!40000 ALTER TABLE `api_company` DISABLE KEYS */;
+INSERT INTO `api_company` VALUES ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1','Camellia Shipping LLC','4444 Camellia Ave, Ottawa, ON K1K 1K1','(613) 666-6666','aukai_demo_2024_3@skyit.services','','lokomotive',2);
+/*!40000 ALTER TABLE `api_company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_costcentremodel`
+--
+
+DROP TABLE IF EXISTS `api_costcentremodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_costcentremodel` (
+  `cost_centre_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`cost_centre_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_costcentremodel`
+--
+
+LOCK TABLES `api_costcentremodel` WRITE;
+/*!40000 ALTER TABLE `api_costcentremodel` DISABLE KEYS */;
+INSERT INTO `api_costcentremodel` VALUES (1,'Accounting A');
+/*!40000 ALTER TABLE `api_costcentremodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_currency`
+--
+
+DROP TABLE IF EXISTS `api_currency`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_currency` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `number` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_currency`
+--
+
+LOCK TABLES `api_currency` WRITE;
+/*!40000 ALTER TABLE `api_currency` DISABLE KEYS */;
+INSERT INTO `api_currency` VALUES (1,'USD','','US Dollar'),(2,'CAD','','Canadian Dollar'),(3,'EUR','','Euro');
+/*!40000 ALTER TABLE `api_currency` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_dailyinspection`
+--
+
+DROP TABLE IF EXISTS `api_dailyinspection`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_dailyinspection` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIN` varchar(17) NOT NULL,
+  `inspection_date` date NOT NULL,
+  `pfd_lifejacket_ledger` longtext,
+  `throw_bags` tinyint(1) NOT NULL,
+  `heaving_line` tinyint(1) NOT NULL,
+  `liferings` tinyint(1) NOT NULL,
+  `reboarding_device` tinyint(1) NOT NULL,
+  `watertight_flashlight` tinyint(1) NOT NULL,
+  `pyrotechnic_flares` tinyint(1) NOT NULL,
+  `first_aid_kit` tinyint(1) NOT NULL,
+  `engine_working` tinyint(1) NOT NULL,
+  `marine_vhf_radio` tinyint(1) NOT NULL,
+  `police_radio` tinyint(1) NOT NULL,
+  `epirb_registered` tinyint(1) NOT NULL,
+  `bilge_pump_clear` tinyint(1) NOT NULL,
+  `steering_controls_operable` tinyint(1) NOT NULL,
+  `hatches_operable` tinyint(1) NOT NULL,
+  `training_skills_exercised` tinyint(1) NOT NULL,
+  `drills_entered_logbook` tinyint(1) NOT NULL,
+  `emergency_briefings_conducted` tinyint(1) NOT NULL,
+  `fire_extinguishers_inspected` tinyint(1) NOT NULL,
+  `regular_inspections_completed` tinyint(1) NOT NULL,
+  `electrical_inspections_completed` tinyint(1) NOT NULL,
+  `broken_cracked_lenses` tinyint(1) NOT NULL,
+  `lights_functioning` tinyint(1) NOT NULL,
+  `fuel_connections_good` tinyint(1) NOT NULL,
+  `fuel_containers_stored_properly` tinyint(1) NOT NULL,
+  `ground_tackle_inspected` tinyint(1) NOT NULL,
+  `bitter_end_attached` tinyint(1) NOT NULL,
+  `anchor_secured` tinyint(1) NOT NULL,
+  `welds_bolts_screws_good` tinyint(1) NOT NULL,
+  `grab_lines_good` tinyint(1) NOT NULL,
+  `operators_trained` tinyint(1) NOT NULL,
+  `crew_equipment_trained` tinyint(1) NOT NULL,
+  `vessel_damaged_since_last_report` tinyint(1) NOT NULL,
+  `structural_changes_made_since_last_report` tinyint(1) NOT NULL,
+  `date_created` date NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_dailyinspection_created_by_id_f033ed51_fk_api_detai` (`created_by_id`),
+  KEY `api_dailyinspection_modified_by_id_ccd7e2b7_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_dailyinspection_created_by_id_f033ed51_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_dailyinspection_modified_by_id_ccd7e2b7_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_dailyinspection`
+--
+
+LOCK TABLES `api_dailyinspection` WRITE;
+/*!40000 ALTER TABLE `api_dailyinspection` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_dailyinspection` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_dailyinspectionhistory`
+--
+
+DROP TABLE IF EXISTS `api_dailyinspectionhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_dailyinspectionhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIN` varchar(17) NOT NULL,
+  `inspection_date` date NOT NULL,
+  `pfd_lifejacket_ledger` longtext,
+  `throw_bags` tinyint(1) NOT NULL,
+  `heaving_line` tinyint(1) NOT NULL,
+  `liferings` tinyint(1) NOT NULL,
+  `reboarding_device` tinyint(1) NOT NULL,
+  `watertight_flashlight` tinyint(1) NOT NULL,
+  `pyrotechnic_flares` tinyint(1) NOT NULL,
+  `first_aid_kit` tinyint(1) NOT NULL,
+  `engine_working` tinyint(1) NOT NULL,
+  `marine_vhf_radio` tinyint(1) NOT NULL,
+  `police_radio` tinyint(1) NOT NULL,
+  `epirb_registered` tinyint(1) NOT NULL,
+  `bilge_pump_clear` tinyint(1) NOT NULL,
+  `steering_controls_operable` tinyint(1) NOT NULL,
+  `hatches_operable` tinyint(1) NOT NULL,
+  `training_skills_exercised` tinyint(1) NOT NULL,
+  `drills_entered_logbook` tinyint(1) NOT NULL,
+  `emergency_briefings_conducted` tinyint(1) NOT NULL,
+  `fire_extinguishers_inspected` tinyint(1) NOT NULL,
+  `regular_inspections_completed` tinyint(1) NOT NULL,
+  `electrical_inspections_completed` tinyint(1) NOT NULL,
+  `broken_cracked_lenses` tinyint(1) NOT NULL,
+  `lights_functioning` tinyint(1) NOT NULL,
+  `fuel_connections_good` tinyint(1) NOT NULL,
+  `fuel_containers_stored_properly` tinyint(1) NOT NULL,
+  `ground_tackle_inspected` tinyint(1) NOT NULL,
+  `bitter_end_attached` tinyint(1) NOT NULL,
+  `anchor_secured` tinyint(1) NOT NULL,
+  `welds_bolts_screws_good` tinyint(1) NOT NULL,
+  `grab_lines_good` tinyint(1) NOT NULL,
+  `operators_trained` tinyint(1) NOT NULL,
+  `crew_equipment_trained` tinyint(1) NOT NULL,
+  `vessel_damaged_since_last_report` tinyint(1) NOT NULL,
+  `structural_changes_made_since_last_report` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_dailyinspectionhistory`
+--
+
+LOCK TABLES `api_dailyinspectionhistory` WRITE;
+/*!40000 ALTER TABLE `api_dailyinspectionhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_dailyinspectionhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_deliverycost`
+--
+
+DROP TABLE IF EXISTS `api_deliverycost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_deliverycost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_deliverycost_created_by_id_c17f28d6_fk_api_detai` (`created_by_id`),
+  KEY `api_deliverycost_currency_id_91d26aab_fk_api_currency_id` (`currency_id`),
+  KEY `api_deliverycost_disposal_id_9dc4f78b_fk_api_asset` (`disposal_id`),
+  KEY `api_deliverycost_location_id_4354d4fc_fk_api_locat` (`location_id`),
+  KEY `api_deliverycost_maintenance_id_418648c9_fk_api_maint` (`maintenance_id`),
+  KEY `api_deliverycost_modified_by_id_5500cc05_fk_api_detai` (`modified_by_id`),
+  KEY `api_deliverycost_repair_id_1ba17210_fk_api_repai` (`repair_id`),
+  KEY `api_deliverycost_asset_request_id_4f0d9ded_fk_api_asset` (`asset_request_id`),
+  CONSTRAINT `api_deliverycost_asset_request_id_4f0d9ded_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_deliverycost_created_by_id_c17f28d6_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycost_currency_id_91d26aab_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_deliverycost_disposal_id_9dc4f78b_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_deliverycost_location_id_4354d4fc_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_deliverycost_maintenance_id_418648c9_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_deliverycost_modified_by_id_5500cc05_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycost_repair_id_1ba17210_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_deliverycost`
+--
+
+LOCK TABLES `api_deliverycost` WRITE;
+/*!40000 ALTER TABLE `api_deliverycost` DISABLE KEYS */;
+INSERT INTO `api_deliverycost` VALUES (1,2500,350,2850,'2025-01-14 14:45:16.031920','2025-01-14 14:45:16.049898',NULL,1,2,NULL,4,NULL,1,14);
+/*!40000 ALTER TABLE `api_deliverycost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_deliverycosthistory`
+--
+
+DROP TABLE IF EXISTS `api_deliverycosthistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_deliverycosthistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `delivery_cost_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset` (`asset_request_id`),
+  KEY `api_deliverycosthist_created_by_id_93a7f210_fk_api_detai` (`created_by_id`),
+  KEY `api_deliverycosthistory_currency_id_5506c51d_fk_api_currency_id` (`currency_id`),
+  KEY `api_deliverycosthist_delivery_cost_id_06598be1_fk_api_deliv` (`delivery_cost_id`),
+  KEY `api_deliverycosthist_disposal_id_b5de59a0_fk_api_asset` (`disposal_id`),
+  KEY `api_deliverycosthist_location_id_6956ae5d_fk_api_locat` (`location_id`),
+  KEY `api_deliverycosthist_maintenance_id_142da7d7_fk_api_maint` (`maintenance_id`),
+  KEY `api_deliverycosthist_modified_by_id_7fb448f4_fk_api_detai` (`modified_by_id`),
+  KEY `api_deliverycosthist_repair_id_7fef1a8d_fk_api_repai` (`repair_id`),
+  CONSTRAINT `api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_deliverycosthist_created_by_id_93a7f210_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycosthist_delivery_cost_id_06598be1_fk_api_deliv` FOREIGN KEY (`delivery_cost_id`) REFERENCES `api_deliverycost` (`id`),
+  CONSTRAINT `api_deliverycosthist_disposal_id_b5de59a0_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_deliverycosthist_location_id_6956ae5d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_deliverycosthist_maintenance_id_142da7d7_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_deliverycosthist_modified_by_id_7fb448f4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycosthist_repair_id_7fef1a8d_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_deliverycosthistory_currency_id_5506c51d_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_deliverycosthistory`
+--
+
+LOCK TABLES `api_deliverycosthistory` WRITE;
+/*!40000 ALTER TABLE `api_deliverycosthistory` DISABLE KEYS */;
+INSERT INTO `api_deliverycosthistory` VALUES (1,2500,350,2850,'2025-01-14 14:45:16.057707','2025-01-14 14:45:16.057743',NULL,NULL,2,1,NULL,4,NULL,1,14);
+/*!40000 ALTER TABLE `api_deliverycosthistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_detaileduser`
+--
+
+DROP TABLE IF EXISTS `api_detaileduser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_detaileduser` (
+  `detailed_user_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(254) NOT NULL,
+  `cost_allowance` int NOT NULL,
+  `image_url` longtext NOT NULL,
+  `agreement_accepted` tinyint(1) NOT NULL,
+  `first_time_login` tinyint(1) NOT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `role_permissions_id` int DEFAULT NULL,
+  `cost_centre_id` int DEFAULT NULL,
+  PRIMARY KEY (`detailed_user_id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep` (`role_permissions_id`),
+  KEY `api_detaileduser_business_unit_id_7932adec_fk_api_busin` (`business_unit_id`),
+  KEY `api_detaileduser_company_id_4d55f60a_fk_api_company_company_id` (`company_id`),
+  KEY `api_detaileduser_cost_centre_id_dbed5ea7_fk_api_costc` (`cost_centre_id`),
+  CONSTRAINT `api_detaileduser_business_unit_id_7932adec_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_detaileduser_company_id_4d55f60a_fk_api_company_company_id` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_detaileduser_cost_centre_id_dbed5ea7_fk_api_costc` FOREIGN KEY (`cost_centre_id`) REFERENCES `api_costcentremodel` (`cost_centre_id`),
+  CONSTRAINT `api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep` FOREIGN KEY (`role_permissions_id`) REFERENCES `api_rolepermissions` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_detaileduser`
+--
+
+LOCK TABLES `api_detaileduser` WRITE;
+/*!40000 ALTER TABLE `api_detaileduser` DISABLE KEYS */;
+INSERT INTO `api_detaileduser` VALUES (1,'aukai_demo_2024_3@skyit.services',999999999,'NA',1,0,1,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',3,1);
+/*!40000 ALTER TABLE `api_detaileduser` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_detaileduser_location`
+--
+
+DROP TABLE IF EXISTS `api_detaileduser_location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_detaileduser_location` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `detaileduser_id` int NOT NULL,
+  `locationmodel_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_detaileduser_locatio_detaileduser_id_location_0662e2dc_uniq` (`detaileduser_id`,`locationmodel_id`),
+  KEY `api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat` (`locationmodel_id`),
+  CONSTRAINT `api_detaileduser_loc_detaileduser_id_e5cfc688_fk_api_detai` FOREIGN KEY (`detaileduser_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat` FOREIGN KEY (`locationmodel_id`) REFERENCES `api_locationmodel` (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_detaileduser_location`
+--
+
+LOCK TABLES `api_detaileduser_location` WRITE;
+/*!40000 ALTER TABLE `api_detaileduser_location` DISABLE KEYS */;
+INSERT INTO `api_detaileduser_location` VALUES (1,1,4);
+/*!40000 ALTER TABLE `api_detaileduser_location` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_detailedusermodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_detailedusermodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_detailedusermodelhistory` (
+  `detailed_user_history_id` int NOT NULL AUTO_INCREMENT,
+  `date` datetime(6) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `cost_allowance` int NOT NULL,
+  `image_url` longtext NOT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `role_permissions_id` int DEFAULT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`detailed_user_history_id`),
+  KEY `api_detailedusermode_business_unit_id_c0219409_fk_api_busin` (`business_unit_id`),
+  KEY `api_detailedusermode_company_id_7c62abcc_fk_api_compa` (`company_id`),
+  KEY `api_detailedusermode_role_permissions_id_f60796a1_fk_api_rolep` (`role_permissions_id`),
+  KEY `api_detailedusermode_user_id_458862a4_fk_api_detai` (`user_id`),
+  CONSTRAINT `api_detailedusermode_business_unit_id_c0219409_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_detailedusermode_company_id_7c62abcc_fk_api_compa` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_detailedusermode_role_permissions_id_f60796a1_fk_api_rolep` FOREIGN KEY (`role_permissions_id`) REFERENCES `api_rolepermissions` (`id`),
+  CONSTRAINT `api_detailedusermode_user_id_458862a4_fk_api_detai` FOREIGN KEY (`user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_detailedusermodelhistory`
+--
+
+LOCK TABLES `api_detailedusermodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_detailedusermodelhistory` DISABLE KEYS */;
+INSERT INTO `api_detailedusermodelhistory` VALUES (1,'2024-07-12 04:42:47.185153','aukai_demo_2024_3@skyit.services',999999999,'https://2023aukaiprodv6.blob.core.windows.net/users/images/6d5caa39-28f0-4914-9328-514951ceb663_Camellia_Shipping_LLC_user_20240712-044247',1,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',3,1),(2,'2024-07-12 04:43:15.711597','aukai_demo_2024_3@skyit.services',999999999,'https://2023aukaiprodv6.blob.core.windows.net/users/images/967dc6eb-068d-44cf-8e50-856d0668e3ef_Camellia_Shipping_LLC_user_20240712-044315',1,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',3,1),(3,'2024-07-12 04:43:34.851303','aukai_demo_2024_3@skyit.services',999999999,'https://2023aukaiprodv6.blob.core.windows.net/users/images/88e2d652-781c-490a-83e0-81a705582a12_Camellia_Shipping_LLC_user_20240712-044334',1,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',3,1);
+/*!40000 ALTER TABLE `api_detailedusermodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_enginehistorymodel`
+--
+
+DROP TABLE IF EXISTS `api_enginehistorymodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_enginehistorymodel` (
+  `engine_history_id` int NOT NULL AUTO_INCREMENT,
+  `updated_name` varchar(100) DEFAULT NULL,
+  `updated_hours` double DEFAULT NULL,
+  `action` varchar(20) NOT NULL,
+  `responsible_user_id` int NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `engine_id_id` int DEFAULT NULL,
+  `responsible_daily_check_id` int DEFAULT NULL,
+  `responsible_maintenance_id` int DEFAULT NULL,
+  `responsible_repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`engine_history_id`),
+  KEY `api_enginehistorymod_responsible_user_id_3e190328_fk_api_detai` (`responsible_user_id`),
+  KEY `api_enginehistorymod_engine_id_id_6dfadf2c_fk_api_engin` (`engine_id_id`),
+  KEY `api_enginehistorymod_responsible_daily_ch_08e0d8ff_fk_api_asset` (`responsible_daily_check_id`),
+  KEY `api_enginehistorymod_responsible_maintena_9ddbea1a_fk_api_maint` (`responsible_maintenance_id`),
+  KEY `api_enginehistorymod_responsible_repair_i_1b274ea4_fk_api_repai` (`responsible_repair_id`),
+  CONSTRAINT `api_enginehistorymod_engine_id_id_6dfadf2c_fk_api_engin` FOREIGN KEY (`engine_id_id`) REFERENCES `api_enginemodel` (`engine_id`),
+  CONSTRAINT `api_enginehistorymod_responsible_daily_ch_08e0d8ff_fk_api_asset` FOREIGN KEY (`responsible_daily_check_id`) REFERENCES `api_assetdailychecksmodel` (`daily_check_id`),
+  CONSTRAINT `api_enginehistorymod_responsible_maintena_9ddbea1a_fk_api_maint` FOREIGN KEY (`responsible_maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_enginehistorymod_responsible_repair_i_1b274ea4_fk_api_repai` FOREIGN KEY (`responsible_repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_enginehistorymod_responsible_user_id_3e190328_fk_api_detai` FOREIGN KEY (`responsible_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_enginehistorymodel`
+--
+
+LOCK TABLES `api_enginehistorymodel` WRITE;
+/*!40000 ALTER TABLE `api_enginehistorymodel` DISABLE KEYS */;
+INSERT INTO `api_enginehistorymodel` VALUES (1,'V6 Left Engine',100,'Create',1,'2024-04-04 03:48:41.899034',1,NULL,NULL,NULL),(2,'V6 Right Engine',100,'Create',1,'2024-04-04 04:10:20.636057',2,NULL,NULL,NULL),(3,'V6 Left Engine',200,'Create',1,'2024-04-04 04:11:19.804665',3,NULL,NULL,NULL),(4,'V6 Right Egine',200,'Create',1,'2024-04-04 04:11:30.030427',4,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `api_enginehistorymodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_enginemodel`
+--
+
+DROP TABLE IF EXISTS `api_enginemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_enginemodel` (
+  `engine_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `hours` double NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `daily_average_hours` double NOT NULL,
+  PRIMARY KEY (`engine_id`),
+  KEY `api_enginemodel_VIN_id_93922063_fk_api_assetmodel_VIN` (`VIN_id`),
+  CONSTRAINT `api_enginemodel_VIN_id_93922063_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_enginemodel`
+--
+
+LOCK TABLES `api_enginemodel` WRITE;
+/*!40000 ALTER TABLE `api_enginemodel` DISABLE KEYS */;
+INSERT INTO `api_enginemodel` VALUES (1,'V6 Left Engine',100,'SBM2024XK91',0),(2,'V6 Right Engine',100,'SBM2024XK91',0),(3,'V6 Left Engine',200,'ASY21FRYX589',0),(4,'V6 Right Egine',200,'ASY21FRYX589',0);
+/*!40000 ALTER TABLE `api_enginemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_equipmenttypemodel`
+--
+
+DROP TABLE IF EXISTS `api_equipmenttypemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_equipmenttypemodel` (
+  `equipment_type_id` int NOT NULL AUTO_INCREMENT,
+  `model_number` varchar(100) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `asset_type_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `fuel_id` int DEFAULT NULL,
+  `manufacturer_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`equipment_type_id`),
+  KEY `api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset` (`asset_type_id`),
+  KEY `api_equipmenttypemod_created_by_id_c346a1e6_fk_api_detai` (`created_by_id`),
+  KEY `api_equipmenttypemodel_fuel_id_cba9eff5_fk_api_fueltype_id` (`fuel_id`),
+  KEY `api_equipmenttypemod_manufacturer_id_29668e7f_fk_api_asset` (`manufacturer_id`),
+  KEY `api_equipmenttypemod_modified_by_id_da7eef15_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset` FOREIGN KEY (`asset_type_id`) REFERENCES `api_assettypemodel` (`id`),
+  CONSTRAINT `api_equipmenttypemod_created_by_id_c346a1e6_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_equipmenttypemod_manufacturer_id_29668e7f_fk_api_asset` FOREIGN KEY (`manufacturer_id`) REFERENCES `api_assetmanufacturermodel` (`id`),
+  CONSTRAINT `api_equipmenttypemod_modified_by_id_da7eef15_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_equipmenttypemodel_fuel_id_cba9eff5_fk_api_fueltype_id` FOREIGN KEY (`fuel_id`) REFERENCES `api_fueltype` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_equipmenttypemodel`
+--
+
+LOCK TABLES `api_equipmenttypemodel` WRITE;
+/*!40000 ALTER TABLE `api_equipmenttypemodel` DISABLE KEYS */;
+INSERT INTO `api_equipmenttypemodel` VALUES (1,'SSN-774','pressurized water reactor','2024-03-14 16:15:34.348660','2024-03-14 16:15:34.348728',NULL,NULL,1,1,1,1,1),(2,'SSBN-726','pressurized water reactor','2024-03-14 16:16:01.567904','2024-03-14 16:16:01.567974',NULL,NULL,1,1,1,1,1),(3,'SSN-21','pressurized water reactor','2024-03-14 16:16:12.693633','2024-03-14 16:16:12.693694',NULL,NULL,1,1,1,1,1),(4,'CGCR2024','MAN Energy Solutions','2024-03-14 16:17:23.904086','2024-03-14 16:17:23.904145',NULL,NULL,2,1,2,2,1),(5,'8000TEU','MAN Energy Solutions','2024-03-14 16:17:57.884752','2024-03-14 16:17:57.884809',NULL,NULL,2,1,2,3,1),(6,'Baltic112','Yanmar','2024-03-14 16:24:32.481351','2024-03-14 16:24:32.481506',NULL,NULL,3,1,3,4,1),(7,'RXP-X300','Rotax','2024-03-14 16:26:51.788887','2024-03-14 16:26:51.788938',NULL,NULL,4,1,5,5,1),(8,'VX1100E-P','Yamaha marine engines','2024-03-14 16:27:46.505035','2024-03-14 16:27:46.505083',NULL,NULL,4,1,5,6,1),(9,'Aresa2500','Caterpillar Inc.','2024-03-14 16:28:47.112980','2024-03-14 16:28:47.113034',NULL,NULL,5,1,6,7,1);
+/*!40000 ALTER TABLE `api_equipmenttypemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_errorreport`
+--
+
+DROP TABLE IF EXISTS `api_errorreport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_errorreport` (
+  `error_report_id` int NOT NULL AUTO_INCREMENT,
+  `issue_type` varchar(50) NOT NULL,
+  `error_title` varchar(1000) NOT NULL,
+  `error_description` longtext NOT NULL,
+  `steps_to_reproduce` longtext,
+  `date_created` date NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`error_report_id`),
+  KEY `api_errorreport_created_by_id_d3637fe3_fk_api_detai` (`created_by_id`),
+  CONSTRAINT `api_errorreport_created_by_id_d3637fe3_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_errorreport`
+--
+
+LOCK TABLES `api_errorreport` WRITE;
+/*!40000 ALTER TABLE `api_errorreport` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_errorreport` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_errorreportfile`
+--
+
+DROP TABLE IF EXISTS `api_errorreportfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_errorreportfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `error_report_id` int NOT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_errorreportfile_error_report_id_ee964a4f_fk_api_error` (`error_report_id`),
+  CONSTRAINT `api_errorreportfile_error_report_id_ee964a4f_fk_api_error` FOREIGN KEY (`error_report_id`) REFERENCES `api_errorreport` (`error_report_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_errorreportfile`
+--
+
+LOCK TABLES `api_errorreportfile` WRITE;
+/*!40000 ALTER TABLE `api_errorreportfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_errorreportfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fleetguru`
+--
+
+DROP TABLE IF EXISTS `api_fleetguru`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fleetguru` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `process` varchar(50) NOT NULL,
+  `title` varchar(150) NOT NULL,
+  `description` longtext NOT NULL,
+  `image_url` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fleetguru`
+--
+
+LOCK TABLES `api_fleetguru` WRITE;
+/*!40000 ALTER TABLE `api_fleetguru` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fleetguru` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcard`
+--
+
+DROP TABLE IF EXISTS `api_fuelcard`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcard` (
+  `card_id` int NOT NULL AUTO_INCREMENT,
+  `expiration` date DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `assigned_employee_id` varchar(254) DEFAULT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `issuer_id` varchar(254) DEFAULT NULL,
+  PRIMARY KEY (`card_id`),
+  KEY `api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai` (`assigned_employee_id`),
+  KEY `api_fuelcard_business_unit_id_6843f63b_fk_api_busin` (`business_unit_id`),
+  KEY `api_fuelcard_issuer_id_7a73ca8f_fk_api_detaileduser_email` (`issuer_id`),
+  CONSTRAINT `api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai` FOREIGN KEY (`assigned_employee_id`) REFERENCES `api_detaileduser` (`email`),
+  CONSTRAINT `api_fuelcard_business_unit_id_6843f63b_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_fuelcard_issuer_id_7a73ca8f_fk_api_detaileduser_email` FOREIGN KEY (`issuer_id`) REFERENCES `api_detaileduser` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcard`
+--
+
+LOCK TABLES `api_fuelcard` WRITE;
+/*!40000 ALTER TABLE `api_fuelcard` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fuelcard` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcost`
+--
+
+DROP TABLE IF EXISTS `api_fuelcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `volume` double NOT NULL,
+  `volume_unit` varchar(50) NOT NULL,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `fuel_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `flagged` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id` (`fuel_type_id`),
+  KEY `api_fuelcost_location_id_3e8c907b_fk_api_locat` (`location_id`),
+  KEY `api_fuelcost_modified_by_id_f184d7f2_fk_api_detai` (`modified_by_id`),
+  KEY `api_fuelcost_VIN_id_b79a526d_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_fuelcost_created_by_id_9050c739_fk_api_detai` (`created_by_id`),
+  KEY `api_fuelcost_currency_id_4e73dab3_fk_api_currency_id` (`currency_id`),
+  CONSTRAINT `api_fuelcost_created_by_id_9050c739_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fuelcost_currency_id_4e73dab3_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id` FOREIGN KEY (`fuel_type_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_fuelcost_location_id_3e8c907b_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_fuelcost_modified_by_id_f184d7f2_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fuelcost_VIN_id_b79a526d_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcost`
+--
+
+LOCK TABLES `api_fuelcost` WRITE;
+/*!40000 ALTER TABLE `api_fuelcost` DISABLE KEYS */;
+INSERT INTO `api_fuelcost` VALUES (1,150,'liter',6000,250,'2024-09-06 20:29:46.395328','2024-09-06 20:29:46.412599','BY2024YCHT744',1,2,3,3,1,0);
+/*!40000 ALTER TABLE `api_fuelcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcostcheck`
+--
+
+DROP TABLE IF EXISTS `api_fuelcostcheck`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcostcheck` (
+  `fuel_cost_check_id` int NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL,
+  `volume_ratio_threshold` double NOT NULL,
+  `company_id` char(32) NOT NULL,
+  `cost_ratio_threshold` double NOT NULL,
+  `cost_ratio_type_id` int DEFAULT NULL,
+  `cost_ratio_units` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`fuel_cost_check_id`),
+  KEY `api_fuelcostcheck_company_id_5deafa6a_fk_api_company_company_id` (`company_id`),
+  KEY `api_fuelcostcheck_cost_ratio_type_id_1805091a_fk_api_fueltype_id` (`cost_ratio_type_id`),
+  CONSTRAINT `api_fuelcostcheck_company_id_5deafa6a_fk_api_company_company_id` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_fuelcostcheck_cost_ratio_type_id_1805091a_fk_api_fueltype_id` FOREIGN KEY (`cost_ratio_type_id`) REFERENCES `api_fueltype` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcostcheck`
+--
+
+LOCK TABLES `api_fuelcostcheck` WRITE;
+/*!40000 ALTER TABLE `api_fuelcostcheck` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fuelcostcheck` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_fuelcostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `volume` double NOT NULL,
+  `volume_unit` varchar(50) NOT NULL,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `fuel_cost_id` int DEFAULT NULL,
+  `fuel_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_fuelcostmodelhistory_currency_id_8bdfe0d9_fk_api_currency_id` (`currency_id`),
+  KEY `api_fuelcostmodelhis_fuel_cost_id_4fb992ed_fk_api_fuelc` (`fuel_cost_id`),
+  KEY `api_fuelcostmodelhis_fuel_type_id_1bb4b854_fk_api_fuelt` (`fuel_type_id`),
+  KEY `api_fuelcostmodelhis_location_id_bf6c4061_fk_api_locat` (`location_id`),
+  KEY `api_fuelcostmodelhis_modified_by_id_f59c2374_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_fuelcostmodelhis_fuel_cost_id_4fb992ed_fk_api_fuelc` FOREIGN KEY (`fuel_cost_id`) REFERENCES `api_fuelcost` (`id`),
+  CONSTRAINT `api_fuelcostmodelhis_fuel_type_id_1bb4b854_fk_api_fuelt` FOREIGN KEY (`fuel_type_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_fuelcostmodelhis_location_id_bf6c4061_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_fuelcostmodelhis_modified_by_id_f59c2374_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fuelcostmodelhistory_currency_id_8bdfe0d9_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcostmodelhistory`
+--
+
+LOCK TABLES `api_fuelcostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_fuelcostmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_fuelcostmodelhistory` VALUES (1,150,'liter',6000,250,'2024-09-06 20:29:46.426441','BY2024YCHT744',2,1,3,3,1);
+/*!40000 ALTER TABLE `api_fuelcostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fueltype`
+--
+
+DROP TABLE IF EXISTS `api_fueltype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fueltype` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_fueltype_created_by_id_7ac2889b_fk_api_detai` (`created_by_id`),
+  KEY `api_fueltype_modified_by_id_22b884e4_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_fueltype_created_by_id_7ac2889b_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fueltype_modified_by_id_22b884e4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fueltype`
+--
+
+LOCK TABLES `api_fueltype` WRITE;
+/*!40000 ALTER TABLE `api_fueltype` DISABLE KEYS */;
+INSERT INTO `api_fueltype` VALUES (1,'nuclear-powered','2024-03-14 16:15:34.306917','2024-03-14 16:15:34.307136',1,1),(2,'low-sulfur marine diesel fuel','2024-03-14 16:17:23.853621','2024-03-14 16:17:23.853669',1,1),(3,'marine diesel fuel','2024-03-14 16:24:32.434122','2024-03-14 16:24:32.434188',1,1),(4,'biodiesel','2024-03-14 16:24:53.776547','2024-03-14 16:24:53.776632',1,1),(5,'gasoline','2024-03-14 16:27:46.479537','2024-03-14 16:27:46.479600',1,1),(6,'diesel fuel','2024-03-14 16:28:47.083927','2024-03-14 16:28:47.083971',1,1);
+/*!40000 ALTER TABLE `api_fueltype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_inspectiontypemodel`
+--
+
+DROP TABLE IF EXISTS `api_inspectiontypemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_inspectiontypemodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `inspection_name` varchar(50) NOT NULL,
+  `inspection_code` varchar(50) NOT NULL,
+  `required_at` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_inspectiontypemodel`
+--
+
+LOCK TABLES `api_inspectiontypemodel` WRITE;
+/*!40000 ALTER TABLE `api_inspectiontypemodel` DISABLE KEYS */;
+INSERT INTO `api_inspectiontypemodel` VALUES (1,'Monthly Inspection','MI',250),(2,'Yearly Inspection','YI',1000);
+/*!40000 ALTER TABLE `api_inspectiontypemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_insurancecost`
+--
+
+DROP TABLE IF EXISTS `api_insurancecost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_insurancecost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deductible` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_insurancecost_location_id_db265a0a_fk_api_locat` (`location_id`),
+  KEY `api_insurancecost_modified_by_id_061bb451_fk_api_detai` (`modified_by_id`),
+  KEY `api_insurancecost_VIN_id_7e6d575e_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_insurancecost_accident_id_a2a7e128_fk_api_accid` (`accident_id`),
+  KEY `api_insurancecost_created_by_id_faf2bae2_fk_api_detai` (`created_by_id`),
+  KEY `api_insurancecost_currency_id_8973d10c_fk_api_currency_id` (`currency_id`),
+  CONSTRAINT `api_insurancecost_accident_id_a2a7e128_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_insurancecost_created_by_id_faf2bae2_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_insurancecost_currency_id_8973d10c_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_insurancecost_location_id_db265a0a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_insurancecost_modified_by_id_061bb451_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_insurancecost_VIN_id_7e6d575e_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_insurancecost`
+--
+
+LOCK TABLES `api_insurancecost` WRITE;
+/*!40000 ALTER TABLE `api_insurancecost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_insurancecost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_insurancecostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_insurancecostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_insurancecostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deductible` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `insurance_cost_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_insurancecostmod_VIN_id_c804804e_fk_api_asset` (`VIN_id`),
+  KEY `api_insurancecostmod_accident_id_9a6dc962_fk_api_accid` (`accident_id`),
+  KEY `api_insurancecostmod_currency_id_0a59edae_fk_api_curre` (`currency_id`),
+  KEY `api_insurancecostmod_insurance_cost_id_9153c60e_fk_api_insur` (`insurance_cost_id`),
+  KEY `api_insurancecostmod_location_id_268f5a48_fk_api_locat` (`location_id`),
+  KEY `api_insurancecostmod_modified_by_id_1edeba66_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_insurancecostmod_accident_id_9a6dc962_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_insurancecostmod_currency_id_0a59edae_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_insurancecostmod_insurance_cost_id_9153c60e_fk_api_insur` FOREIGN KEY (`insurance_cost_id`) REFERENCES `api_insurancecost` (`id`),
+  CONSTRAINT `api_insurancecostmod_location_id_268f5a48_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_insurancecostmod_modified_by_id_1edeba66_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_insurancecostmod_VIN_id_c804804e_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_insurancecostmodelhistory`
+--
+
+LOCK TABLES `api_insurancecostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_insurancecostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_insurancecostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_inventory`
+--
+
+DROP TABLE IF EXISTS `api_inventory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_inventory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `serial` varchar(255) DEFAULT NULL,
+  `custom_id` varchar(255) DEFAULT NULL,
+  `inventory_type` varchar(255) NOT NULL,
+  `description` longtext,
+  `per_unit_cost` double DEFAULT NULL,
+  `date_of_manufacture` date DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `equipment_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `serial` (`serial`),
+  UNIQUE KEY `custom_id` (`custom_id`),
+  KEY `api_inventory_created_by_id_b84009f2_fk_api_detai` (`created_by_id`),
+  KEY `api_inventory_equipment_type_id_90bcccc7_fk_api_equip` (`equipment_type_id`),
+  KEY `api_inventory_location_id_a4bcfa28_fk_api_locat` (`location_id`),
+  KEY `api_inventory_modified_by_id_f9495787_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_inventory_created_by_id_b84009f2_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_inventory_equipment_type_id_90bcccc7_fk_api_equip` FOREIGN KEY (`equipment_type_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_inventory_location_id_a4bcfa28_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_inventory_modified_by_id_f9495787_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_inventory`
+--
+
+LOCK TABLES `api_inventory` WRITE;
+/*!40000 ALTER TABLE `api_inventory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_inventory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_jobspecification`
+--
+
+DROP TABLE IF EXISTS `api_jobspecification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_jobspecification` (
+  `job_specification_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`job_specification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_jobspecification`
+--
+
+LOCK TABLES `api_jobspecification` WRITE;
+/*!40000 ALTER TABLE `api_jobspecification` DISABLE KEYS */;
+INSERT INTO `api_jobspecification` VALUES (7,'Sensor');
+/*!40000 ALTER TABLE `api_jobspecification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_laborcost`
+--
+
+DROP TABLE IF EXISTS `api_laborcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_laborcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `base_hourly_rate` double NOT NULL,
+  `total_base_hours` double NOT NULL,
+  `overtime_rate` double NOT NULL,
+  `total_overtime_hours` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_laborcost_location_id_88ec229d_fk_api_locat` (`location_id`),
+  KEY `api_laborcost_maintenance_id_366ad8b9_fk_api_maint` (`maintenance_id`),
+  KEY `api_laborcost_modified_by_id_d6ec089d_fk_api_detai` (`modified_by_id`),
+  KEY `api_laborcost_created_by_id_1a3ecd17_fk_api_detai` (`created_by_id`),
+  KEY `api_laborcost_currency_id_ced7edd3_fk_api_currency_id` (`currency_id`),
+  KEY `api_laborcost_disposal_id_df44d769_fk_api_assetdisposalmodel_id` (`disposal_id`),
+  KEY `api_laborcost_issue_id_3b954f4a_fk_api_assetissuemodel_issue_id` (`issue_id`),
+  CONSTRAINT `api_laborcost_created_by_id_1a3ecd17_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_laborcost_currency_id_ced7edd3_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_laborcost_disposal_id_df44d769_fk_api_assetdisposalmodel_id` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_laborcost_issue_id_3b954f4a_fk_api_assetissuemodel_issue_id` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_laborcost_location_id_88ec229d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_laborcost_maintenance_id_366ad8b9_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_laborcost_modified_by_id_d6ec089d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_laborcost`
+--
+
+LOCK TABLES `api_laborcost` WRITE;
+/*!40000 ALTER TABLE `api_laborcost` DISABLE KEYS */;
+INSERT INTO `api_laborcost` VALUES (1,85,30,0,0,510,3060,'2024-04-04 04:03:47.776610','2025-01-14 14:41:01.017780',1,2,NULL,1,1,NULL,1),(2,17,2,0,0,4.08,38.08,'2024-04-04 04:04:39.690028','2024-04-04 04:04:39.720839',1,2,NULL,NULL,1,1,1),(3,40.547260378193684,2,0,0,10.542287698330357,91.63680845471772,'2024-05-09 21:46:18.886203','2024-05-09 21:46:18.914660',1,2,NULL,NULL,1,1,1),(4,47.305137107892634,2,0,0,12.299335648052084,106.90960986383733,'2024-05-11 14:46:28.724281','2024-05-11 14:46:28.758174',1,2,NULL,NULL,1,2,1),(5,202.7363018909684,12,67.57876729698947,52,270.3150691879579,6217.246591323032,'2024-05-13 03:18:32.019249','2024-05-13 03:18:32.046836',1,2,NULL,8,4,NULL,1),(6,55,25,100,10,237.5,2612.5,'2025-01-07 16:17:36.962048','2025-01-07 16:17:36.983723',1,2,NULL,17,4,NULL,1),(7,123,123,223,10,1735.9,19094.9,'2025-01-07 17:05:54.171321','2025-01-07 17:05:54.198500',1,2,NULL,NULL,4,9,1),(8,55,20,0,0,220,1320,'2025-01-14 14:44:49.545792','2025-01-14 14:44:49.572653',1,2,NULL,14,4,NULL,1);
+/*!40000 ALTER TABLE `api_laborcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_laborcostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_laborcostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_laborcostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `base_hourly_rate` double NOT NULL,
+  `total_base_hours` double NOT NULL,
+  `overtime_rate` double NOT NULL,
+  `total_overtime_hours` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `labor_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre` (`currency_id`),
+  KEY `api_laborcostmodelhi_disposal_id_9c6f3528_fk_api_asset` (`disposal_id`),
+  KEY `api_laborcostmodelhi_issue_id_bb6a1afc_fk_api_asset` (`issue_id`),
+  KEY `api_laborcostmodelhistory_labor_id_2cc63593_fk_api_laborcost_id` (`labor_id`),
+  KEY `api_laborcostmodelhi_location_id_79ca8861_fk_api_locat` (`location_id`),
+  KEY `api_laborcostmodelhi_maintenance_id_e612f7a2_fk_api_maint` (`maintenance_id`),
+  KEY `api_laborcostmodelhi_modified_by_id_3752372f_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_laborcostmodelhi_disposal_id_9c6f3528_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_laborcostmodelhi_issue_id_bb6a1afc_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_laborcostmodelhi_location_id_79ca8861_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_laborcostmodelhi_maintenance_id_e612f7a2_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_laborcostmodelhi_modified_by_id_3752372f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_laborcostmodelhistory_labor_id_2cc63593_fk_api_laborcost_id` FOREIGN KEY (`labor_id`) REFERENCES `api_laborcost` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_laborcostmodelhistory`
+--
+
+LOCK TABLES `api_laborcostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_laborcostmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_laborcostmodelhistory` VALUES (1,17,5,0,0,1.7,86.7,'2024-04-04 04:03:47.814911',2,NULL,1,1,1,NULL,1),(2,17,2,0,0,4.08,38.08,'2024-04-04 04:04:39.729432',2,NULL,NULL,2,1,1,1),(3,40.547260378193684,2,0,0,10.542287698330357,91.63680845471772,'2024-05-09 21:46:18.923902',2,NULL,NULL,3,1,1,1),(4,47.305137107892634,2,0,0,12.299335648052084,106.90960986383733,'2024-05-11 14:46:28.773250',2,NULL,NULL,4,1,2,1),(5,202.7363018909684,12,67.57876729698947,52,270.3150691879579,6217.246591323032,'2024-05-13 03:18:32.057541',2,NULL,8,5,4,NULL,1),(6,55,25,100,10,237.5,2612.5,'2025-01-07 16:17:36.999067',2,NULL,17,6,4,NULL,1),(7,123,123,223,10,1735.9,19094.9,'2025-01-07 17:05:54.211573',2,NULL,NULL,7,4,9,1),(8,85,30,0,0,510,3060,'2025-01-14 14:41:01.027871',2,NULL,1,1,1,NULL,1),(9,55,20,0,0,220,1320,'2025-01-14 14:44:49.580167',2,NULL,14,8,4,NULL,1);
+/*!40000 ALTER TABLE `api_laborcostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_licensecost`
+--
+
+DROP TABLE IF EXISTS `api_licensecost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_licensecost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `license_registration` double NOT NULL,
+  `taxes` double NOT NULL,
+  `license_plate_renewal` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_licensecost_location_id_13de6a03_fk_api_locat` (`location_id`),
+  KEY `api_licensecost_modified_by_id_41820a9d_fk_api_detai` (`modified_by_id`),
+  KEY `api_licensecost_VIN_id_30492662_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_licensecost_created_by_id_b691722b_fk_api_detai` (`created_by_id`),
+  KEY `api_licensecost_currency_id_6eea48cf_fk_api_currency_id` (`currency_id`),
+  CONSTRAINT `api_licensecost_created_by_id_b691722b_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_licensecost_currency_id_6eea48cf_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_licensecost_location_id_13de6a03_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_licensecost_modified_by_id_41820a9d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_licensecost_VIN_id_30492662_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_licensecost`
+--
+
+LOCK TABLES `api_licensecost` WRITE;
+/*!40000 ALTER TABLE `api_licensecost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_licensecost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_licensecostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_licensecostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_licensecostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `license_registration` double NOT NULL,
+  `taxes` double NOT NULL,
+  `license_plate_renewal` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `license_cost_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset` (`VIN_id`),
+  KEY `api_licensecostmodel_currency_id_7162ca61_fk_api_curre` (`currency_id`),
+  KEY `api_licensecostmodel_license_cost_id_6cdba7b2_fk_api_licen` (`license_cost_id`),
+  KEY `api_licensecostmodel_location_id_e8ea7596_fk_api_locat` (`location_id`),
+  KEY `api_licensecostmodel_modified_by_id_5d6e8b37_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_licensecostmodel_currency_id_7162ca61_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_licensecostmodel_license_cost_id_6cdba7b2_fk_api_licen` FOREIGN KEY (`license_cost_id`) REFERENCES `api_licensecost` (`id`),
+  CONSTRAINT `api_licensecostmodel_location_id_e8ea7596_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_licensecostmodel_modified_by_id_5d6e8b37_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_licensecostmodelhistory`
+--
+
+LOCK TABLES `api_licensecostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_licensecostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_licensecostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_locationmodel`
+--
+
+DROP TABLE IF EXISTS `api_locationmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_locationmodel` (
+  `location_id` int NOT NULL AUTO_INCREMENT,
+  `location_code` varchar(10) NOT NULL,
+  `location_name` varchar(100) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  PRIMARY KEY (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_locationmodel`
+--
+
+LOCK TABLES `api_locationmodel` WRITE;
+/*!40000 ALTER TABLE `api_locationmodel` DISABLE KEYS */;
+INSERT INTO `api_locationmodel` VALUES (1,'OTTAWA','Ottawa',45.4215,-75.6972),(2,'CALGARY','Calgary',51.0447,-114.0719),(3,'Halifax','Halifax',44.65107,-63.582687),(4,'VANCOUVER','VANCOUVER',49.2827,-123.1207);
+/*!40000 ALTER TABLE `api_locationmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenanceforecastrules`
+--
+
+DROP TABLE IF EXISTS `api_maintenanceforecastrules`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenanceforecastrules` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date_created` date NOT NULL,
+  `date_updated` date NOT NULL,
+  `hour_cycle` double NOT NULL,
+  `mileage_cycle` double NOT NULL,
+  `time_cycle` double NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `inspection_type_id` int NOT NULL,
+  `location_id` int NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `linked_engine_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_maintenanceforec_VIN_id_43d27b29_fk_api_asset` (`VIN_id`),
+  KEY `api_maintenanceforec_created_by_id_7b4190e3_fk_api_detai` (`created_by_id`),
+  KEY `api_maintenanceforec_inspection_type_id_4c2e50e0_fk_api_inspe` (`inspection_type_id`),
+  KEY `api_maintenanceforec_location_id_7d1db767_fk_api_locat` (`location_id`),
+  KEY `api_maintenanceforec_modified_by_id_0cb09b5d_fk_api_detai` (`modified_by_id`),
+  KEY `api_maintenanceforec_linked_engine_id_e91b800b_fk_api_engin` (`linked_engine_id`),
+  CONSTRAINT `api_maintenanceforec_created_by_id_7b4190e3_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenanceforec_inspection_type_id_4c2e50e0_fk_api_inspe` FOREIGN KEY (`inspection_type_id`) REFERENCES `api_inspectiontypemodel` (`id`),
+  CONSTRAINT `api_maintenanceforec_linked_engine_id_e91b800b_fk_api_engin` FOREIGN KEY (`linked_engine_id`) REFERENCES `api_enginemodel` (`engine_id`),
+  CONSTRAINT `api_maintenanceforec_location_id_7d1db767_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_maintenanceforec_modified_by_id_0cb09b5d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenanceforec_VIN_id_43d27b29_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenanceforecastrules`
+--
+
+LOCK TABLES `api_maintenanceforecastrules` WRITE;
+/*!40000 ALTER TABLE `api_maintenanceforecastrules` DISABLE KEYS */;
+INSERT INTO `api_maintenanceforecastrules` VALUES (1,'Camellia-Shipping-LLC-mfr-1','2024-07-23','2024-07-23',15,-1,-1,'SABAMR-9767-XR',1,1,4,1,NULL);
+/*!40000 ALTER TABLE `api_maintenanceforecastrules` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenanceforecastruleshistory`
+--
+
+DROP TABLE IF EXISTS `api_maintenanceforecastruleshistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenanceforecastruleshistory` (
+  `maintenance_forecast_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `hour_cycle` double NOT NULL,
+  `mileage_cycle` double NOT NULL,
+  `time_cycle` double NOT NULL,
+  `maintenance_forecast_id` int NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `linked_engine_id` int DEFAULT NULL,
+  PRIMARY KEY (`maintenance_forecast_history_id`),
+  KEY `api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint` (`maintenance_forecast_id`),
+  KEY `api_maintenanceforec_modified_by_id_679c2f26_fk_api_detai` (`modified_by_id`),
+  KEY `api_maintenanceforec_linked_engine_id_a1c94f89_fk_api_engin` (`linked_engine_id`),
+  CONSTRAINT `api_maintenanceforec_linked_engine_id_a1c94f89_fk_api_engin` FOREIGN KEY (`linked_engine_id`) REFERENCES `api_enginemodel` (`engine_id`),
+  CONSTRAINT `api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint` FOREIGN KEY (`maintenance_forecast_id`) REFERENCES `api_maintenanceforecastrules` (`id`),
+  CONSTRAINT `api_maintenanceforec_modified_by_id_679c2f26_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenanceforecastruleshistory`
+--
+
+LOCK TABLES `api_maintenanceforecastruleshistory` WRITE;
+/*!40000 ALTER TABLE `api_maintenanceforecastruleshistory` DISABLE KEYS */;
+INSERT INTO `api_maintenanceforecastruleshistory` VALUES (1,'Camellia-Shipping-LLC-mfr-1','2024-07-23 03:35:24.067268',15,-1,-1,1,1,NULL);
+/*!40000 ALTER TABLE `api_maintenanceforecastruleshistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenancerequestfile`
+--
+
+DROP TABLE IF EXISTS `api_maintenancerequestfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenancerequestfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai` (`created_by_id`),
+  KEY `api_maintenancereque_maintenance_request__dfdeb7ab_fk_api_maint` (`maintenance_request_id`),
+  CONSTRAINT `api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenancereque_maintenance_request__dfdeb7ab_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenancerequestfile`
+--
+
+LOCK TABLES `api_maintenancerequestfile` WRITE;
+/*!40000 ALTER TABLE `api_maintenancerequestfile` DISABLE KEYS */;
+INSERT INTO `api_maintenancerequestfile` VALUES (1,'application/pdf','other','supporting_files-1.pdf','https://2023aukaiprodv6.blob.core.windows.net/maintenance/6b96a083-ccb5-4bdc-b049-6214d9a65ecc_Camellia_Shipping_LLC_other_1_20240404-035145',35715,'2024-04-04 03:51:45.571372',NULL,1,1);
+/*!40000 ALTER TABLE `api_maintenancerequestfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenancerequestmodel`
+--
+
+DROP TABLE IF EXISTS `api_maintenancerequestmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenancerequestmodel` (
+  `maintenance_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `in_house` tinyint(1) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `date_completed` datetime(6) DEFAULT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `requested_delivery_date` datetime(6) DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `assigned_vendor_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `inspection_type_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `description` longtext NOT NULL,
+  PRIMARY KEY (`maintenance_id`),
+  KEY `api_maintenancereque_VIN_id_50b77888_fk_api_asset` (`VIN_id`),
+  KEY `api_maintenancereque_assigned_vendor_id_02b819e7_fk_api_appro` (`assigned_vendor_id`),
+  KEY `api_maintenancereque_created_by_id_8181a9ca_fk_api_detai` (`created_by_id`),
+  KEY `api_maintenancereque_inspection_type_id_f5a6ad64_fk_api_inspe` (`inspection_type_id`),
+  KEY `api_maintenancereque_location_id_945bb3c1_fk_api_locat` (`location_id`),
+  KEY `api_maintenancereque_modified_by_id_f7a66dc4_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_maintenancereque_assigned_vendor_id_02b819e7_fk_api_appro` FOREIGN KEY (`assigned_vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_maintenancereque_created_by_id_8181a9ca_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenancereque_inspection_type_id_f5a6ad64_fk_api_inspe` FOREIGN KEY (`inspection_type_id`) REFERENCES `api_inspectiontypemodel` (`id`),
+  CONSTRAINT `api_maintenancereque_location_id_945bb3c1_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_maintenancereque_modified_by_id_f7a66dc4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenancereque_VIN_id_50b77888_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenancerequestmodel`
+--
+
+LOCK TABLES `api_maintenancerequestmodel` WRITE;
+/*!40000 ALTER TABLE `api_maintenancerequestmodel` DISABLE KEYS */;
+INSERT INTO `api_maintenancerequestmodel` VALUES (1,'Camellia-Shipping-LLC-m-1',1,'2024-04-04 03:51:45.227753','2025-01-07 16:52:46.380983','2025-01-07 16:52:46.323875',NULL,'2024-04-10 07:00:00.000000',NULL,'2024-04-04 03:51:39.169000','NA',-1,300,'delivered','SBM2024XK91',NULL,1,1,1,1,''),(2,'Camellia-Shipping-LLC-m-2',1,'2024-05-10 22:13:06.123811','2025-01-07 16:54:35.854650','2025-01-07 16:54:35.782220',NULL,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000','NA',-1,650,'delivered','ASY20FRYK456',NULL,1,1,1,1,''),(3,'Camellia-Shipping-LLC-m-3',1,'2024-05-13 03:19:29.368521','2024-05-13 03:20:12.145248','2024-05-13 03:20:12.074611',NULL,'2024-05-27 06:00:00.000000',NULL,'2024-05-13 03:19:22.225000','NA',-1,280,'delivered','ASY22FRYX123',NULL,1,1,4,1,''),(4,'Camellia-Shipping-LLC-m-4',1,'2024-05-14 19:42:09.840669','2024-05-14 19:42:09.853014',NULL,NULL,'2024-05-23 06:00:00.000000',NULL,'2024-05-21 06:00:00.000000','NA',-1,350,'awaiting approval','ASY21FRYX589',NULL,1,1,4,1,''),(5,'Camellia-Shipping-LLC-m-5',1,'2024-05-15 13:40:11.990094','2024-05-15 13:40:12.002969',NULL,NULL,'2024-05-29 06:00:00.000000',NULL,'2024-05-15 13:39:37.321000','NA',-1,350,'awaiting approval','ASY21FRYX589',NULL,1,1,4,1,''),(6,'Camellia-Shipping-LLC-m-6',1,'2024-07-23 03:34:38.095756','2024-07-23 03:35:04.002696','2024-07-23 03:35:03.918376',NULL,'2024-07-29 06:00:00.000000',NULL,'2024-07-23 03:34:44.330000','NA',-1,720,'delivered','SABAMR-9767-XR',NULL,1,1,4,1,''),(7,'Camellia-Shipping-LLC-m-7',1,'2024-09-06 20:27:52.395310','2024-09-06 20:27:52.409163',NULL,NULL,'2024-09-30 06:00:00.000000',NULL,'2024-09-06 20:27:46.099000','NA',-1,380,'awaiting approval','ASY18FRYQ987',NULL,1,1,3,1,''),(8,'Camellia-Shipping-LLC-m-8',1,'2025-01-07 17:04:39.084109','2025-01-07 17:06:12.198811','2025-01-07 17:06:12.145923',NULL,'2025-01-27 07:00:00.000000',NULL,'2025-01-07 17:04:32.959000','NA',-1,350,'delivered','UBOTT-1057-AS',NULL,1,1,3,1,''),(9,'Camellia-Shipping-LLC-m-9',1,'2025-01-07 17:05:11.686897','2025-01-07 17:05:11.696353',NULL,NULL,'2025-01-16 07:00:00.000000',NULL,'2025-01-07 17:04:58.135000','NA',-1,350,'awaiting approval','CMA2024SHIP156',NULL,1,1,4,1,'');
+/*!40000 ALTER TABLE `api_maintenancerequestmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenancerequestmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_maintenancerequestmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenancerequestmodelhistory` (
+  `maintenance_history_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `date_completed` date DEFAULT NULL,
+  `estimated_delivery_date` date DEFAULT NULL,
+  `requested_delivery_date` date DEFAULT NULL,
+  `vendor_contacted_date` date DEFAULT NULL,
+  `available_pickup_date` date DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `assigned_vendor_id` int DEFAULT NULL,
+  `inspection_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`maintenance_history_id`),
+  KEY `api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro` (`assigned_vendor_id`),
+  KEY `api_maintenancereque_inspection_type_id_cbbfad63_fk_api_inspe` (`inspection_type_id`),
+  KEY `api_maintenancereque_location_id_9de4fbdf_fk_api_locat` (`location_id`),
+  KEY `api_maintenancereque_maintenance_id_94b8ca43_fk_api_maint` (`maintenance_id`),
+  KEY `api_maintenancereque_modified_by_id_8c9621ac_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro` FOREIGN KEY (`assigned_vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_maintenancereque_inspection_type_id_cbbfad63_fk_api_inspe` FOREIGN KEY (`inspection_type_id`) REFERENCES `api_inspectiontypemodel` (`id`),
+  CONSTRAINT `api_maintenancereque_location_id_9de4fbdf_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_maintenancereque_maintenance_id_94b8ca43_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_maintenancereque_modified_by_id_8c9621ac_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenancerequestmodelhistory`
+--
+
+LOCK TABLES `api_maintenancerequestmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_maintenancerequestmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_maintenancerequestmodelhistory` VALUES (1,'Camellia-Shipping-LLC-m-1','2024-04-04 03:51:45.254078',NULL,NULL,'2024-04-10',NULL,'2024-04-04','NA',-1,300,'awaiting approval',NULL,1,1,1,1),(2,'Camellia-Shipping-LLC-m-1','2024-05-09 21:41:17.905643',NULL,NULL,'2024-04-10',NULL,'2024-04-04','NA',-1,300,'awaiting approval',NULL,1,1,1,1),(3,'Camellia-Shipping-LLC-m-2','2024-05-10 22:13:06.148942',NULL,NULL,'2024-05-15',NULL,'2024-05-13','NA',-1,650,'awaiting approval',NULL,1,1,2,1),(4,'Camellia-Shipping-LLC-m-3','2024-05-13 03:19:29.393278',NULL,NULL,'2024-05-27',NULL,'2024-05-13','NA',-1,280,'awaiting approval',NULL,1,4,3,1),(5,'Camellia-Shipping-LLC-m-3','2024-05-13 03:20:12.166824','2024-05-13',NULL,'2024-05-27',NULL,'2024-05-13','NA',-1,280,'delivered',NULL,1,4,3,1),(6,'Camellia-Shipping-LLC-m-4','2024-05-14 19:42:09.869237',NULL,NULL,'2024-05-23',NULL,'2024-05-21','NA',-1,350,'awaiting approval',NULL,1,4,4,1),(7,'Camellia-Shipping-LLC-m-5','2024-05-15 13:40:12.016230',NULL,NULL,'2024-05-29',NULL,'2024-05-15','NA',-1,350,'awaiting approval',NULL,1,4,5,1),(8,'Camellia-Shipping-LLC-m-6','2024-07-23 03:34:38.126423',NULL,NULL,'2024-07-29',NULL,'2024-07-23','NA',-1,720,'awaiting approval',NULL,1,4,6,1),(9,'Camellia-Shipping-LLC-m-6','2024-07-23 03:35:04.025734','2024-07-23',NULL,'2024-07-29',NULL,'2024-07-23','NA',-1,720,'delivered',NULL,1,4,6,1),(10,'Camellia-Shipping-LLC-m-7','2024-09-06 20:27:52.423796',NULL,NULL,'2024-09-30',NULL,'2024-09-06','NA',-1,380,'awaiting approval',NULL,1,3,7,1),(11,'Camellia-Shipping-LLC-m-1','2025-01-07 16:52:46.417838','2025-01-07',NULL,'2024-04-10',NULL,'2024-04-04','NA',-1,300,'delivered',NULL,1,1,1,1),(12,'Camellia-Shipping-LLC-m-2','2025-01-07 16:54:35.879252','2025-01-07',NULL,'2024-05-15',NULL,'2024-05-13','NA',-1,650,'delivered',NULL,1,1,2,1),(13,'Camellia-Shipping-LLC-m-8','2025-01-07 17:04:39.115491',NULL,NULL,'2025-01-27',NULL,'2025-01-07','NA',-1,350,'awaiting approval',NULL,1,3,8,1),(14,'Camellia-Shipping-LLC-m-9','2025-01-07 17:05:11.809748',NULL,NULL,'2025-01-16',NULL,'2025-01-07','NA',-1,350,'awaiting approval',NULL,1,4,9,1),(15,'Camellia-Shipping-LLC-m-8','2025-01-07 17:06:12.215074','2025-01-07',NULL,'2025-01-27',NULL,'2025-01-07','NA',-1,350,'delivered',NULL,1,3,8,1);
+/*!40000 ALTER TABLE `api_maintenancerequestmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_notificationconfiguration`
+--
+
+DROP TABLE IF EXISTS `api_notificationconfiguration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_notificationconfiguration` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `fields` longtext,
+  `custom_text` longtext,
+  `triggers` longtext,
+  `recipient_type` varchar(50) NOT NULL,
+  `users` longtext,
+  `locations` longtext,
+  `business_units` longtext,
+  `roles` longtext,
+  `date_modified` datetime(6) NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_notificationconfiguration`
+--
+
+LOCK TABLES `api_notificationconfiguration` WRITE;
+/*!40000 ALTER TABLE `api_notificationconfiguration` DISABLE KEYS */;
+INSERT INTO `api_notificationconfiguration` VALUES (1,'New Accident',1,'-accident_id-vin-is_preventable-is_equipment_failure-evaluation_required-date_created-date_updated-is_operational-','','-add_accident-update_accident-','user','-','-','','-','2023-10-30 00:00:00.000000',1),(2,'Asset Reassigned',1,'-accident_id-vin-is_preventable-is_equipment_failure-evaluation_required-date_created-date_updated-is_operational-','','-reassign_asset-','user','-','-','','-','2023-10-30 00:00:00.000000',1),(3,'New Asset Request',1,'-accident_id-vin-is_preventable-is_equipment_failure-evaluation_required-date_created-date_updated-is_operational-','','-update_asset_request-','user','-','-','','-','2023-10-30 00:00:00.000000',1),(4,'New Auction Disposal',1,'-contact_name-company-company_address-contact_email-date-vin-available_pickup_date-asset_type-year-make-model-colour-odometer-engine_hours-location-manager_contact_email-interior_condition-interior_condition_details-exterior_condition-exterior_condition_details-accident-equipment_failure-','','-add_auction-update_disposal-','user','-','-','','-','2023-10-30 00:00:00.000000',1),(5,'New Daily Check',1,'-vin-created_by-date-mileage-hours-daily_check_name-daily_check_status-','','-add_daily_check-','user','-','-','','-','2023-10-30 00:00:00.000000',1),(6,'New Donation Disposal',1,'-contact_name-company-company_address-contact_email-date-vin-available_pickup_date-asset_type-year-make-model-colour-odometer-engine_hours-location-manager_contact_email-interior_condition-interior_condition_details-exterior_condition-exterior_condition_details-accident-equipment_failure-','','-add_donation-update_disposal-','user','-','-','','-','2023-10-30 00:00:00.000000',1),(7,'Expiry',1,'-vin-expiring_items-','','-notify_expiry-','user','-',NULL,NULL,NULL,'2023-10-30 00:00:00.000000',1),(8,'New Asset Issue',1,'-issue_id-vin-issue_type-cause-date_created-date_updated-status-issue_repair_category-issue_title-issue_description-','','-add_issue-update_issue-','user','-',NULL,NULL,NULL,'2023-10-30 00:00:00.000000',1),(9,'Maintenance Forecast',1,'-vin-inspection_type-','','-notify_maintenance-','user','-','-',NULL,'-','2023-10-30 00:00:00.000000',1),(10,'New Maintenance',1,'maintenance_id-vin-inspection_type-location-mileage-hours-assigned_vendor-fleet_contact_email-fleet_contact_name-requested_delivery-estimated_delivery-status-','','-add_maintenance-update_maintenance-','user','-','-',NULL,'-','2023-10-30 00:00:00.000000',1),(11,'New Repair',1,'-company_name-company_address-company_phone-asset_num-serial_num-license_num-engine_type-odometer-engine_hours-make-model-repair_id-po_num-wo_num-fleet_contact_email-fleet_contact_name-vendor_pickup_date-est_return_date-pickup_location-dropoff_location-invoice_to-issue_repair_category-issue_title-issue_description-','','-add_repair-update_repair-update_issue-','user','-','-',NULL,'-','2023-10-30 00:00:00.000000',1),(12,'Request Cancellation',1,NULL,'','-cancel_maintenance-cancel_repair-cancel_asset_request-','user','-',NULL,NULL,'-','2023-10-30 00:00:00.000000',1),(13,'New Scrap Disposal',1,'-contact_name-company-company_address-contact_email-date-vin-available_pickup_date-asset_type-year-make-model-colour-odometer-engine_hours-location-manager_contact_email-interior_condition-interior_condition_details-exterior_condition-exterior_condition_details-accident-equipment_failure-','','-add_scrap-update_disposal-','user','-',NULL,NULL,'-','2023-10-30 00:00:00.000000',1),(14,'New Transfer',1,'-asset_transfer_id-vin-fleet_contact_email-fleet_contact_name-pickup_date-destination_location-justification-status-','','-add_transfer-update_transfer-','user','-','-',NULL,'-','2023-10-30 00:00:00.000000',1),(15,'Updated Daily Check',1,'-daily_op_checks_id-daily_op_checks_manufacturer-daily_op_checks_asset_type-daily_op_checks_model-vin-modified_by-prev_mileage-updated_mileage-prev_hours-updated_hours-prev_fuel-updated_fuel-','','-update_daily_check-','user','-','-',NULL,'-','2023-10-30 00:00:00.000000',1),(16,'Overdue Maintenance',0,'-vin-inspection_type-','','-notify_overdue_maintenance','user','-','-','','-','2023-10-30 00:00:00.000000',1),(17,'Unusual Fuel Cost',1,NULL,NULL,NULL,'user','-',NULL,NULL,NULL,'2023-10-30 00:00:00.000000',1);
+/*!40000 ALTER TABLE `api_notificationconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_parts`
+--
+
+DROP TABLE IF EXISTS `api_parts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_parts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `part_number` varchar(100) NOT NULL,
+  `part_name` varchar(100) NOT NULL,
+  `quantity` int NOT NULL,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_parts_created_by_id_8d88feb8_fk_api_detai` (`created_by_id`),
+  KEY `api_parts_currency_id_31be192f_fk_api_currency_id` (`currency_id`),
+  KEY `api_parts_disposal_id_8471b0ca_fk_api_assetdisposalmodel_id` (`disposal_id`),
+  KEY `api_parts_issue_id_75453a17_fk_api_assetissuemodel_issue_id` (`issue_id`),
+  KEY `api_parts_location_id_675c79a9_fk_api_locationmodel_location_id` (`location_id`),
+  KEY `api_parts_maintenance_id_3be00de0_fk_api_maint` (`maintenance_id`),
+  KEY `api_parts_modified_by_id_fc2414a8_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_parts_created_by_id_8d88feb8_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_parts_currency_id_31be192f_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_parts_disposal_id_8471b0ca_fk_api_assetdisposalmodel_id` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_parts_issue_id_75453a17_fk_api_assetissuemodel_issue_id` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_parts_location_id_675c79a9_fk_api_locationmodel_location_id` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_parts_maintenance_id_3be00de0_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_parts_modified_by_id_fc2414a8_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_parts`
+--
+
+LOCK TABLES `api_parts` WRITE;
+/*!40000 ALTER TABLE `api_parts` DISABLE KEYS */;
+INSERT INTO `api_parts` VALUES (1,'12699529','Engine Piston - GM',2,1500,69.06,3069.06,'2024-04-04 04:02:56.991762','2025-01-14 14:41:16.038815',1,2,NULL,1,1,NULL,1),(2,'12699529','Engine Piston - GM',6,95.91,69.06,644.52,'2024-04-04 04:04:22.589139','2024-04-04 04:04:22.609974',1,2,NULL,NULL,1,1,1),(3,'123','Oil seal',1,27.031506918795788,3.514095899443453,30.545602818239242,'2024-05-09 21:45:45.863468','2024-05-09 21:45:45.885652',1,2,NULL,NULL,1,1,1),(5,'123','Filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-10 22:43:06.938716','2024-05-10 22:43:06.965862',1,2,NULL,NULL,1,2,1),(6,'123','Air Filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-11 14:45:11.749863','2024-05-11 14:45:11.771373',1,2,NULL,NULL,1,2,1),(7,'123','Air filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-11 15:01:02.217223','2024-05-11 15:01:02.242125',1,2,NULL,NULL,1,2,1),(8,'123','Engine',3,33863.72029252142,270.3150691879579,101861.47594675224,'2024-05-13 03:20:02.044929','2024-05-13 03:20:02.068125',1,2,NULL,NULL,4,3,1),(9,'123','Air filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-14 19:44:47.830904','2024-05-14 19:44:47.853316',1,2,NULL,NULL,4,4,1),(10,'123','123',12,123,123,1599,'2024-07-23 03:34:54.488061','2024-07-23 03:34:54.512431',1,2,NULL,NULL,4,6,1),(11,'Engine Part1','Engine Part1',2,73280.05,8793.606,155353.706,'2024-09-06 20:27:06.272989','2024-09-06 20:27:06.298048',1,2,NULL,11,3,NULL,1),(12,'125','125',5,500,250,2750,'2025-01-07 16:17:20.378500','2025-01-07 16:17:20.397596',1,2,NULL,15,4,NULL,1),(13,'123','123',123,123,1512.9,16641.9,'2025-01-07 17:05:40.762335','2025-01-07 17:05:40.782004',1,2,NULL,NULL,4,9,1),(14,'123435HHS2JD','Engine Seal',2,850,340,2040,'2025-01-14 14:44:36.430226','2025-01-14 14:44:36.448458',1,2,NULL,14,4,NULL,1),(15,'Batt','Batt',10,7328.005,10992.0075,84272.0575,'2025-02-06 17:25:39.023616','2025-02-06 17:25:39.047991',1,2,NULL,24,3,NULL,1);
+/*!40000 ALTER TABLE `api_parts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_partsmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_partsmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_partsmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `part_number` varchar(100) NOT NULL,
+  `part_name` varchar(100) NOT NULL,
+  `quantity` int NOT NULL,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `parts_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id` (`currency_id`),
+  KEY `api_partsmodelhistor_disposal_id_78da58e1_fk_api_asset` (`disposal_id`),
+  KEY `api_partsmodelhistor_issue_id_7708c488_fk_api_asset` (`issue_id`),
+  KEY `api_partsmodelhistor_location_id_2c2991fe_fk_api_locat` (`location_id`),
+  KEY `api_partsmodelhistor_maintenance_id_cd17ac11_fk_api_maint` (`maintenance_id`),
+  KEY `api_partsmodelhistor_modified_by_id_d6a9f159_fk_api_detai` (`modified_by_id`),
+  KEY `api_partsmodelhistory_parts_id_ba93e01e_fk_api_parts_id` (`parts_id`),
+  CONSTRAINT `api_partsmodelhistor_disposal_id_78da58e1_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_partsmodelhistor_issue_id_7708c488_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_partsmodelhistor_location_id_2c2991fe_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_partsmodelhistor_maintenance_id_cd17ac11_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_partsmodelhistor_modified_by_id_d6a9f159_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_partsmodelhistory_parts_id_ba93e01e_fk_api_parts_id` FOREIGN KEY (`parts_id`) REFERENCES `api_parts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_partsmodelhistory`
+--
+
+LOCK TABLES `api_partsmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_partsmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_partsmodelhistory` VALUES (1,'12699529','Engine Piston - GM',6,95.91,69.06,644.52,'2024-04-04 04:02:57.022638','2024-04-04 04:02:57.022666',2,NULL,1,1,NULL,1,1),(2,'12699529','Engine Piston - GM',6,95.91,69.06,644.52,'2024-04-04 04:04:22.618636','2024-04-04 04:04:22.618664',2,NULL,NULL,1,1,1,2),(3,'123','Oil seal',1,27.031506918795788,3.514095899443453,30.545602818239242,'2024-05-09 21:45:45.895110','2024-05-09 21:45:45.895140',2,NULL,NULL,1,1,1,3),(4,'123','Air filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-10 22:23:19.901818','2024-05-10 22:23:19.901848',2,NULL,NULL,1,2,1,NULL),(5,'123','Filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-10 22:43:06.976027','2024-05-10 22:43:06.976069',2,NULL,NULL,1,2,1,5),(6,'123','Air Filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-11 14:45:11.781524','2024-05-11 14:45:11.781554',2,NULL,NULL,1,2,1,6),(7,'123','Air filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-11 15:01:02.251637','2024-05-11 15:01:02.251666',2,NULL,NULL,1,2,1,7),(8,'123','Engine',3,33863.72029252142,270.3150691879579,101861.47594675224,'2024-05-13 03:20:02.077981','2024-05-13 03:20:02.078017',2,NULL,NULL,4,3,1,8),(9,'123','Air filter',2,47.305137107892634,12.299335648052084,106.90960986383733,'2024-05-14 19:44:47.862944','2024-05-14 19:44:47.862976',2,NULL,NULL,4,4,1,9),(10,'123','123',12,123,123,1599,'2024-07-23 03:34:54.523907','2024-07-23 03:34:54.523960',2,NULL,NULL,4,6,1,10),(11,'Engine Part1','Engine Part1',2,73280.05,8793.606,155353.706,'2024-09-06 20:27:06.310274','2024-09-06 20:27:06.310325',2,NULL,11,3,NULL,1,11),(12,'125','125',5,500,250,2750,'2025-01-07 16:17:20.406382','2025-01-07 16:17:20.406420',2,NULL,15,4,NULL,1,12),(13,'123','123',123,123,1512.9,16641.9,'2025-01-07 17:05:40.791461','2025-01-07 17:05:40.791496',2,NULL,NULL,4,9,1,13),(14,'12699529','Engine Piston - GM',2,1500,69.06,3069.06,'2025-01-14 14:41:16.048530','2025-01-14 14:41:16.048565',2,NULL,1,1,NULL,1,1),(15,'123435HHS2JD','Engine Seal',2,850,340,2040,'2025-01-14 14:44:36.455724','2025-01-14 14:44:36.455758',2,NULL,14,4,NULL,1,14),(16,'Batt','Batt',10,7328.005,10992.0075,84272.0575,'2025-02-06 17:25:39.057082','2025-02-06 17:25:39.057128',2,NULL,24,3,NULL,1,15);
+/*!40000 ALTER TABLE `api_partsmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_rentalcost`
+--
+
+DROP TABLE IF EXISTS `api_rentalcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_rentalcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id` (`repair_id`),
+  KEY `api_rentalcost_VIN_id_70e51830_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_rentalcost_accident_id_87ebc25f_fk_api_accid` (`accident_id`),
+  KEY `api_rentalcost_created_by_id_a458d221_fk_api_detai` (`created_by_id`),
+  KEY `api_rentalcost_currency_id_500e53df_fk_api_currency_id` (`currency_id`),
+  KEY `api_rentalcost_location_id_1efbd134_fk_api_locat` (`location_id`),
+  KEY `api_rentalcost_maintenance_id_9237c325_fk_api_maint` (`maintenance_id`),
+  KEY `api_rentalcost_modified_by_id_0a505810_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_rentalcost_accident_id_87ebc25f_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_rentalcost_created_by_id_a458d221_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_rentalcost_currency_id_500e53df_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_rentalcost_location_id_1efbd134_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_rentalcost_maintenance_id_9237c325_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_rentalcost_modified_by_id_0a505810_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_rentalcost_VIN_id_70e51830_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_rentalcost`
+--
+
+LOCK TABLES `api_rentalcost` WRITE;
+/*!40000 ALTER TABLE `api_rentalcost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_rentalcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_rentalcostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_rentalcostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_rentalcostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `rental_cost_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_rentalcostmodelh_accident_id_a69d45ed_fk_api_accid` (`accident_id`),
+  KEY `api_rentalcostmodelh_currency_id_d08ff758_fk_api_curre` (`currency_id`),
+  KEY `api_rentalcostmodelh_location_id_939da8fa_fk_api_locat` (`location_id`),
+  KEY `api_rentalcostmodelh_maintenance_id_e9f9565d_fk_api_maint` (`maintenance_id`),
+  KEY `api_rentalcostmodelh_modified_by_id_3b0dbc48_fk_api_detai` (`modified_by_id`),
+  KEY `api_rentalcostmodelh_rental_cost_id_794e94d2_fk_api_renta` (`rental_cost_id`),
+  KEY `api_rentalcostmodelh_repair_id_bfb01785_fk_api_repai` (`repair_id`),
+  CONSTRAINT `api_rentalcostmodelh_accident_id_a69d45ed_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_rentalcostmodelh_currency_id_d08ff758_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_rentalcostmodelh_location_id_939da8fa_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_rentalcostmodelh_maintenance_id_e9f9565d_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_rentalcostmodelh_modified_by_id_3b0dbc48_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_rentalcostmodelh_rental_cost_id_794e94d2_fk_api_renta` FOREIGN KEY (`rental_cost_id`) REFERENCES `api_rentalcost` (`id`),
+  CONSTRAINT `api_rentalcostmodelh_repair_id_bfb01785_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_rentalcostmodelhistory`
+--
+
+LOCK TABLES `api_rentalcostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_rentalcostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_rentalcostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_repairfile`
+--
+
+DROP TABLE IF EXISTS `api_repairfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_repairfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_repairfile_created_by_id_e6fffdd7_fk_api_detai` (`created_by_id`),
+  KEY `api_repairfile_repair_id_19d4f16c_fk_api_repairsmodel_repair_id` (`repair_id`),
+  CONSTRAINT `api_repairfile_created_by_id_e6fffdd7_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairfile_repair_id_19d4f16c_fk_api_repairsmodel_repair_id` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_repairfile`
+--
+
+LOCK TABLES `api_repairfile` WRITE;
+/*!40000 ALTER TABLE `api_repairfile` DISABLE KEYS */;
+INSERT INTO `api_repairfile` VALUES (1,'application/pdf','other','supporting_files-1.pdf','https://2023aukaiprodv6.blob.core.windows.net/repair/c2c4af59-e49c-4266-b8bb-1c163b8370f0_Camellia_Shipping_LLC_other_1_20240403-220239',35715,'2024-04-03 22:02:39.947995',NULL,1,1);
+/*!40000 ALTER TABLE `api_repairfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_repairsmodel`
+--
+
+DROP TABLE IF EXISTS `api_repairsmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_repairsmodel` (
+  `repair_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `in_house` tinyint(1) NOT NULL,
+  `description` longtext NOT NULL,
+  `is_refurbishment` tinyint(1) NOT NULL,
+  `requested_delivery_date` datetime(6) DEFAULT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `date_completed` datetime(6) DEFAULT NULL,
+  `down_time` double DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `is_urgent` tinyint(1) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`repair_id`),
+  KEY `api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_repairsmodel_created_by_id_132af9d7_fk_api_detai` (`created_by_id`),
+  KEY `api_repairsmodel_disposal_id_c9f681ab_fk_api_asset` (`disposal_id`),
+  KEY `api_repairsmodel_location_id_baf19500_fk_api_locat` (`location_id`),
+  KEY `api_repairsmodel_modified_by_id_de30d9ec_fk_api_detai` (`modified_by_id`),
+  KEY `api_repairsmodel_vendor_id_11d778d3_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_repairsmodel_created_by_id_132af9d7_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairsmodel_disposal_id_c9f681ab_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_repairsmodel_location_id_baf19500_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_repairsmodel_modified_by_id_de30d9ec_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairsmodel_vendor_id_11d778d3_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_repairsmodel`
+--
+
+LOCK TABLES `api_repairsmodel` WRITE;
+/*!40000 ALTER TABLE `api_repairsmodel` DISABLE KEYS */;
+INSERT INTO `api_repairsmodel` VALUES (1,'Camellia-Shipping-LLC-r-1','2024-04-03 22:02:39.817539','2024-04-03 22:02:39.875965',1,'Changing piston with a new one.',0,'2024-04-08 07:00:00.000000',NULL,'2024-04-04 07:00:00.000000',NULL,9091,NULL,'NA',-1,200,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(2,'Camellia-Shipping-LLC-r-2','2024-05-09 21:44:15.665359','2024-05-09 21:44:15.720360',1,'Replace seal on engine',0,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,8228,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(3,'Camellia-Shipping-LLC-r-3','2024-05-10 21:52:38.712056','2024-05-10 21:52:38.765720',1,'Replace seal',0,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,8203,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(4,'Camellia-Shipping-LLC-r-4','2024-05-10 21:58:31.565184','2024-05-10 21:58:31.623836',1,'change seal on engine',0,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,8203,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(5,'Camellia-Shipping-LLC-r-5','2024-05-10 22:10:50.156014','2024-05-10 22:10:50.212823',1,'Replace seal on engine',0,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,8203,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(6,'Camellia-Shipping-LLC-r-6','2024-05-11 14:42:42.279863','2024-05-11 14:42:42.332652',1,'Replace seal in engine',0,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,8187,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(7,'Camellia-Shipping-LLC-r-7','2024-05-11 14:58:53.554916','2024-05-11 14:58:53.610335',1,'Repair oil leak',0,'2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,8186,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,1,1,NULL),(8,'Camellia-Shipping-LLC-r-8','2024-05-13 03:17:58.701812','2024-05-13 03:18:45.084855',1,'Fix',0,'2024-05-27 06:00:00.000000',NULL,'2024-05-13 03:17:51.164000','2024-05-12 21:18:40.098000',-6,NULL,'NA',-1,250,0,'delivered','ASY22FRYX123',1,NULL,4,1,NULL),(9,'Camellia-Shipping-LLC-r-9','2024-05-15 13:34:42.515851','2024-05-15 13:34:42.575016',1,'Fix',0,'2024-05-29 06:00:00.000000',NULL,'2024-05-15 13:33:11.279000',NULL,8092,NULL,'NA',-1,350,0,'approved','ASY21FRYX589',1,NULL,4,1,NULL),(10,'Camellia-Shipping-LLC-r-10','2024-07-23 03:34:10.582242','2024-07-23 03:34:10.647114',1,'Fix',0,'2024-07-30 06:00:00.000000',NULL,'2024-07-23 03:34:17.131000',NULL,6446,NULL,'NA',-1,720,1,'approved','SABAMR-9767-XR',1,NULL,4,1,NULL),(11,'Camellia-Shipping-LLC-r-11','2024-09-06 20:26:28.346680','2024-09-06 20:26:28.443000',1,'Fix',0,'2024-09-30 06:00:00.000000',NULL,'2024-09-06 20:26:16.008000',NULL,5349,NULL,'NA',-1,350,0,'approved','ASY18FRYQ987',1,NULL,3,1,NULL),(12,'Camellia-Shipping-LLC-r-12','2025-01-07 16:16:46.093049','2025-01-07 16:17:53.346217',1,'Plz fix',0,'2025-01-28 07:00:00.000000',NULL,'2025-01-14 07:00:00.000000','2025-01-07 09:17:45.967000',-7,NULL,'NA',-1,300,0,'delivered','BY2024YCHT289',1,NULL,4,1,NULL),(13,'Camellia-Shipping-LLC-r-13','2025-01-07 16:51:52.081916','2025-01-07 16:51:52.165103',1,'Fix',0,'2025-01-20 07:00:00.000000',NULL,'2025-01-07 16:51:45.600000',NULL,2400,NULL,'NA',-1,350,0,'approved','ASY21FRYX589',1,NULL,3,1,NULL),(14,'Camellia-Shipping-LLC-r-14','2025-01-14 14:43:29.160852','2025-01-14 14:45:15.610765',1,'Fix Engine',0,'2025-01-21 07:00:00.000000',NULL,'2025-01-14 14:43:15.037000','2025-01-14 07:45:01.478000',-7,NULL,'NA',-1,365,0,'delivered','ASY22FRYX123',1,NULL,4,1,NULL),(15,'Camellia-Shipping-LLC-r-15','2025-01-14 16:35:17.348429','2025-01-14 16:35:17.391809',1,'Fix',0,'2025-01-27 07:00:00.000000',NULL,'2025-01-14 16:32:32.191000',NULL,2233,NULL,'NA',-1,650,0,'approved','BY2024YCHT188',1,NULL,4,1,NULL),(16,'Camellia-Shipping-LLC-r-16','2025-02-06 17:25:05.766772','2025-02-06 17:25:49.290148',1,'Plz fix',0,'2025-02-26 07:00:00.000000',NULL,'2025-02-06 17:24:59.273000','2025-02-06 10:25:45.281000',-7,NULL,'NA',-1,590,0,'delivered','BY2024YCHT744',1,NULL,3,1,NULL),(17,'Camellia-Shipping-LLC-r-17','2025-04-17 17:47:13.083852','2025-04-17 17:47:13.185246',1,'Engine fix',0,'2025-04-24 06:00:00.000000',NULL,'2025-04-17 17:45:55.747000',NULL,0,NULL,'NA',-1,315,0,'approved','BY2024YCHT289',1,NULL,4,1,NULL);
+/*!40000 ALTER TABLE `api_repairsmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_repairsmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_repairsmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_repairsmodelhistory` (
+  `repair_history_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `description` longtext NOT NULL,
+  `requested_delivery_date` datetime(6) DEFAULT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `date_completed` datetime(6) DEFAULT NULL,
+  `down_time` int DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int NOT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`repair_history_id`),
+  KEY `api_repairsmodelhist_location_id_409ef7e3_fk_api_locat` (`location_id`),
+  KEY `api_repairsmodelhist_modified_by_id_a021000f_fk_api_detai` (`modified_by_id`),
+  KEY `api_repairsmodelhist_repair_id_34ccb561_fk_api_repai` (`repair_id`),
+  KEY `api_repairsmodelhist_vendor_id_22ec1f3b_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_repairsmodelhist_location_id_409ef7e3_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_repairsmodelhist_modified_by_id_a021000f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairsmodelhist_repair_id_34ccb561_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_repairsmodelhist_vendor_id_22ec1f3b_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_repairsmodelhistory`
+--
+
+LOCK TABLES `api_repairsmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_repairsmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_repairsmodelhistory` VALUES (1,'Camellia-Shipping-LLC-r-1','2024-04-03 22:02:39.960464','Changing piston with a new one.','2024-04-08 07:00:00.000000',NULL,'2024-04-04 07:00:00.000000',NULL,NULL,NULL,'NA',-1,200,'approved',1,1,1,NULL),(2,'Camellia-Shipping-LLC-r-2','2024-05-09 21:44:15.728361','Replace seal on engine','2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,NULL,NULL,'NA',-1,350,'approved',1,1,2,NULL),(3,'Camellia-Shipping-LLC-r-3','2024-05-10 21:52:38.773637','Replace seal','2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,NULL,NULL,'NA',-1,350,'approved',1,1,3,NULL),(4,'Camellia-Shipping-LLC-r-4','2024-05-10 21:58:31.631702','change seal on engine','2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,NULL,NULL,'NA',-1,350,'approved',1,1,4,NULL),(5,'Camellia-Shipping-LLC-r-5','2024-05-10 22:10:50.221870','Replace seal on engine','2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,NULL,NULL,'NA',-1,350,'approved',1,1,5,NULL),(6,'Camellia-Shipping-LLC-r-6','2024-05-11 14:42:42.339742','Replace seal in engine','2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,NULL,NULL,'NA',-1,350,'approved',1,1,6,NULL),(7,'Camellia-Shipping-LLC-r-7','2024-05-11 14:58:53.618299','Repair oil leak','2024-05-15 06:00:00.000000',NULL,'2024-05-13 06:00:00.000000',NULL,NULL,NULL,'NA',-1,350,'approved',1,1,7,NULL),(8,'Camellia-Shipping-LLC-r-8','2024-05-13 03:17:58.763979','Fix','2024-05-27 06:00:00.000000',NULL,'2024-05-13 03:17:51.164000',NULL,NULL,NULL,'NA',-1,250,'approved',4,1,8,NULL),(9,'Camellia-Shipping-LLC-r-8','2024-05-13 03:18:45.173668','Fix','2024-05-27 06:00:00.000000',NULL,'2024-05-13 03:17:51.164000','2024-05-12 21:18:40.098000',-6,NULL,'NA',-1,250,'delivered',4,1,8,NULL),(10,'Camellia-Shipping-LLC-r-9','2024-05-15 13:34:42.582760','Fix','2024-05-29 06:00:00.000000',NULL,'2024-05-15 13:33:11.279000',NULL,NULL,NULL,'NA',-1,350,'approved',4,1,9,NULL),(11,'Camellia-Shipping-LLC-r-10','2024-07-23 03:34:10.656749','Fix','2024-07-30 06:00:00.000000',NULL,'2024-07-23 03:34:17.131000',NULL,NULL,NULL,'NA',-1,720,'approved',4,1,10,NULL),(12,'Camellia-Shipping-LLC-r-11','2024-09-06 20:26:28.451162','Fix','2024-09-30 06:00:00.000000',NULL,'2024-09-06 20:26:16.008000',NULL,NULL,NULL,'NA',-1,350,'approved',3,1,11,NULL),(13,'Camellia-Shipping-LLC-r-12','2025-01-07 16:16:46.302065','Plz fix','2025-01-28 07:00:00.000000',NULL,'2025-01-14 07:00:00.000000',NULL,NULL,NULL,'NA',-1,300,'approved',4,1,12,NULL),(14,'Camellia-Shipping-LLC-r-12','2025-01-07 16:17:53.557116','Plz fix','2025-01-28 07:00:00.000000',NULL,'2025-01-14 07:00:00.000000','2025-01-07 09:17:45.967000',-7,NULL,'NA',-1,300,'delivered',4,1,12,NULL),(15,'Camellia-Shipping-LLC-r-13','2025-01-07 16:51:52.175673','Fix','2025-01-20 07:00:00.000000',NULL,'2025-01-07 16:51:45.600000',NULL,NULL,NULL,'NA',-1,350,'approved',3,1,13,NULL),(16,'Camellia-Shipping-LLC-r-14','2025-01-14 14:43:29.217040','Fix Engine','2025-01-21 07:00:00.000000',NULL,'2025-01-14 14:43:15.037000',NULL,NULL,NULL,'NA',-1,365,'approved',4,1,14,NULL),(17,'Camellia-Shipping-LLC-r-14','2025-01-14 14:45:15.793133','Fix Engine','2025-01-21 07:00:00.000000',NULL,'2025-01-14 14:43:15.037000','2025-01-14 07:45:01.478000',-7,NULL,'NA',-1,365,'delivered',4,1,14,NULL),(18,'Camellia-Shipping-LLC-r-15','2025-01-14 16:35:17.398342','Fix','2025-01-27 07:00:00.000000',NULL,'2025-01-14 16:32:32.191000',NULL,NULL,NULL,'NA',-1,650,'approved',4,1,15,NULL),(19,'Camellia-Shipping-LLC-r-16','2025-02-06 17:25:06.016929','Plz fix','2025-02-26 07:00:00.000000',NULL,'2025-02-06 17:24:59.273000',NULL,NULL,NULL,'NA',-1,590,'approved',3,1,16,NULL),(20,'Camellia-Shipping-LLC-r-16','2025-02-06 17:25:49.368638','Plz fix','2025-02-26 07:00:00.000000',NULL,'2025-02-06 17:24:59.273000','2025-02-06 10:25:45.281000',-7,NULL,'NA',-1,590,'delivered',3,1,16,NULL),(21,'Camellia-Shipping-LLC-r-17','2025-04-17 17:47:13.196700','Engine fix','2025-04-24 06:00:00.000000',NULL,'2025-04-17 17:45:55.747000',NULL,NULL,NULL,'NA',-1,315,'approved',4,1,17,NULL);
+/*!40000 ALTER TABLE `api_repairsmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_requestquote`
+--
+
+DROP TABLE IF EXISTS `api_requestquote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_requestquote` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `status` varchar(50) NOT NULL,
+  `vendor_quote_id` varchar(50) DEFAULT NULL,
+  `estimated_cost` double DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `approved_by_id` int DEFAULT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `disposal_request_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  `repair_request_id` int DEFAULT NULL,
+  `transfer_request_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_requestquote_approved_by_id_90433a46_fk_api_detai` (`approved_by_id`),
+  KEY `api_requestquote_asset_request_id_e19b02a6_fk_api_asset` (`asset_request_id`),
+  KEY `api_requestquote_disposal_request_id_ea75c564_fk_api_asset` (`disposal_request_id`),
+  KEY `api_requestquote_maintenance_request__00583fc6_fk_api_maint` (`maintenance_request_id`),
+  KEY `api_requestquote_repair_request_id_ea0c519b_fk_api_repai` (`repair_request_id`),
+  KEY `api_requestquote_transfer_request_id_10604ee4_fk_api_asset` (`transfer_request_id`),
+  KEY `api_requestquote_vendor_id_2f3b5a52_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_requestquote_approved_by_id_90433a46_fk_api_detai` FOREIGN KEY (`approved_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_requestquote_asset_request_id_e19b02a6_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_requestquote_disposal_request_id_ea75c564_fk_api_asset` FOREIGN KEY (`disposal_request_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_requestquote_maintenance_request__00583fc6_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_requestquote_repair_request_id_ea0c519b_fk_api_repai` FOREIGN KEY (`repair_request_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_requestquote_transfer_request_id_10604ee4_fk_api_asset` FOREIGN KEY (`transfer_request_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_requestquote_vendor_id_2f3b5a52_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_requestquote`
+--
+
+LOCK TABLES `api_requestquote` WRITE;
+/*!40000 ALTER TABLE `api_requestquote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_requestquote` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_rolepermissions`
+--
+
+DROP TABLE IF EXISTS `api_rolepermissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_rolepermissions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `role` varchar(50) NOT NULL,
+  `dashboard` tinyint(1) NOT NULL,
+  `dashboard_operator` tinyint(1) NOT NULL,
+  `fleet_at_a_glance` tinyint(1) NOT NULL,
+  `fleet_at_a_glance_executive` tinyint(1) NOT NULL,
+  `fleet_at_a_glance_manager` tinyint(1) NOT NULL,
+  `fleet_overview` tinyint(1) NOT NULL,
+  `asset_request` tinyint(1) NOT NULL,
+  `asset_request_new_order` tinyint(1) NOT NULL,
+  `asset_request_list` tinyint(1) NOT NULL,
+  `repairs` tinyint(1) NOT NULL,
+  `repairs_list` tinyint(1) NOT NULL,
+  `repairs_new_request` tinyint(1) NOT NULL,
+  `maintenance` tinyint(1) NOT NULL,
+  `maintenance_status` tinyint(1) NOT NULL,
+  `maintenance_new_request` tinyint(1) NOT NULL,
+  `maintenance_forecast` tinyint(1) NOT NULL,
+  `maintenance_lookup` tinyint(1) NOT NULL,
+  `incidents` tinyint(1) NOT NULL,
+  `incidents_list` tinyint(1) NOT NULL,
+  `incidents_new_report` tinyint(1) NOT NULL,
+  `issues` tinyint(1) NOT NULL,
+  `issues_new` tinyint(1) NOT NULL,
+  `issues_list` tinyint(1) NOT NULL,
+  `issues_search` tinyint(1) NOT NULL,
+  `operators` tinyint(1) NOT NULL,
+  `operators_daily_check` tinyint(1) NOT NULL,
+  `operators_search` tinyint(1) NOT NULL,
+  `unfinished_checks` tinyint(1) NOT NULL,
+  `energy` tinyint(1) NOT NULL,
+  `energy_fuel_tracking` tinyint(1) NOT NULL,
+  `fuel_orders` tinyint(1) NOT NULL,
+  `fuel_transactions` tinyint(1) NOT NULL,
+  `asset_removal` tinyint(1) NOT NULL,
+  `asset_removal_new` tinyint(1) NOT NULL,
+  `asset_removal_list` tinyint(1) NOT NULL,
+  `approval_request` tinyint(1) NOT NULL,
+  `asset_transfers` tinyint(1) NOT NULL,
+  `asset_transfers_current_transfers` tinyint(1) NOT NULL,
+  `asset_transfers_new_transfer_request` tinyint(1) NOT NULL,
+  `asset_transfers_map` tinyint(1) NOT NULL,
+  `asset_log` tinyint(1) NOT NULL,
+  `annual_report` tinyint(1) NOT NULL,
+  `annual_report_lookup` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_rolepermissions`
+--
+
+LOCK TABLES `api_rolepermissions` WRITE;
+/*!40000 ALTER TABLE `api_rolepermissions` DISABLE KEYS */;
+INSERT INTO `api_rolepermissions` VALUES (1,'operator',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),(2,'manager',1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0),(3,'executive',1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0),(4,'supervisor',0,0,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,1,1,0,1,1,0,0);
+/*!40000 ALTER TABLE `api_rolepermissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailyasset`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailyasset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailyasset` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIN` varchar(100) DEFAULT NULL,
+  `parent` varchar(100) DEFAULT NULL,
+  `equipment_type` varchar(100) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `jde_department` varchar(100) DEFAULT NULL,
+  `original_location` varchar(100) DEFAULT NULL,
+  `current_location` varchar(100) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `aircraft_compatability` varchar(100) DEFAULT NULL,
+  `unit_number` varchar(100) DEFAULT NULL,
+  `license_plate` varchar(100) DEFAULT NULL,
+  `date_of_manufacture` date DEFAULT NULL,
+  `department` varchar(100) DEFAULT NULL,
+  `job_specification` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_quantity` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_inspection_date` date DEFAULT NULL,
+  `path` varchar(300) DEFAULT NULL,
+  `last_process` varchar(50) DEFAULT NULL,
+  `hours_or_mileage` varchar(50) DEFAULT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `mileage_unit` varchar(50) DEFAULT NULL,
+  `date_in_service` date DEFAULT NULL,
+  `total_cost` double NOT NULL,
+  `currency` varchar(100) DEFAULT NULL,
+  `daily_average_hours` double NOT NULL,
+  `daily_average_mileage` double NOT NULL,
+  `replacement_hours` double DEFAULT NULL,
+  `replacement_mileage` double DEFAULT NULL,
+  `insurance_renewal_date` date DEFAULT NULL,
+  `registration_renewal_date` date DEFAULT NULL,
+  `load_capacity` double DEFAULT NULL,
+  `load_capacity_unit` varchar(50) DEFAULT NULL,
+  `fuel` varchar(100) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `colour` varchar(50) NOT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `is_rental` tinyint(1) DEFAULT NULL,
+  `monthly_subscription_cost` double DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailyasset`
+--
+
+LOCK TABLES `api_snapshotdailyasset` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailyasset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_snapshotdailyasset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailycounts`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailycounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailycounts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `asset_count` int NOT NULL,
+  `user_count` int NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailycounts`
+--
+
+LOCK TABLES `api_snapshotdailycounts` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailycounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_snapshotdailycounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailycurrency`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailycurrency`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailycurrency` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `currency_value` double NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `currency_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_snapshotdailycur_currency_id_2b593858_fk_api_curre` (`currency_id`),
+  CONSTRAINT `api_snapshotdailycur_currency_id_2b593858_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailycurrency`
+--
+
+LOCK TABLES `api_snapshotdailycurrency` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailycurrency` DISABLE KEYS */;
+INSERT INTO `api_snapshotdailycurrency` VALUES (1,0.7398773608915388,'2024-04-04 04:02:37.872788',1),(2,1,'2024-04-04 04:02:37.873284',2),(3,0.6823139449277122,'2024-04-04 04:02:37.873284',3);
+/*!40000 ALTER TABLE `api_snapshotdailycurrency` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailylocationcost`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailylocationcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailylocationcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `location` varchar(50) NOT NULL,
+  `volume_fuel` double NOT NULL,
+  `volume_unit` varchar(50) NOT NULL,
+  `total_cost_fuel` double NOT NULL,
+  `taxes_fuel` double NOT NULL,
+  `deductible` double NOT NULL,
+  `total_cost_insurance` double NOT NULL,
+  `total_base_hours` double NOT NULL,
+  `total_overtime_hours` double NOT NULL,
+  `total_cost_labor` double NOT NULL,
+  `taxes_labor` double NOT NULL,
+  `license_registration_cost` double NOT NULL,
+  `license_plate_renewal_cost` double NOT NULL,
+  `total_cost_license` double NOT NULL,
+  `taxes_license` double NOT NULL,
+  `total_cost_parts` double NOT NULL,
+  `taxes_parts` double NOT NULL,
+  `total_cost_rental` double NOT NULL,
+  `total_cost_acquisition` double NOT NULL,
+  `taxes_acquisition` double NOT NULL,
+  `total_cost_delivery` double NOT NULL,
+  `taxes_delivery` double NOT NULL,
+  `currency` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailylocationcost`
+--
+
+LOCK TABLES `api_snapshotdailylocationcost` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailylocationcost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_snapshotdailylocationcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailylocationcounts`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailylocationcounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailylocationcounts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `active_asset_count` int NOT NULL,
+  `all_asset_count` int NOT NULL,
+  `daily_check_count` int NOT NULL,
+  `location` int NOT NULL,
+  `date_of_checks` date NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailylocationcounts`
+--
+
+LOCK TABLES `api_snapshotdailylocationcounts` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailylocationcounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_snapshotdailylocationcounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_transferfile`
+--
+
+DROP TABLE IF EXISTS `api_transferfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_transferfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `transfer_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_transferfile_created_by_id_eb950b6f_fk_api_detai` (`created_by_id`),
+  KEY `api_transferfile_transfer_id_93e2fc4e_fk_api_asset` (`transfer_id`),
+  CONSTRAINT `api_transferfile_created_by_id_eb950b6f_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_transferfile_transfer_id_93e2fc4e_fk_api_asset` FOREIGN KEY (`transfer_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_transferfile`
+--
+
+LOCK TABLES `api_transferfile` WRITE;
+/*!40000 ALTER TABLE `api_transferfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_transferfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_userconfiguration`
+--
+
+DROP TABLE IF EXISTS `api_userconfiguration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_userconfiguration` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date_modified` datetime(6) NOT NULL,
+  `sound` tinyint(1) NOT NULL,
+  `sound_percentage` int unsigned NOT NULL,
+  `dashboard_layout` longtext,
+  `table_filter` longtext,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_userconfiguratio_user_id_0dd3d13f_fk_api_detai` (`user_id`),
+  CONSTRAINT `api_userconfiguratio_user_id_0dd3d13f_fk_api_detai` FOREIGN KEY (`user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_userconfiguration_chk_1` CHECK ((`sound_percentage` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_userconfiguration`
+--
+
+LOCK TABLES `api_userconfiguration` WRITE;
+/*!40000 ALTER TABLE `api_userconfiguration` DISABLE KEYS */;
+INSERT INTO `api_userconfiguration` VALUES (1,'2025-03-11 15:12:54.344899',1,20,'{\'exec_layout\': {\'lg\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 11.1, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 31.299999999999997, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 4.5, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 17.7, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 30.299999999999997, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 29.299999999999997, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 5, \'x\': 0, \'y\': 24.299999999999997, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 32.3, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 1, \'y\': 32.3, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 2, \'y\': 32.3, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 33.3, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 5}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 5}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 5}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 5}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 5}], \'md\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 12.1, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 18.7, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 25.299999999999997, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 26.299999999999997, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 27.299999999999997, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 33.9, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 34.9, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 35.9, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 36.9, \'i\': \'mm\', \'moved\': False, \'static\': False}], \'sm\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 12.1, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 18.699999999999996, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 25.299999999999997, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 1, \'x\': 0, \'y\': 26.299999999999997, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 27.299999999999997, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 33.9, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 34.9, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 35.9, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 36.9, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 45.099999999999994, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 51.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 58.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 64.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 71.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 78.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 84.7, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}], \'xs\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 5, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 12.1, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 18.7, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 25.299999999999997, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 26.299999999999997, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 5.699999999999999, \'x\': 0, \'y\': 27.299999999999997, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 33.9, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 34.9, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 35.9, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 36.9, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.5}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.5}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.5}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.5}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.5}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.5}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.5}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.5}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.5}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.5}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.5}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.5}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.5}], \'xxs\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 5.2, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 12.1, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 18.7, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 25.299999999999997, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 26.299999999999997, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6.199999999999999, \'x\': 0, \'y\': 27.299999999999997, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 33.9, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 34.9, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 35.9, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 36.9, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}]}, \'mngr_layout\': {\'lg\': [{\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 6.5, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 4.5, \'x\': 0, \'y\': 13, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 17.5, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 24, \'i\': \'e\', \'moved\': False, \'static\': False}], \'md\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 3, \'h\': 6.5}, {\'i\': \'b\', \'x\': 0, \'y\': 6.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'c\', \'x\': 0, \'y\': 13, \'w\': 3, \'h\': 4.5}, {\'i\': \'d\', \'x\': 0, \'y\': 17.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'e\', \'x\': 0, \'y\': 24, \'w\': 3, \'h\': 6.5}], \'sm\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 3, \'h\': 6.5}, {\'i\': \'b\', \'x\': 0, \'y\': 6.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'c\', \'x\': 0, \'y\': 13, \'w\': 3, \'h\': 4.5}, {\'i\': \'d\', \'x\': 0, \'y\': 17.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'e\', \'x\': 0, \'y\': 24, \'w\': 3, \'h\': 6.5}], \'xs\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 1, \'h\': 4.5}, {\'i\': \'b\', \'x\': 0, \'y\': 4.5, \'w\': 1, \'h\': 4.5}, {\'i\': \'c\', \'x\': 0, \'y\': 9, \'w\': 1, \'h\': 4.5}, {\'i\': \'e\', \'x\': 0, \'y\': 19.5, \'w\': 1, \'h\': 6}], \'xxs\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 4.5, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 9, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 19.5, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6, \'x\': 0, \'y\': 13.5, \'i\': \'e\', \'moved\': False, \'static\': False}]}}',NULL,1);
+/*!40000 ALTER TABLE `api_userconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_usertablelayoutmodel`
+--
+
+DROP TABLE IF EXISTS `api_usertablelayoutmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_usertablelayoutmodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `key` varchar(100) NOT NULL,
+  `value` longtext,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_usertablelayoutm_user_id_e9170365_fk_api_detai` (`user_id`),
+  CONSTRAINT `api_usertablelayoutm_user_id_e9170365_fk_api_detai` FOREIGN KEY (`user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_usertablelayoutmodel`
+--
+
+LOCK TABLES `api_usertablelayoutmodel` WRITE;
+/*!40000 ALTER TABLE `api_usertablelayoutmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_usertablelayoutmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_migrations`
+--
+
+DROP TABLE IF EXISTS `django_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_migrations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `app` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `applied` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_migrations`
+--
+
+LOCK TABLES `django_migrations` WRITE;
+/*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
+INSERT INTO `django_migrations` VALUES (1,'api','0001_initial','2024-03-12 16:28:28.764321'),(2,'api','0002_maintenancerequestmodel_description','2024-03-12 16:29:06.124028'),(3,'api','0003_auto_20231113_1734','2024-03-12 16:29:08.830546'),(4,'api','0004_auto_20231124_0245','2024-03-12 16:29:09.502767'),(5,'api','0005_detaileduser_cost_centre','2024-03-12 16:29:10.030390'),(6,'api','0006_assetrequestmodel_cost_centre','2024-03-12 16:29:10.472590'),(7,'api','0007_enginemodel','2024-03-12 16:29:10.898307'),(8,'api','0008_enginehistorymodel','2024-03-12 16:29:11.382057'),(9,'api','0009_enginehistorymodel_date','2024-03-12 16:29:11.751978'),(10,'api','0010_auto_20231204_2222','2024-03-12 16:29:12.641396'),(11,'api','0011_enginehistorymodel_responsible_daily_check','2024-03-12 16:29:12.994284'),(12,'api','0007_assetrequestfile_inventory_requestquote','2024-03-12 16:29:15.355253'),(13,'api','0012_merge_20231205_2040','2024-03-12 16:29:17.824228'),(14,'api','0013_usertablelayoutmodel','2024-03-12 16:29:18.363360'),(15,'api','0014_fuelcostcheck','2024-03-12 16:29:19.157372'),(16,'api','0015_auto_20240116_0352','2024-03-12 16:29:20.551830'),(17,'api','0016_annualreport','2024-03-12 16:29:23.746678'),(18,'api','0017_auto_20240118_1511','2024-03-12 16:29:25.081461'),(19,'api','0013_auto_20231211_2156','2024-03-12 16:29:25.681480'),(20,'api','0018_merge_20240118_1531','2024-03-12 16:29:25.785939'),(21,'api','0019_assetmodel_lifespan_years','2024-03-12 16:29:26.223327'),(22,'api','0020_enginemodel_daily_average_hours','2024-03-12 16:29:26.629800'),(23,'api','0021_auto_20240209_1546','2024-03-12 16:29:27.435554'),(33,'api','0029_merge_20240319_1232','2024-04-03 22:18:40.391174'),(34,'api','0029_merge_20240403_1631','2024-04-04 00:07:50.245730'),(35,'api','0030_auto_20240403_1704','2024-04-04 00:07:50.932963'),(36,'api','0031_auto_20240403_1951','2024-04-04 02:55:34.370106'),(37,'api','0032_auto_20240403_1952','2024-04-04 02:55:34.530066'),(39,'api','0020_auto_20240314_1128','2024-04-04 03:45:06.305378');
+/*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-01-22 13:10:17

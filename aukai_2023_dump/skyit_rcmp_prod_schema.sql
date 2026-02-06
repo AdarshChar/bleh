@@ -1,0 +1,3667 @@
+-- MySQL dump 10.13  Distrib 8.4.8, for Win64 (x86_64)
+--
+-- Host: aukai-prod-v6-2023-db.mysql.database.azure.com    Database: skyit_rcmp_prod
+-- ------------------------------------------------------
+-- Server version	8.0.42-azure
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `api_accidentfilemodel`
+--
+
+DROP TABLE IF EXISTS `api_accidentfilemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_accidentfilemodel` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `accident_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_accidentfilemode_accident_id_a356de30_fk_api_accid` (`accident_id`),
+  CONSTRAINT `api_accidentfilemode_accident_id_a356de30_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_accidentfilemodel`
+--
+
+LOCK TABLES `api_accidentfilemodel` WRITE;
+/*!40000 ALTER TABLE `api_accidentfilemodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_accidentfilemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_accidentmodel`
+--
+
+DROP TABLE IF EXISTS `api_accidentmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_accidentmodel` (
+  `accident_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `estimated_return_date` datetime(6) DEFAULT NULL,
+  `accident_report_completed` tinyint(1) NOT NULL,
+  `is_equipment_failure` tinyint(1) NOT NULL,
+  `notification_ack` tinyint(1) NOT NULL,
+  `evaluation_required` tinyint(1) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `is_preventable` tinyint(1) NOT NULL,
+  `is_operational` tinyint(1) NOT NULL,
+  `date_returned_to_service` datetime(6) DEFAULT NULL,
+  `accident_summary` longtext,
+  `downtime_hours` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`accident_id`),
+  KEY `api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_accidentmodel_created_by_id_3c566486_fk_api_detai` (`created_by_id`),
+  KEY `api_accidentmodel_disposal_id_a16512ac_fk_api_asset` (`disposal_id`),
+  KEY `api_accidentmodel_location_id_1b207e0d_fk_api_locat` (`location_id`),
+  KEY `api_accidentmodel_modified_by_id_ef02950f_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_accidentmodel_created_by_id_3c566486_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_accidentmodel_disposal_id_a16512ac_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_accidentmodel_location_id_1b207e0d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_accidentmodel_modified_by_id_ef02950f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_accidentmodel_VIN_id_3130961a_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_accidentmodel`
+--
+
+LOCK TABLES `api_accidentmodel` WRITE;
+/*!40000 ALTER TABLE `api_accidentmodel` DISABLE KEYS */;
+INSERT INTO `api_accidentmodel` VALUES (1,'RCMP-a-1',NULL,1,0,0,0,1,0,1,NULL,'Vessel made contact with the dock',0,'2023-11-13 21:25:11.904924','2023-11-13 21:36:07.965978','CA-XDC75434C212',1,NULL,13,1),(2,'RCMP-a-2',NULL,1,0,0,0,0,0,1,NULL,'Vessel made contact with the dock',0,'2023-11-13 21:34:26.993473','2023-11-13 21:34:27.097033','CA-XDC75434C212',1,NULL,13,1);
+/*!40000 ALTER TABLE `api_accidentmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_accidentmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_accidentmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_accidentmodelhistory` (
+  `accident_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `estimated_return_date` datetime(6) DEFAULT NULL,
+  `accident_report_completed` tinyint(1) NOT NULL,
+  `is_equipment_failure` tinyint(1) NOT NULL,
+  `notification_ack` tinyint(1) NOT NULL,
+  `evaluation_required` tinyint(1) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `is_preventable` tinyint(1) NOT NULL,
+  `is_operational` tinyint(1) NOT NULL,
+  `date_returned_to_service` datetime(6) DEFAULT NULL,
+  `accident_summary` longtext,
+  `downtime_hours` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `accident_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`accident_history_id`),
+  KEY `api_accidentmodelhis_accident_id_7eec054b_fk_api_accid` (`accident_id`),
+  KEY `api_accidentmodelhis_location_id_9d5dc35c_fk_api_locat` (`location_id`),
+  KEY `api_accidentmodelhis_modified_by_id_d676ee67_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_accidentmodelhis_accident_id_7eec054b_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_accidentmodelhis_location_id_9d5dc35c_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_accidentmodelhis_modified_by_id_d676ee67_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_accidentmodelhistory`
+--
+
+LOCK TABLES `api_accidentmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_accidentmodelhistory` DISABLE KEYS */;
+INSERT INTO `api_accidentmodelhistory` VALUES (1,'RCMP-a-1',NULL,1,0,0,0,0,0,1,NULL,'Vessel made contact with the dock',0,'2023-11-13 21:25:12.122052',1,13,1),(2,'RCMP-a-2',NULL,1,0,0,0,0,0,1,NULL,'Vessel made contact with the dock',0,'2023-11-13 21:34:27.226425',2,13,1),(3,'RCMP-a-1',NULL,1,0,0,0,1,0,1,NULL,'Vessel made contact with the dock',0,'2023-11-13 21:36:08.143920',1,13,1);
+/*!40000 ALTER TABLE `api_accidentmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_acquisitioncost`
+--
+
+DROP TABLE IF EXISTS `api_acquisitioncost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_acquisitioncost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `administrative_cost` double NOT NULL,
+  `misc_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_acquisitioncost_created_by_id_2a71eeed_fk_api_detai` (`created_by_id`),
+  KEY `api_acquisitioncost_currency_id_e73277cd_fk_api_currency_id` (`currency_id`),
+  KEY `api_acquisitioncost_location_id_5bd5e472_fk_api_locat` (`location_id`),
+  KEY `api_acquisitioncost_modified_by_id_1662932d_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_acquisitioncost_created_by_id_2a71eeed_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_acquisitioncost_currency_id_e73277cd_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_acquisitioncost_location_id_5bd5e472_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_acquisitioncost_modified_by_id_1662932d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_acquisitioncost_VIN_id_3526fd6e_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_acquisitioncost`
+--
+
+LOCK TABLES `api_acquisitioncost` WRITE;
+/*!40000 ALTER TABLE `api_acquisitioncost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_acquisitioncost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_acquisitioncostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_acquisitioncostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_acquisitioncostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `administrative_cost` double NOT NULL,
+  `misc_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `acquisition_cost_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_acquisitioncostm_VIN_id_943b3499_fk_api_asset` (`VIN_id`),
+  KEY `api_acquisitioncostm_acquisition_cost_id_7094c72d_fk_api_acqui` (`acquisition_cost_id`),
+  KEY `api_acquisitioncostm_currency_id_4f614d77_fk_api_curre` (`currency_id`),
+  KEY `api_acquisitioncostm_location_id_fe5ae5a3_fk_api_locat` (`location_id`),
+  KEY `api_acquisitioncostm_modified_by_id_ffbff6db_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_acquisitioncostm_acquisition_cost_id_7094c72d_fk_api_acqui` FOREIGN KEY (`acquisition_cost_id`) REFERENCES `api_acquisitioncost` (`id`),
+  CONSTRAINT `api_acquisitioncostm_currency_id_4f614d77_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_acquisitioncostm_location_id_fe5ae5a3_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_acquisitioncostm_modified_by_id_ffbff6db_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_acquisitioncostm_VIN_id_943b3499_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_acquisitioncostmodelhistory`
+--
+
+LOCK TABLES `api_acquisitioncostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_acquisitioncostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_acquisitioncostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approval`
+--
+
+DROP TABLE IF EXISTS `api_approval`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approval` (
+  `approval_id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `description` longtext NOT NULL,
+  `deny_reason` longtext NOT NULL,
+  `is_approved` tinyint(1) DEFAULT NULL,
+  `date_created` date NOT NULL,
+  `date_modified` date NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `approving_user_id` int DEFAULT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `asset_transfer_request_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  `repair_request_id` int DEFAULT NULL,
+  `requesting_user_id` int DEFAULT NULL,
+  PRIMARY KEY (`approval_id`),
+  KEY `api_approval_VIN_id_867898b0_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_approval_approving_user_id_42cad599_fk_api_detai` (`approving_user_id`),
+  KEY `api_approval_asset_request_id_11278853_fk_api_asset` (`asset_request_id`),
+  KEY `api_approval_asset_transfer_reque_a51ddf9b_fk_api_asset` (`asset_transfer_request_id`),
+  KEY `api_approval_location_id_090f0b07_fk_api_locat` (`location_id`),
+  KEY `api_approval_maintenance_request__2f0759c6_fk_api_maint` (`maintenance_request_id`),
+  KEY `api_approval_repair_request_id_2651d208_fk_api_repai` (`repair_request_id`),
+  KEY `api_approval_requesting_user_id_e6e018a6_fk_api_detai` (`requesting_user_id`),
+  CONSTRAINT `api_approval_approving_user_id_42cad599_fk_api_detai` FOREIGN KEY (`approving_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_approval_asset_request_id_11278853_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_approval_asset_transfer_reque_a51ddf9b_fk_api_asset` FOREIGN KEY (`asset_transfer_request_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_approval_location_id_090f0b07_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_approval_maintenance_request__2f0759c6_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_approval_repair_request_id_2651d208_fk_api_repai` FOREIGN KEY (`repair_request_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_approval_requesting_user_id_e6e018a6_fk_api_detai` FOREIGN KEY (`requesting_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_approval_VIN_id_867898b0_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approval`
+--
+
+LOCK TABLES `api_approval` WRITE;
+/*!40000 ALTER TABLE `api_approval` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approval` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvalmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_approvalmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvalmodelhistory` (
+  `approval_history_id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `description` longtext NOT NULL,
+  `deny_reason` longtext NOT NULL,
+  `is_approved` tinyint(1) DEFAULT NULL,
+  `accident_summary` longtext,
+  `date` datetime(6) NOT NULL,
+  `approval_id` int NOT NULL,
+  `approving_user_id` int DEFAULT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `asset_transfer_request_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  `repair_request_id` int DEFAULT NULL,
+  `requesting_user_id` int DEFAULT NULL,
+  PRIMARY KEY (`approval_history_id`),
+  KEY `api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro` (`approval_id`),
+  KEY `api_approvalmodelhis_approving_user_id_0f09aa8a_fk_api_detai` (`approving_user_id`),
+  KEY `api_approvalmodelhis_asset_request_id_95a3e31b_fk_api_asset` (`asset_request_id`),
+  KEY `api_approvalmodelhis_asset_transfer_reque_58f1e105_fk_api_asset` (`asset_transfer_request_id`),
+  KEY `api_approvalmodelhis_location_id_60640ac2_fk_api_locat` (`location_id`),
+  KEY `api_approvalmodelhis_maintenance_request__e206156c_fk_api_maint` (`maintenance_request_id`),
+  KEY `api_approvalmodelhis_repair_request_id_6f14411b_fk_api_repai` (`repair_request_id`),
+  KEY `api_approvalmodelhis_requesting_user_id_39c5af2f_fk_api_detai` (`requesting_user_id`),
+  CONSTRAINT `api_approvalmodelhis_approval_id_0a7b0f20_fk_api_appro` FOREIGN KEY (`approval_id`) REFERENCES `api_approval` (`approval_id`),
+  CONSTRAINT `api_approvalmodelhis_approving_user_id_0f09aa8a_fk_api_detai` FOREIGN KEY (`approving_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_approvalmodelhis_asset_request_id_95a3e31b_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_approvalmodelhis_asset_transfer_reque_58f1e105_fk_api_asset` FOREIGN KEY (`asset_transfer_request_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_approvalmodelhis_location_id_60640ac2_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_approvalmodelhis_maintenance_request__e206156c_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_approvalmodelhis_repair_request_id_6f14411b_fk_api_repai` FOREIGN KEY (`repair_request_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_approvalmodelhis_requesting_user_id_39c5af2f_fk_api_detai` FOREIGN KEY (`requesting_user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvalmodelhistory`
+--
+
+LOCK TABLES `api_approvalmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_approvalmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvalmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendordepartments`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendordepartments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendordepartments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendordepartments`
+--
+
+LOCK TABLES `api_approvedvendordepartments` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendordepartments` DISABLE KEYS */;
+INSERT INTO `api_approvedvendordepartments` VALUES (1,'Independent Vendor');
+/*!40000 ALTER TABLE `api_approvedvendordepartments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendorrequest`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendorrequest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendorrequest` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `vendor_department_id` int DEFAULT NULL,
+  `vendor_task_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro` (`vendor_department_id`),
+  KEY `api_approvedvendorre_vendor_task_id_ba536e79_fk_api_appro` (`vendor_task_id`),
+  CONSTRAINT `api_approvedvendorre_vendor_department_id_ad59b755_fk_api_appro` FOREIGN KEY (`vendor_department_id`) REFERENCES `api_approvedvendordepartments` (`id`),
+  CONSTRAINT `api_approvedvendorre_vendor_task_id_ba536e79_fk_api_appro` FOREIGN KEY (`vendor_task_id`) REFERENCES `api_approvedvendortasks` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendorrequest`
+--
+
+LOCK TABLES `api_approvedvendorrequest` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendorrequest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_approvedvendorrequest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendorsmodel`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendorsmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendorsmodel` (
+  `vendor_id` int NOT NULL AUTO_INCREMENT,
+  `vendor_name` varchar(100) NOT NULL,
+  `is_vendor_green` tinyint(1) NOT NULL,
+  `phone_number` varchar(50) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `website` varchar(1000) NOT NULL,
+  `primary_email` varchar(254) NOT NULL,
+  `vendor_department_id` int DEFAULT NULL,
+  `vendor_task_id` int DEFAULT NULL,
+  PRIMARY KEY (`vendor_id`),
+  KEY `api_approvedvendorsm_vendor_task_id_93aad341_fk_api_appro` (`vendor_task_id`),
+  KEY `api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro` (`vendor_department_id`),
+  CONSTRAINT `api_approvedvendorsm_vendor_department_id_c7c8df78_fk_api_appro` FOREIGN KEY (`vendor_department_id`) REFERENCES `api_approvedvendordepartments` (`id`),
+  CONSTRAINT `api_approvedvendorsm_vendor_task_id_93aad341_fk_api_appro` FOREIGN KEY (`vendor_task_id`) REFERENCES `api_approvedvendortasks` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendorsmodel`
+--
+
+LOCK TABLES `api_approvedvendorsmodel` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendorsmodel` DISABLE KEYS */;
+INSERT INTO `api_approvedvendorsmodel` VALUES (1,'LIQUID METAL MARINE',0,'2506569298','V8L 5X2','tbd','tbd',1,1),(2,'SEA POWER MARINE CENTRE LTD',0,'2506564341','V8L 3Z8','tbd','tbd',1,1),(3,'A & E MARINE 2016 LTD',0,'2503394422','V9M 4C9','tbd','tbd',1,1),(4,'BRIDGEVIEW MARINE LTD',0,'2506375432','V0T 1T0','tbd','tbd',1,1),(5,'SHAWNIGAN LAKE AUTOMOTIVE',0,'2507432122','V0R 2W0','tbd','tbd',1,1),(6,'MCDONALD MARINE SERVICE',0,'6044831792','V8A 1W1','tbd','tbd',1,1),(7,'OCEAN MARINE',0,'6043903339','V8B 0K8','tbd','tbd',1,1),(8,'HOWE SOUND MARINE LTD.',0,'6049217124','V0N 2E0','tbd','tbd',1,1),(9,'IMARKET MARINE INC',0,'2503362430','V8V 1E5','tbd','tbd',1,1),(10,'ALLEY CAT AUTO REPAIR',0,'2505754735','V1Y 4N8','tbd','tbd',1,1),(11,'KAL TIRE (HEAD OFFICE)',0,'2505583200','V1T 6V2','tbd','tbd',1,1),(12,'SELKA BOAT CENTRE LTD',0,'2507691466','V1Z 3E5','tbd','tbd',1,1),(13,'KAL TIRE TRUCK CENTRE',0,'2503746258','V2H 1B5','tbd','tbd',1,1),(14,'KAL TIRE KELOWNA',0,'2507657181','V1X 5C2','tbd','tbd',1,1),(15,'PORT BOAT HOUSE LTD.',0,'2507245754','V9Y 1T7','tbd','tbd',1,1),(16,'FOUNTAIN TIRE - GOODYEAR - #142',0,'2507581508','V9T 2H5','tbd','tbd',1,1),(17,'INA MARINE',0,'2504742448','V9B 4M1','tbd','tbd',1,1),(18,'DB POWERSPORTS AND MARINE',0,'2508708543','V4V 2C1','tbd','tbd',1,1),(19,'KAL TIRE',0,'6045261854','V3M 5R6','tbd','tbd',1,1),(20,'ALPINE TRANSMISSION & AUTO',0,'2504743777','V9B 2S1','tbd','tbd',1,1),(21,'KAL TIRE LTD.',0,'2504746333','V9B 1Y5','tbd','tbd',1,1),(22,'OKANAGAN R.V. CENTRE',0,'2504956548','V0H 1V6','tbd','tbd',1,1),(23,'SEA-SPORT OUTBOARD MARINA LTD.',0,'2506245337','V8J 1A7','tbd','tbd',1,1),(24,'CRESCENT BEACH MARINA CO.',0,'6045381441','V4A 2V4','tbd','tbd',1,1),(25,'DELTA TRUCK REPAIR INTERNATION',0,'6049467616','V4G 1H8','tbd','tbd',1,1),(26,'THE MARINA',0,'2508363131','V0E 2V0','tbd','tbd',1,1),(27,'DON\'S REPAIR',0,'2509968711','V0J 1P0','tbd','tbd',1,1),(28,'RAND AUTOMOTIVE (1995) LTD',0,'2503815455','V8Z 1C2','tbd','tbd',1,1),(29,'SOUTH ISLAND MARINE LTD',0,'2506561405','V8L 2P6','tbd','tbd',1,1),(30,'KAL TIRE - MICHELIN',0,'2503831711','V8T 4M9','tbd','tbd',1,1),(31,'MUTINY INFLATABLES INC',0,'6047807525','V3Z 9Z5','tbd','tbd',1,1),(32,'NR MOTORS',0,'2505638891','V2L 2Y4','tbd','tbd',1,1),(33,'MONTI\'S MARINE & MOTOR SPORTS',0,'2507484451','V9L 6C1','tbd','tbd',1,1),(34,'PARKER MARINE NANAIMO',0,'2507411618','V9S 5X6','tbd','tbd',1,1),(35,'DALY\'S AUTO CENTRE',0,'2507453433','V0R 3E1','tbd','tbd',1,1),(36,'FOUNTAIN TIRE - GOODYEAR - #155',0,'2504936655','V2A 3N5','tbd','tbd',1,1),(37,'MURRAY BUICK GMC PENTICTON',0,'2504937121','V2A 1L6','tbd','tbd',1,1),(38,'O.K. TIRE - TOYO TIRE',0,'2507070700','V4T 3J6','tbd','tbd',1,1),(39,'ROD\'S POWER & MARINE LTD',0,'2507253735','V0R 2Z0','tbd','tbd',1,1),(40,'STONES BOATYARD LTD.',0,'2507169065','V9S 4E6','tbd','tbd',1,1),(41,'BURKMAR AUTOMOTIVE',0,'2506525066','V8M 1Z8','tbd','tbd',1,1),(42,'BILL HOWICH CHRYSLER',0,'2502879555','V9W 2H4','tbd','tbd',1,1),(43,'QUANTUM MARINE SERVICES LTD',0,'6047952628','V2R 4H2','tbd','tbd',1,1),(44,'VENTURE RIVERBOATS LTD',0,'6047923662','V2R 4H2','tbd','tbd',1,1),(45,'HANEY MARINE-USE 039817CC',0,'6044675256','V2W 1B9','tbd','tbd',1,1),(46,'BLUEWATER RIGGING LTD.',0,'6044675256','V6G 3X7','tbd','tbd',1,1),(47,'VENTURE RIVERBOATS LTD.',0,'6047923662','V2R 4H2','tbd','tbd',1,1),(48,'EAGLE AUTOMOTIVE CENTER',0,'2506923744','V0J 1E0','tbd','tbd',1,1),(49,'HIGHLINER TRAILERS LTD',0,'6049466177','V3M 3B9','tbd','tbd',1,1),(50,'TRAILBLAZNPOWER LTD',0,'2507856675','V1J 1B3','tbd','tbd',1,1),(51,'ALLEN MARINE',0,'2505857880','V9S 4M7','tbd','tbd',1,1),(52,'AVO VEHICLE OUTFITTING',0,'7782858200','V3C 3Y9','tbd','tbd',1,1),(53,'GALLEON MARINE',0,'6042737544','V6X1X8','tbd','tbd',1,1),(54,'GOLD RIVER AUTO PARTS LTD',0,'2502832611','V0P 1G0','tbd','tbd',1,1),(55,'SHIPTECH MARINE REPAIRS',0,'7789878306','V9S 1T4','tbd','tbd',1,1),(56,'ZODIAC HURRICANE TECHNOLOGIES',0,'6049407646','V4G 1A7','tbd','tbd',1,1),(57,'SOUTH CARIBOO MOTOR SPORTS LTD',0,'2503952366','V0K 2E0','tbd','tbd',1,1),(58,'ARCTECH WELDING & MACHINING',0,'2507855151','V1J 4H7','tbd','tbd',1,1),(59,'PARKSVILLE BOATHOUSE LTD',0,'2509479666','V9P 2T2','tbd','tbd',1,1),(60,'CITY OF PRINCE GEORGE',0,'2505617554','V2N 4R8','tbd','tbd',1,1),(61,'CHD HOLDING LTD',0,'2507715700','V0C 1L0','tbd','tbd',1,1),(62,'HARRISON MARINE GROUP',0,'6047963123','V0M 1A2','tbd','tbd',1,1),(63,'RG\'S AUTO MARINE LTD',0,'2506327722','V8C 2E7','tbd','tbd',1,1),(64,'HARBOURS END MARINE',0,'2505374202','V8K 2S2','tbd','tbd',1,1),(65,'R G\'S AUTO SERVICES LTD',0,'2506327722','V8C 2E7','tbd','tbd',1,1),(66,'HARBOUR MACHINING',0,'2506243253','V8J 3R5','tbd','tbd',1,1),(67,'FOUNTAIN TIRE - #136 - CORP',0,'2507695955','V1Z 1G4','tbd','tbd',1,1),(68,'PROGRESSIVE DIESEL LTD',0,'2509562700','V0N 2R0','tbd','tbd',1,1),(69,'CT INLET MARINE',0,'6049364602','V3H 1V6','tbd','tbd',1,1),(70,'TLC AUTOMOTIVE SERVICES LTD',0,'2506263756','V0T 1M0','tbd','tbd',1,1),(71,'NORTH ARM TRANSPORTATION LTD.',0,'6043219171','V5S 2H8','tbd','tbd',1,1),(72,'DRIFTECH MECHANICAL SERVICES',0,'2506265181','V0T 1M0','tbd','tbd',1,1),(73,'TRIPORT MARINE',0,'2509497882','V0N 2P0','tbd','tbd',1,1),(74,'BYTOWN DIESEL SALES LTD',0,'2506271304','V8J 3R5','tbd','tbd',1,1),(75,'VANCOUVER ISLAND MARINE',0,'2502480645','V9P 2B9','tbd','tbd',1,1),(76,'LOVE ELECTRIC (1987) LTD.',0,'2506243113','V8J 4J3','tbd','tbd',1,1),(77,'BILL HOWICH RV AND MARINE',0,'2502879514','V9W 7M1','tbd','tbd',1,1),(78,'BRIDGEVIEW MARINE',0,'1111111111','V8J 4H6','tbd','tbd',1,1),(79,'CRESTON MARINE AND SMALL ENGIN',0,'2504284333','V0B 1G6','tbd','tbd',1,1),(80,'KALUM TIRE SERVICE - MICHELIN',0,'2506354902','V8G 1L6','tbd','tbd',1,1),(81,'CANADIAN TIRE',0,'7787464120','V8L 5X7','tbd','tbd',1,1),(82,'JOE\'S AUTOBODY REPAIR',0,'2506245536','V8J 4P1','tbd','tbd',1,1),(83,'QUADRA MARINE SERVICES',0,'2502022853','V0P 1N0','tbd','tbd',1,1),(84,'O.K. TIRE (N. ISLAND) - TOYO TIRE',0,'2509497731','V0N 2P0','tbd','tbd',1,1),(85,'QUINSAM AUTO REPAIR',0,'2502872494','V9W 4J4','tbd','tbd',1,1),(86,'NORTHSHORE YACHT WORKS',0,'6049855326','V7M 1A6','tbd','tbd',1,1),(87,'10-8 AUTOMOTIVE & MARINE',0,'2509742400','V0N 1A0','tbd','tbd',1,1),(88,'MARINE SYSTEMS',0,'6049855326','V7M 1A6','tbd','tbd',1,1),(89,'WHITE\'S SPECIALTY AUTOMOTIVE',0,'6049849548','V7J 1G4','tbd','tbd',1,1),(90,'DISTRICT OF MACKENZIE',0,'2509973221','V0J 2C0','tbd','tbd',1,1),(91,'POCO MARINE PROPELLERS',0,'6044648773','V3C 6N2','tbd','tbd',1,1),(92,'ELITE BODY SHOP',0,'6049874408','V7P 2J9','tbd','tbd',1,1),(93,'FOUNTAIN TIRE - #142 - CORP',0,'2507581508','V9T 6K8','tbd','tbd',1,1),(94,'BDM TIRE - GOODYEAR',0,'2508373082','V0E 3K0','tbd','tbd',1,1),(95,'POWERHOUSE CUSTOMS',0,'2508144606','V0E 3K0','tbd','tbd',1,1),(96,'BLUE MAX LIGHTING LTD',0,'6045744062','V3S 7A4','tbd','tbd',1,1),(97,'FOUNTAIN TIRE - GOODYEAR - #116',0,'6047016777','V2P 1A2','tbd','tbd',1,1),(98,'MODERN TIRE',0,'6047962611','V0M 1A0','tbd','tbd',1,1),(99,'FALCON AUTO CLINIC',0,'6049456575','V3H 1W4','tbd','tbd',1,1),(100,'FRANK LAIRD AUTOMOTIVE',0,'2502455758','V9G 1A5','tbd','tbd',1,1),(101,'ISLETECH AUTO SERVICE',0,'2502853100','V0P 1N0','tbd','tbd',1,1),(102,'CHRISTINA LAKE MECHANICAL',0,'2504476288','V0H 1E0','tbd','tbd',1,1),(103,'MID ISLE MARINE & EQUIPMENT',0,'2509314020','V8K 2P8','tbd','tbd',1,1),(104,'LITTLE RIVER BOATWORLD',0,'2506752321','V0E 2W0','tbd','tbd',1,1),(105,'SUNSHINE GM',0,'6048855131','V0N 3A0','tbd','tbd',1,1),(106,'NAPA AUTO PARTS SECHELT',0,'6048855181','V0N 3A0','tbd','tbd',1,1),(107,'SUNCOAST MOTORS LTD',0,'6048868213','V0N 1V4','tbd','tbd',1,1),(108,'S K AUTOMOTIVE',0,'6048852375','V0N 3A3','tbd','tbd',1,1),(109,'SOUTH COAST FORD SALES LTD.',0,'6048852376','V0N 3A0','tbd','tbd',1,1),(110,'SHOPRITE',0,'2509563385','V0N 2R0','tbd','tbd',1,1),(111,'MCLEAN MOTORS LTD',0,'2506798616','V0E 1M0','tbd','tbd',1,1),(112,'VECTOR YACHT SERVICES LTD',0,'2506553222','V8L 2P5','tbd','tbd',1,1),(113,'METHOD MARINE SUPPLY LTD.',0,'2507253251','V0R 2Z0','tbd','tbd',1,1),(114,'FOUNTAIN TIRE - #116 - CORP',0,'6047016777','V2P 1A2','tbd','tbd',1,1),(115,'CHILLIWACK AUTOGLASS LTD',0,'6047928102','V2P 1L4','tbd','tbd',1,1),(116,'OCEAN PACIFIC MARINE STORE AND',0,'2502861011','V9W 8C9','tbd','tbd',1,1),(117,'KOLESZAR MARINE & POWER EQUIP',0,'6044855616','V8A 2M6','tbd','tbd',1,1),(118,'KAL TIRE - AERO POWELL RIVER',0,'6044852711','V8A 1W5','tbd','tbd',1,1),(119,'SHEARWATER MARINE',0,'2509572305','V7B 1B4','tbd','tbd',1,1),(120,'GABRIOLA AUTOMOTIVE',0,'2502479868','V0R 1X4','tbd','tbd',1,1),(121,'ALBERNI POWERAND MARINE',0,'2507245722','V9Y 4C2','tbd','tbd',1,1),(122,'CITY CENTRE AUTO SERVICE',0,'2503725150','V2C 2C1','tbd','tbd',1,1),(123,'SUPERIOR RADIO SALES & SERVICE',0,'2506249101','V8J 4N5','tbd','tbd',1,1),(124,'NAPA AUTO PARTS',0,'2504924142','V2A 6A2','tbd','tbd',1,1),(125,'CITY OF PENTICTON',0,'2504902500','V2A 5A9','tbd','tbd',1,1),(126,'OUTLAW MOTORSPORTS',0,'2508282200','V1S 1C8','tbd','tbd',1,1),(127,'MOORE\'S BOATWORKS',0,'2506283333','V0V 1G0','tbd','tbd',1,1),(128,'FLEET SERVICES INSTALLATION',0,'7782988995','V4N 4W7','tbd','tbd',1,1),(129,'SPIT & SHINE MOBILE SERVICE LT',0,'6047154588','V5N 2V7','tbd','tbd',1,1),(130,'MAPLE MARINE SERVICES LTD',0,'6045331301','V3A 5E8','tbd','tbd',1,1),(131,'VALLEY AUTO SPA LIMITED',0,'2508717837','V9N 9E7','tbd','tbd',1,1),(132,'OCEAN PACIFIC MARINE',0,'2502861011','V9W 8C9','tbd','tbd',1,1),(133,'KAL TIRE - WHARF TIRE',0,'6048857927','V0N 3A0','tbd','tbd',1,1),(134,'GIBSONS HEAVY DUTY FLEET SERVI',0,'6048863443','V0N 1V4','tbd','tbd',1,1),(135,'LADYSMITH MARINE SERVICES',0,'2507146206','V9G 1B5','tbd','tbd',1,1),(136,'VAN-ISLE TRUCK TECH LTD.',0,'2502453092','V9G 1A4','tbd','tbd',1,1),(137,'EDWARDS JANITORIAL SERVICES',0,'2507155624','V0R 2P1','tbd','tbd',1,1);
+/*!40000 ALTER TABLE `api_approvedvendorsmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_approvedvendortasks`
+--
+
+DROP TABLE IF EXISTS `api_approvedvendortasks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_approvedvendortasks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_approvedvendortasks`
+--
+
+LOCK TABLES `api_approvedvendortasks` WRITE;
+/*!40000 ALTER TABLE `api_approvedvendortasks` DISABLE KEYS */;
+INSERT INTO `api_approvedvendortasks` VALUES (1,'Maintenance/Repairs');
+/*!40000 ALTER TABLE `api_approvedvendortasks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdailycheckscomment`
+--
+
+DROP TABLE IF EXISTS `api_assetdailycheckscomment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdailycheckscomment` (
+  `daily_check_comment_id` int NOT NULL AUTO_INCREMENT,
+  `comment` longtext NOT NULL,
+  `check` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `daily_check_id` int DEFAULT NULL,
+  PRIMARY KEY (`daily_check_comment_id`),
+  KEY `api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset` (`daily_check_id`),
+  CONSTRAINT `api_assetdailychecks_daily_check_id_14befe1e_fk_api_asset` FOREIGN KEY (`daily_check_id`) REFERENCES `api_assetdailychecksmodel` (`daily_check_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdailycheckscomment`
+--
+
+LOCK TABLES `api_assetdailycheckscomment` WRITE;
+/*!40000 ALTER TABLE `api_assetdailycheckscomment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdailycheckscomment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdailychecksmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetdailychecksmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdailychecksmodel` (
+  `daily_check_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `operable` tinyint(1) NOT NULL,
+  `mileage` double DEFAULT NULL,
+  `hours` double DEFAULT NULL,
+  `is_tagout` tinyint(1) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `tires` tinyint(1) DEFAULT NULL,
+  `wheels` tinyint(1) DEFAULT NULL,
+  `horn` tinyint(1) DEFAULT NULL,
+  `fuel` int DEFAULT NULL,
+  `mirrors` tinyint(1) DEFAULT NULL,
+  `glass` tinyint(1) DEFAULT NULL,
+  `overhead_guard` tinyint(1) DEFAULT NULL,
+  `steps` tinyint(1) DEFAULT NULL,
+  `forks` tinyint(1) DEFAULT NULL,
+  `operator_cab` tinyint(1) DEFAULT NULL,
+  `cosmetic_damage` tinyint(1) DEFAULT NULL,
+  `brakes` tinyint(1) DEFAULT NULL,
+  `steering` tinyint(1) DEFAULT NULL,
+  `attachments` tinyint(1) DEFAULT NULL,
+  `mud_flaps` tinyint(1) DEFAULT NULL,
+  `electrical_connectors` tinyint(1) DEFAULT NULL,
+  `air_pressure` tinyint(1) DEFAULT NULL,
+  `boom_extensions` tinyint(1) DEFAULT NULL,
+  `spreader_functions` tinyint(1) DEFAULT NULL,
+  `headlights` tinyint(1) DEFAULT NULL,
+  `backup_lights` tinyint(1) DEFAULT NULL,
+  `trailer_light_cord` tinyint(1) DEFAULT NULL,
+  `oil` tinyint(1) DEFAULT NULL,
+  `transmission_fluid` tinyint(1) DEFAULT NULL,
+  `steering_fluid` tinyint(1) DEFAULT NULL,
+  `hydraulic_fluid` tinyint(1) DEFAULT NULL,
+  `brake_fluid` tinyint(1) DEFAULT NULL,
+  `fire_extinguisher` tinyint(1) DEFAULT NULL,
+  `hydraulic_hoses` tinyint(1) DEFAULT NULL,
+  `trailer_air_lines` tinyint(1) DEFAULT NULL,
+  `other_leaks` tinyint(1) DEFAULT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`daily_check_id`),
+  KEY `api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetdailychecks_created_by_id_029fc175_fk_api_detai` (`created_by_id`),
+  KEY `api_assetdailychecks_location_id_f76e3d5a_fk_api_locat` (`location_id`),
+  KEY `api_assetdailychecks_modified_by_id_4fbf1c05_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetdailychecks_created_by_id_029fc175_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdailychecks_location_id_f76e3d5a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdailychecks_modified_by_id_4fbf1c05_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdailychecksmodel_VIN_id_d3577052_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdailychecksmodel`
+--
+
+LOCK TABLES `api_assetdailychecksmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetdailychecksmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdailychecksmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdailychecksmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetdailychecksmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdailychecksmodelhistory` (
+  `daily_check_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `operable` tinyint(1) NOT NULL,
+  `mileage` double DEFAULT NULL,
+  `hours` double DEFAULT NULL,
+  `is_tagout` tinyint(1) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `tires` tinyint(1) DEFAULT NULL,
+  `wheels` tinyint(1) DEFAULT NULL,
+  `horn` tinyint(1) DEFAULT NULL,
+  `fuel` int DEFAULT NULL,
+  `mirrors` tinyint(1) DEFAULT NULL,
+  `glass` tinyint(1) DEFAULT NULL,
+  `overhead_guard` tinyint(1) DEFAULT NULL,
+  `steps` tinyint(1) DEFAULT NULL,
+  `forks` tinyint(1) DEFAULT NULL,
+  `operator_cab` tinyint(1) DEFAULT NULL,
+  `cosmetic_damage` tinyint(1) DEFAULT NULL,
+  `brakes` tinyint(1) DEFAULT NULL,
+  `steering` tinyint(1) DEFAULT NULL,
+  `attachments` tinyint(1) DEFAULT NULL,
+  `mud_flaps` tinyint(1) DEFAULT NULL,
+  `electrical_connectors` tinyint(1) DEFAULT NULL,
+  `air_pressure` tinyint(1) DEFAULT NULL,
+  `boom_extensions` tinyint(1) DEFAULT NULL,
+  `spreader_functions` tinyint(1) DEFAULT NULL,
+  `headlights` tinyint(1) DEFAULT NULL,
+  `backup_lights` tinyint(1) DEFAULT NULL,
+  `trailer_light_cord` tinyint(1) DEFAULT NULL,
+  `oil` tinyint(1) DEFAULT NULL,
+  `transmission_fluid` tinyint(1) DEFAULT NULL,
+  `steering_fluid` tinyint(1) DEFAULT NULL,
+  `hydraulic_fluid` tinyint(1) DEFAULT NULL,
+  `brake_fluid` tinyint(1) DEFAULT NULL,
+  `fire_extinguisher` tinyint(1) DEFAULT NULL,
+  `hydraulic_hoses` tinyint(1) DEFAULT NULL,
+  `trailer_air_lines` tinyint(1) DEFAULT NULL,
+  `other_leaks` tinyint(1) DEFAULT NULL,
+  `daily_check_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`daily_check_history_id`),
+  KEY `api_assetdailychecks_daily_check_id_668316ed_fk_api_asset` (`daily_check_id`),
+  KEY `api_assetdailychecks_location_id_21106c94_fk_api_locat` (`location_id`),
+  KEY `api_assetdailychecks_modified_by_id_107f412c_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetdailychecks_daily_check_id_668316ed_fk_api_asset` FOREIGN KEY (`daily_check_id`) REFERENCES `api_assetdailychecksmodel` (`daily_check_id`),
+  CONSTRAINT `api_assetdailychecks_location_id_21106c94_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdailychecks_modified_by_id_107f412c_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdailychecksmodelhistory`
+--
+
+LOCK TABLES `api_assetdailychecksmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetdailychecksmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdailychecksmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdisposalfile`
+--
+
+DROP TABLE IF EXISTS `api_assetdisposalfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdisposalfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai` (`created_by_id`),
+  KEY `api_assetdisposalfil_disposal_id_21e54a10_fk_api_asset` (`disposal_id`),
+  CONSTRAINT `api_assetdisposalfil_created_by_id_16c71e95_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalfil_disposal_id_21e54a10_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdisposalfile`
+--
+
+LOCK TABLES `api_assetdisposalfile` WRITE;
+/*!40000 ALTER TABLE `api_assetdisposalfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdisposalfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdisposalmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetdisposalmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdisposalmodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `disposal_type` varchar(50) NOT NULL,
+  `estimated_pickup_date` datetime(6) DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `accounting_contacted_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `interior_condition` varchar(50) NOT NULL,
+  `interior_condition_details` longtext NOT NULL,
+  `exterior_condition` varchar(50) NOT NULL,
+  `exterior_condition_details` longtext NOT NULL,
+  `disposal_reason` varchar(50) NOT NULL,
+  `replacement_reason` varchar(50) NOT NULL,
+  `is_stripped` tinyint(1) NOT NULL,
+  `refurbished` tinyint(1) NOT NULL,
+  `primary_vendor_email` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetdisposalmod_created_by_id_64abcd41_fk_api_detai` (`created_by_id`),
+  KEY `api_assetdisposalmod_location_id_b2ebc3c6_fk_api_locat` (`location_id`),
+  KEY `api_assetdisposalmod_modified_by_id_8e1214f6_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetdisposalmod_vendor_id_ceb0fad4_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetdisposalmod_created_by_id_64abcd41_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalmod_location_id_b2ebc3c6_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdisposalmod_modified_by_id_8e1214f6_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalmod_vendor_id_ceb0fad4_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_assetdisposalmodel_VIN_id_243b83ce_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdisposalmodel`
+--
+
+LOCK TABLES `api_assetdisposalmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetdisposalmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdisposalmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetdisposalmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetdisposalmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetdisposalmodelhistory` (
+  `disposal_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `disposal_type` varchar(50) NOT NULL,
+  `estimated_pickup_date` datetime(6) DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `accounting_contacted_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `date` datetime(6) NOT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`disposal_history_id`),
+  KEY `api_assetdisposalmod_disposal_id_eab85920_fk_api_asset` (`disposal_id`),
+  KEY `api_assetdisposalmod_location_id_b9df111d_fk_api_locat` (`location_id`),
+  KEY `api_assetdisposalmod_modified_by_id_77d46eb8_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetdisposalmod_vendor_id_10c94a92_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetdisposalmod_disposal_id_eab85920_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assetdisposalmod_location_id_b9df111d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetdisposalmod_modified_by_id_77d46eb8_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetdisposalmod_vendor_id_10c94a92_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetdisposalmodelhistory`
+--
+
+LOCK TABLES `api_assetdisposalmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetdisposalmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetdisposalmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetfile`
+--
+
+DROP TABLE IF EXISTS `api_assetfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` date NOT NULL,
+  `date_modified` date NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetfile_created_by_id_db646b2a_fk_api_detai` (`created_by_id`),
+  KEY `api_assetfile_modified_by_id_8c9e37fc_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetfile_created_by_id_db646b2a_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetfile_modified_by_id_8c9e37fc_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetfile_VIN_id_686ffcd4_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetfile`
+--
+
+LOCK TABLES `api_assetfile` WRITE;
+/*!40000 ALTER TABLE `api_assetfile` DISABLE KEYS */;
+INSERT INTO `api_assetfile` VALUES (1,'application/pdf','registration','C20804BC.pdf','https://2023aukaiprodv6.blob.core.windows.net/asset/registration/c949bd59-5238-424b-8690-b613c5c109bc_RCMP_registration_CA-XDC75434C212_20231113-212227',131827,'2023-11-13','2023-11-13','2028-01-31','CA-XDC75434C212',1,1);
+/*!40000 ALTER TABLE `api_assetfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuecategory`
+--
+
+DROP TABLE IF EXISTS `api_assetissuecategory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuecategory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetissuecatego_created_by_id_ba655274_fk_api_detai` (`created_by_id`),
+  KEY `api_assetissuecatego_modified_by_id_c453ea4c_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetissuecatego_created_by_id_ba655274_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuecatego_modified_by_id_c453ea4c_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuecategory`
+--
+
+LOCK TABLES `api_assetissuecategory` WRITE;
+/*!40000 ALTER TABLE `api_assetissuecategory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetissuecategory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuefilemodel`
+--
+
+DROP TABLE IF EXISTS `api_assetissuefilemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuefilemodel` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `issue_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset` (`issue_id`),
+  CONSTRAINT `api_assetissuefilemo_issue_id_301f3ca4_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuefilemodel`
+--
+
+LOCK TABLES `api_assetissuefilemodel` WRITE;
+/*!40000 ALTER TABLE `api_assetissuefilemodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetissuefilemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuemodel`
+--
+
+DROP TABLE IF EXISTS `api_assetissuemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuemodel` (
+  `issue_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `issue_details` longtext,
+  `issue_title` varchar(150) NOT NULL,
+  `issue_type` varchar(50) NOT NULL,
+  `issue_result` varchar(100) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `issue_created` datetime(6) NOT NULL,
+  `issue_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `accident_id_id` int DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id_id` int DEFAULT NULL,
+  PRIMARY KEY (`issue_id`),
+  KEY `api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetissuemodel_accident_id_id_22653a0e_fk_api_accid` (`accident_id_id`),
+  KEY `api_assetissuemodel_category_id_cd4c02f3_fk_api_asset` (`category_id`),
+  KEY `api_assetissuemodel_created_by_id_0f5c0bd9_fk_api_detai` (`created_by_id`),
+  KEY `api_assetissuemodel_location_id_af14c6da_fk_api_locat` (`location_id`),
+  KEY `api_assetissuemodel_modified_by_id_9575934e_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetissuemodel_repair_id_id_4ca7bc53_fk_api_repai` (`repair_id_id`),
+  CONSTRAINT `api_assetissuemodel_accident_id_id_22653a0e_fk_api_accid` FOREIGN KEY (`accident_id_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_assetissuemodel_category_id_cd4c02f3_fk_api_asset` FOREIGN KEY (`category_id`) REFERENCES `api_assetissuecategory` (`id`),
+  CONSTRAINT `api_assetissuemodel_created_by_id_0f5c0bd9_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuemodel_location_id_af14c6da_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetissuemodel_modified_by_id_9575934e_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuemodel_repair_id_id_4ca7bc53_fk_api_repai` FOREIGN KEY (`repair_id_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_assetissuemodel_VIN_id_08375bbc_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuemodel`
+--
+
+LOCK TABLES `api_assetissuemodel` WRITE;
+/*!40000 ALTER TABLE `api_assetissuemodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetissuemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetissuemodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetissuemodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetissuemodelhistory` (
+  `issue_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `issue_details` longtext,
+  `issue_title` varchar(150) NOT NULL,
+  `issue_type` varchar(50) NOT NULL,
+  `issue_result` varchar(100) NOT NULL,
+  `is_resolved` tinyint(1) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `accident_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`issue_history_id`),
+  KEY `api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid` (`accident_id`),
+  KEY `api_assetissuemodelh_issue_id_405009a0_fk_api_asset` (`issue_id`),
+  KEY `api_assetissuemodelh_location_id_d302e45a_fk_api_locat` (`location_id`),
+  KEY `api_assetissuemodelh_modified_by_id_4ccfcbc4_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetissuemodelh_repair_id_177618a0_fk_api_repai` (`repair_id`),
+  CONSTRAINT `api_assetissuemodelh_accident_id_8bf9790b_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_assetissuemodelh_issue_id_405009a0_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_assetissuemodelh_location_id_d302e45a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetissuemodelh_modified_by_id_4ccfcbc4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetissuemodelh_repair_id_177618a0_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetissuemodelhistory`
+--
+
+LOCK TABLES `api_assetissuemodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetissuemodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetissuemodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetlog`
+--
+
+DROP TABLE IF EXISTS `api_assetlog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetlog` (
+  `asset_log_id` int NOT NULL AUTO_INCREMENT,
+  `log_type` varchar(50) NOT NULL,
+  `event_type` varchar(50) DEFAULT NULL,
+  `event_id` varchar(100) DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `asset_log_created` datetime(6) NOT NULL,
+  `asset_log_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_log_id`),
+  KEY `api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetlog_created_by_id_ca0ba384_fk_api_detai` (`created_by_id`),
+  KEY `api_assetlog_location_id_d02de46b_fk_api_locat` (`location_id`),
+  KEY `api_assetlog_modified_by_id_cf6e288f_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetlog_created_by_id_ca0ba384_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetlog_location_id_d02de46b_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetlog_modified_by_id_cf6e288f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetlog_VIN_id_e1fe8a29_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetlog`
+--
+
+LOCK TABLES `api_assetlog` WRITE;
+/*!40000 ALTER TABLE `api_assetlog` DISABLE KEYS */;
+INSERT INTO `api_assetlog` VALUES (1,'event','accident','RCMP-a-1','Event: Accident RCMP-a-1 was reported.','2023-11-13 21:25:12.301390','2023-11-13 21:25:12.301438','CA-XDC75434C212',1,13,1),(2,'event','accident','RCMP-a-2','Event: Accident RCMP-a-2 was reported.','2023-11-13 21:34:27.420739','2023-11-13 21:34:27.420795','CA-XDC75434C212',1,13,1),(3,'event','accident','RCMP-a-1','Event: Accident RCMP-a-1 was resolved.','2023-11-13 21:36:08.360232','2023-11-13 21:36:08.360289','CA-XDC75434C212',1,13,1);
+/*!40000 ALTER TABLE `api_assetlog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmanufacturermodel`
+--
+
+DROP TABLE IF EXISTS `api_assetmanufacturermodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmanufacturermodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetmanufacture_created_by_id_4003f7de_fk_api_detai` (`created_by_id`),
+  KEY `api_assetmanufacture_modified_by_id_752c0d40_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assetmanufacture_created_by_id_4003f7de_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmanufacture_modified_by_id_752c0d40_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmanufacturermodel`
+--
+
+LOCK TABLES `api_assetmanufacturermodel` WRITE;
+/*!40000 ALTER TABLE `api_assetmanufacturermodel` DISABLE KEYS */;
+INSERT INTO `api_assetmanufacturermodel` VALUES (1,'HARBERCRAFT','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(2,'LEGEND','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(3,'LIQUID METAL','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(4,'OUTLAW','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(5,'Silver Streak','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(6,'Titan','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(7,'Western Canoe','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(8,'WESTERN','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(9,'Zodiac Hurricane','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1),(10,'ZODIAC','2023-10-17 16:55:05.802661','2023-10-17 16:55:05.802661',1,1);
+/*!40000 ALTER TABLE `api_assetmanufacturermodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmanufacturermodel_asset_type`
+--
+
+DROP TABLE IF EXISTS `api_assetmanufacturermodel_asset_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmanufacturermodel_asset_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `assetmanufacturermodel_id` int NOT NULL,
+  `assettypemodel_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_assetmanufacturermod_assetmanufacturermodel_i_065ca3a4_uniq` (`assetmanufacturermodel_id`,`assettypemodel_id`),
+  KEY `api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset` (`assettypemodel_id`),
+  CONSTRAINT `api_assetmanufacture_assetmanufacturermod_c02f3a63_fk_api_asset` FOREIGN KEY (`assetmanufacturermodel_id`) REFERENCES `api_assetmanufacturermodel` (`id`),
+  CONSTRAINT `api_assetmanufacture_assettypemodel_id_913e74b9_fk_api_asset` FOREIGN KEY (`assettypemodel_id`) REFERENCES `api_assettypemodel` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmanufacturermodel_asset_type`
+--
+
+LOCK TABLES `api_assetmanufacturermodel_asset_type` WRITE;
+/*!40000 ALTER TABLE `api_assetmanufacturermodel_asset_type` DISABLE KEYS */;
+INSERT INTO `api_assetmanufacturermodel_asset_type` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,5,1),(6,6,1),(7,7,1),(8,8,1),(9,9,1),(10,10,1);
+/*!40000 ALTER TABLE `api_assetmanufacturermodel_asset_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmodel` (
+  `VIN` varchar(100) NOT NULL,
+  `jde_department` varchar(100) DEFAULT NULL,
+  `status` varchar(50) NOT NULL,
+  `aircraft_compatability` varchar(100) DEFAULT NULL,
+  `unit_number` varchar(100) DEFAULT NULL,
+  `license_plate` varchar(100) DEFAULT NULL,
+  `date_of_manufacture` date DEFAULT NULL,
+  `fire_extinguisher_quantity` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_inspection_date` date DEFAULT NULL,
+  `path` varchar(300) DEFAULT NULL,
+  `last_process` varchar(50) NOT NULL,
+  `hours_or_mileage` varchar(50) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `mileage_unit` varchar(50) DEFAULT NULL,
+  `date_in_service` date DEFAULT NULL,
+  `total_cost` double NOT NULL,
+  `daily_average_hours` double NOT NULL,
+  `daily_average_mileage` double NOT NULL,
+  `replacement_hours` double DEFAULT NULL,
+  `replacement_mileage` double DEFAULT NULL,
+  `insurance_renewal_date` date DEFAULT NULL,
+  `registration_renewal_date` date DEFAULT NULL,
+  `load_capacity` double DEFAULT NULL,
+  `load_capacity_unit` varchar(50) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `colour` varchar(50) NOT NULL,
+  `date_created` date NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `is_rental` tinyint(1) DEFAULT NULL,
+  `monthly_subscription_cost` double DEFAULT NULL,
+  `class_code` varchar(50) DEFAULT NULL,
+  `asset_description` longtext,
+  `custom_fields` longtext,
+  `overdue_date_variance` int NOT NULL,
+  `due_soon_date_variance` int NOT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `current_location_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `equipment_type_id` int DEFAULT NULL,
+  `fuel_id` int DEFAULT NULL,
+  `job_specification_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  `parent_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`VIN`),
+  KEY `api_assetmodel_company_id_f122d18f_fk_api_company_company_id` (`company_id`),
+  KEY `api_assetmodel_created_by_id_d48a4bf8_fk_api_detai` (`created_by_id`),
+  KEY `api_assetmodel_currency_id_fa8254f2_fk_api_currency_id` (`currency_id`),
+  KEY `api_assetmodel_current_location_id_f50c42e2_fk_api_locat` (`current_location_id`),
+  KEY `api_assetmodel_department_id_95103181_fk_api_busin` (`department_id`),
+  KEY `api_assetmodel_equipment_type_id_08bc551d_fk_api_equip` (`equipment_type_id`),
+  KEY `api_assetmodel_fuel_id_90e7cb1a_fk_api_fueltype_id` (`fuel_id`),
+  KEY `api_assetmodel_job_specification_id_b5467ffd_fk_api_jobsp` (`job_specification_id`),
+  KEY `api_assetmodel_modified_by_id_6826ae09_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetmodel_original_location_id_9d64c4f1_fk_api_locat` (`original_location_id`),
+  KEY `api_assetmodel_parent_id_9e5f5e9c_fk_api_assetmodel_VIN` (`parent_id`),
+  CONSTRAINT `api_assetmodel_company_id_f122d18f_fk_api_company_company_id` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_assetmodel_created_by_id_d48a4bf8_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmodel_currency_id_fa8254f2_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_assetmodel_current_location_id_f50c42e2_fk_api_locat` FOREIGN KEY (`current_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodel_department_id_95103181_fk_api_busin` FOREIGN KEY (`department_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetmodel_equipment_type_id_08bc551d_fk_api_equip` FOREIGN KEY (`equipment_type_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetmodel_fuel_id_90e7cb1a_fk_api_fueltype_id` FOREIGN KEY (`fuel_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_assetmodel_job_specification_id_b5467ffd_fk_api_jobsp` FOREIGN KEY (`job_specification_id`) REFERENCES `api_jobspecification` (`job_specification_id`),
+  CONSTRAINT `api_assetmodel_modified_by_id_6826ae09_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmodel_original_location_id_9d64c4f1_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodel_parent_id_9e5f5e9c_fk_api_assetmodel_VIN` FOREIGN KEY (`parent_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmodel`
+--
+
+LOCK TABLES `api_assetmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetmodel` DISABLE KEYS */;
+INSERT INTO `api_assetmodel` VALUES ('CA-XDC75434C212',NULL,'Active',NULL,'EXDQ12106',NULL,'2012-01-01',NULL,NULL,NULL,'Accident','hours',-1,439,NULL,'2012-06-15',97322.76,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-11-13 21:34:27.477985',NULL,NULL,0,0,'C20804BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,13,1,34,9,1,1,NULL,NULL),('CA-XMP11222E919',NULL,'Active',NULL,'EXDR21142',NULL,'2021-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C32275BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,29,9,1,1,NULL,NULL),('CA-XMP11224C121',NULL,'Active',NULL,'EXDR21141',NULL,'2021-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C32276BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,29,17,1,1,NULL,NULL),('CA-XMP11232J222',NULL,'Active',NULL,'EXDR23144',NULL,'2022-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C35227BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,29,17,1,1,NULL,NULL),('CA-XMP11233L222',NULL,'Active',NULL,'EXDR23145',NULL,'2022-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C35228BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,29,17,1,1,NULL,NULL),('PLX77257A404',NULL,'Active',NULL,'EXAL04067','C14220BC','2004-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C14220BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,15,1,2,9,1,1,NULL,NULL),('QBSY0467C212',NULL,'Active',NULL,'EXAL12104','UTK 75Y','2012-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C21713BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,49,1,1,9,1,1,NULL,NULL),('QBSY9477G011',NULL,'Active',NULL,'EXAL10096','C17655BC','2010-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C17655BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,1,12,1,1,NULL,NULL),('QBSY9874C111',NULL,'Active',NULL,'EXAL11097',NULL,'2010-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C18409BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,1,9,1,1,NULL,NULL),('QEK22007J005',NULL,'Active',NULL,'EXDQ04068',NULL,'2004-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C10239BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,6,1,17,9,1,1,NULL,NULL),('QEK22008J005',NULL,'Active',NULL,'EXDQ05076','C10467BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C10467BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,46,1,15,15,1,1,NULL,NULL),('QEK22009A005',NULL,'Active',NULL,'EXDQ05078','C10842BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C10842BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,3,1,15,12,1,1,NULL,NULL),('QEK22010C005',NULL,'Active',NULL,'EXDQ05080','C11252BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C11252BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,27,1,16,9,1,1,NULL,NULL),('QEK22011A005',NULL,'Active',NULL,'EXDQ05077',NULL,'2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C11074BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,41,1,15,9,1,1,NULL,NULL),('QEK22012A005',NULL,'Active',NULL,'EXDQ05079','C12720BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12720BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,28,1,15,9,1,1,NULL,NULL),('QEK22014F005',NULL,'Active',NULL,'EXDQ06088','C13340BC','2008-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C13340BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,42,1,15,9,1,1,NULL,NULL),('QEK22016K007',NULL,'Active',NULL,'EXDQ06089',NULL,'2008-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C13833BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,45,1,15,9,1,1,NULL,NULL),('QEK22017K007',NULL,'Active',NULL,'EXDQ07090',NULL,'2007-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C15112BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,9,1,15,9,1,1,NULL,NULL),('QEK23001L003',NULL,'Active',NULL,'EXAQ03058',NULL,'2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C05243BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,29,1,18,9,1,1,NULL,NULL),('QEK23002A003',NULL,'Active',NULL,'EXAQ03059','4522 2W','2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C06583BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,50,1,18,13,1,1,NULL,NULL),('QEK23003C003',NULL,'Active',NULL,'EXAQ03060',NULL,'2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C05959BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,34,1,18,9,1,1,NULL,NULL),('QEK23004F003',NULL,'Active',NULL,'EXAQ03061','C04918BC','2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C04918BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,12,1,19,11,1,1,NULL,NULL),('QEK23005K004',NULL,'Active',NULL,'EXAQ03065','C08271BC','2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08271BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,30,1,19,16,1,1,NULL,NULL),('QEK23006K004-XL',NULL,'Active',NULL,'EXAQ04071','C08272BC','2006-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08272BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,30,1,19,16,1,1,NULL,NULL),('QEK23007E004',NULL,'Active',NULL,'EXAQ04072','C08249BC','2007-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08249BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,19,1,19,13,1,1,NULL,NULL),('QEK23008K006',NULL,'Active',NULL,'EXAQ05081','03509Y','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C11558BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,54,1,19,16,1,1,NULL,NULL),('QEK24005B011',NULL,'Active',NULL,'EXDQ11100','83327 C','2011-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C19624BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,19,1,20,9,1,1,NULL,NULL),('QEK24008J013',NULL,'Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22236BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,19,1,20,9,1,1,NULL,NULL),('QEK24011M314',NULL,'Active',NULL,'EXDQ14118','61620 D','2014-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22911BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,43,1,25,9,1,1,NULL,NULL),('QEK24012M314',NULL,'Active',NULL,'EXDQ14117','UVY26M','2014-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C23236BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,14,1,26,9,1,1,NULL,NULL),('QEK24013L415',NULL,'Active',NULL,'EXDQ15124','WBG 45A','2015-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C24460BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,11,1,26,9,1,1,NULL,NULL),('QEK24014J414',NULL,'Active',NULL,'EXDQ15125','UXV 53A','2015-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C23857BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,14,1,26,9,1,1,NULL,NULL),('QEK24016K617',NULL,'Active',NULL,'EXDQ17132','WCP88X','2017-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C26714BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,24,1,26,9,1,1,NULL,NULL),('QEK24017K617',NULL,'Active',NULL,'EXDQ17131',NULL,'2017-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C26593BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,16,1,20,9,1,1,NULL,NULL),('QEK24018K617',NULL,'Active',NULL,'EXDQ18135',NULL,'2018-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C27425BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,48,1,20,9,1,1,NULL,NULL),('QEK24927E003',NULL,'Active',NULL,'EXDQ04069',NULL,'2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C06586BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,20,1,21,9,1,1,NULL,NULL),('QEK24937H006',NULL,'Active',NULL,'EXDQ05082','C12349BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12349BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,21,9,1,1,NULL,NULL),('QEK24938J006',NULL,'Active',NULL,'EXDQ05083','C12349BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12350BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,21,9,1,1,NULL,NULL),('QEK28006B008',NULL,'Active',NULL,'EXDQ08091','C15005BC','2008-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C15005BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,22,9,1,1,NULL,NULL),('QEK28007G008',NULL,'Active',NULL,'EXDQ08093',NULL,'2008-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C16930BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,22,9,1,1,NULL,NULL),('QEK28008K010',NULL,'Active',NULL,'EXDQ09095',NULL,'2011-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C17996BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,3,1,22,9,1,1,NULL,NULL),('QEK29010H013',NULL,'Active',NULL,'EXDQ1202','29529D','2012-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C21386BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,18,1,13,9,1,1,NULL,NULL),('QEK30001A006',NULL,'Active',NULL,'EXDQ06084','15238C','2006-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12951BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,23,9,1,1,NULL,NULL),('QEK30006E009',NULL,'Active',NULL,'EXDQ08092',NULL,'2010-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C16860BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,13,1,24,9,1,1,NULL,NULL),('QEK30014A717',NULL,'Active',NULL,'EXDQ18137',NULL,'2017-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C27129BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,13,1,14,9,1,1,NULL,NULL),('QLV102RJA617',NULL,'Active',NULL,'EXDL16130','WAR88Y','2016-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C25643BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,21,1,5,9,1,1,NULL,NULL),('QLV103RJA612',NULL,'Active',NULL,'EXDL16129','2995 4U','2016-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C26023BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,5,1,5,9,1,1,NULL,NULL),('QLV105MRH405',NULL,'Active',NULL,'EXDL15128','UXY 09F','2015-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C23806BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,16,1,4,9,1,1,NULL,NULL),('QLV115MRH405',NULL,'Active',NULL,'EXDL15127','UYY 01Y','2015-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C24278BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,40,1,4,9,1,1,NULL,NULL),('QLV15MRCA305',NULL,'Active',NULL,'EXDL13110',NULL,'2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C21880BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,4,1,4,9,1,1,NULL,NULL),('QLV16MRCL310',NULL,'Active',NULL,'EXDQ14116','6454 7D','2014-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C23752BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,23,1,6,9,1,1,NULL,NULL),('QLV25MRCA305',NULL,'Active',NULL,'EXDL13111','UYG 36Y','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C21884BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,22,1,4,14,1,1,NULL,NULL),('QLV35MRCC305',NULL,'Active',NULL,'EXDL14112','35989D','2014-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22991BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,52,1,4,9,1,1,NULL,NULL),('QLV45MRCC305',NULL,'Active',NULL,'EXDL14113','3257 6D','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22110BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,28,1,4,9,1,1,NULL,NULL),('QLV55MRCF305',NULL,'Active',NULL,'EXDL14114','UVK 77X','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22606BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,57,1,3,9,1,1,NULL,NULL),('QLV65MRCF305',NULL,'Active',NULL,'EXDL14115','UWG 80F','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22745BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,58,1,4,9,1,1,NULL,NULL),('QLV75MRCJ305',NULL,'Active',NULL,'EXDL14119','UVX 14H','2014-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C23176BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,7,1,4,9,1,1,NULL,NULL),('QLV7M212D211',NULL,'Active',NULL,'EXDQ13108','USG67X','2011-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C20959BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,5,1,7,9,1,1,NULL,NULL),('QLV7RC12B211',NULL,'Active',NULL,'EXDQ12105','06709D','2012-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C20967BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,10,1,10,9,1,1,NULL,NULL),('QLV85MRCJ305',NULL,'Active',NULL,'EXDL14121','32576D','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22835BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,25,1,5,9,1,1,NULL,NULL),('QLV95MRCJ305',NULL,'Active',NULL,'EXDL14120','UWK 17C','2013-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C22834BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,25,1,4,9,1,1,NULL,NULL),('QLVKJ301D705',NULL,'Active',NULL,'EXDL17134',NULL,'2017-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C26999BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,26,1,5,9,1,1,NULL,NULL),('QLVKJ315J920',NULL,'Active',NULL,'EXDL20138',NULL,'2020-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C29809BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,38,1,4,11,1,1,NULL,NULL),('QLVKJ316J920',NULL,'Active',NULL,'EXDL20140',NULL,'2020-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C29886BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,34,1,4,9,1,1,NULL,NULL),('QLVKJ317J920',NULL,'Active',NULL,'EXDL20139',NULL,'2020-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C30002BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,15,1,4,9,1,1,NULL,NULL),('QLVKT300L711',NULL,'Active',NULL,'EXDQ17133','50103U','2017-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C26758BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,53,1,8,9,1,1,NULL,NULL),('QLVKT302G711',NULL,'Active',NULL,'EXDQ18136',NULL,'2018-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C27371BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,44,1,8,9,1,1,NULL,NULL),('QLVMH330A222',NULL,'Active',NULL,'EXAQ22141',NULL,'2022-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C33386BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,9,1,9,17,1,1,NULL,NULL),('QOM22314C909',NULL,'Active',NULL,'EXAQ08094','C17194BC','2008-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C17194BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,36,1,11,14,1,1,NULL,NULL),('QSMJT724D414',NULL,'Active',NULL,'EXAL14122','288996B','2014-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C24418BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,28,1,12,9,1,1,NULL,NULL),('XDC531070696',NULL,'Active',NULL,'EXDL96032',NULL,'1996-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C07422BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,15,1,31,9,1,1,NULL,NULL),('XDC533101G595',NULL,'Active',NULL,'EXDL95024','15237C','1995-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12700BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,35,9,1,1,NULL,NULL),('XDC54002C797',NULL,'Active',NULL,'EXDL97038','WCM23L','1997-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12701BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,35,12,1,1,NULL,NULL),('XDC54003C797',NULL,'Active',NULL,'EXDL97039','12827U','1996-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12702BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,35,9,1,1,NULL,NULL),('XDC54005C797',NULL,'Active',NULL,'EXDL97040','C12699BC','1997-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12699BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,35,12,1,1,NULL,NULL),('XDC54110A202',NULL,'Active',NULL,'EXDL02051','961 147','2002-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08195BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,33,1,35,9,1,1,NULL,NULL),('XDC54111B202',NULL,'Active',NULL,'EXDL02054','UBE75C','2002-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12906BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,11,1,35,9,1,1,NULL,NULL),('XDC54113C202',NULL,'Active',NULL,'EXDL02053','C08159BC','2002-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08159BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,35,1,31,9,1,1,NULL,NULL),('XDC54114C202',NULL,'Active',NULL,'EXDL02055','C12761BC','2002-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12761BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,31,1,35,9,1,1,NULL,NULL),('XDC54140H405',NULL,'Active',NULL,'EXDL04070','C08163BC','2004-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08163BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,17,1,35,12,1,1,NULL,NULL),('XDC541448B505',NULL,'Active',NULL,'EXDL05074','UTJ73C','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C13153BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,32,1,31,9,1,1,NULL,NULL),('XDC54147A505',NULL,'Active',NULL,'EXDL05075','C10908BC','2005-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C10908BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,47,1,35,9,1,1,NULL,NULL),('XDC5414G504',NULL,'Active',NULL,'EXDL04073','C08247BC','2004-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08247BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,55,1,35,14,1,1,NULL,NULL),('XDC54160C606',NULL,'Active',NULL,'EXDL06086','C13942BC','2006-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C13942BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,31,10,1,1,NULL,NULL),('XDC54161C606',NULL,'Active',NULL,'EXDL06087','C12744BC','2006-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C12744BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,2,1,31,9,1,1,NULL,NULL),('XDC54413C202',NULL,'Active',NULL,'EXDL02052','C14130BC','2001-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C14130BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,36,1,35,15,1,1,NULL,NULL),('XDC63290B303',NULL,'Active',NULL,'EXDQ03063','C06526BC','2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C06526BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,56,1,37,15,1,1,NULL,NULL),('XDC63291B303',NULL,'Active',NULL,'EXDQ03062','C06484BC','2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C06484BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,51,1,36,9,1,1,NULL,NULL),('XDC63292B303',NULL,'Active',NULL,'EXDQ03064','C08275BC','2003-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C08275BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,39,1,36,9,1,1,NULL,NULL),('XDC73387B494',NULL,'Active',NULL,'EXDQ94099',NULL,'2011-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C02979BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,37,1,33,9,1,1,NULL,NULL),('XMP75447A515',NULL,'Active',NULL,'EXDQ15126',NULL,'2015-01-01',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,0,0,NULL,0,NULL,NULL,NULL,NULL,'TBD','TBD','2023-10-17','2023-10-26 00:00:00.000000',NULL,NULL,0,0,'C24180BC','Vessel',NULL,0,0,'b37b68f52d524864babf5840f822a9d1',1,2,8,1,34,9,1,1,NULL,NULL);
+/*!40000 ALTER TABLE `api_assetmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetmodelhistory` (
+  `asset_history_id` int NOT NULL AUTO_INCREMENT,
+  `date` datetime(6) NOT NULL,
+  `jde_department` varchar(100) DEFAULT NULL,
+  `status` varchar(50) NOT NULL,
+  `unit_number` varchar(100) DEFAULT NULL,
+  `license_plate` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_quantity` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_inspection_date` varchar(100) DEFAULT NULL,
+  `path` varchar(300) DEFAULT NULL,
+  `last_process` varchar(50) NOT NULL,
+  `hours_or_mileage` varchar(50) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `mileage_unit` varchar(50) DEFAULT NULL,
+  `total_cost` double NOT NULL,
+  `daily_average_hours` double NOT NULL,
+  `daily_average_mileage` double NOT NULL,
+  `replacement_hours` double DEFAULT NULL,
+  `replacement_mileage` double DEFAULT NULL,
+  `load_capacity` double DEFAULT NULL,
+  `load_capacity_unit` varchar(50) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `is_rental` tinyint(1) DEFAULT NULL,
+  `monthly_subscription_cost` double DEFAULT NULL,
+  `class_code` varchar(50) DEFAULT NULL,
+  `asset_description` longtext,
+  `custom_fields` longtext,
+  `overdue_date_variance` int NOT NULL,
+  `due_soon_date_variance` int NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `current_location_id` int DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
+  `equipment_type_id` int DEFAULT NULL,
+  `fuel_id` int DEFAULT NULL,
+  `job_specification_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  `parent_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`asset_history_id`),
+  KEY `api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_assetmodelhistor_company_id_f7bb1171_fk_api_compa` (`company_id`),
+  KEY `api_assetmodelhistory_currency_id_ab3b9b7a_fk_api_currency_id` (`currency_id`),
+  KEY `api_assetmodelhistor_current_location_id_467d3a2f_fk_api_locat` (`current_location_id`),
+  KEY `api_assetmodelhistor_department_id_8fb917a8_fk_api_busin` (`department_id`),
+  KEY `api_assetmodelhistor_equipment_type_id_4b88b5ce_fk_api_equip` (`equipment_type_id`),
+  KEY `api_assetmodelhistory_fuel_id_73ea8d75_fk_api_fueltype_id` (`fuel_id`),
+  KEY `api_assetmodelhistor_job_specification_id_78ef1952_fk_api_jobsp` (`job_specification_id`),
+  KEY `api_assetmodelhistor_modified_by_id_77a2bcc7_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetmodelhistor_original_location_id_6c04f79b_fk_api_locat` (`original_location_id`),
+  KEY `api_assetmodelhistory_parent_id_1c81d2a0_fk_api_assetmodel_VIN` (`parent_id`),
+  CONSTRAINT `api_assetmodelhistor_company_id_f7bb1171_fk_api_compa` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_assetmodelhistor_current_location_id_467d3a2f_fk_api_locat` FOREIGN KEY (`current_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodelhistor_department_id_8fb917a8_fk_api_busin` FOREIGN KEY (`department_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetmodelhistor_equipment_type_id_4b88b5ce_fk_api_equip` FOREIGN KEY (`equipment_type_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetmodelhistor_job_specification_id_78ef1952_fk_api_jobsp` FOREIGN KEY (`job_specification_id`) REFERENCES `api_jobspecification` (`job_specification_id`),
+  CONSTRAINT `api_assetmodelhistor_modified_by_id_77a2bcc7_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetmodelhistor_original_location_id_6c04f79b_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetmodelhistory_currency_id_ab3b9b7a_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_assetmodelhistory_fuel_id_73ea8d75_fk_api_fueltype_id` FOREIGN KEY (`fuel_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_assetmodelhistory_parent_id_1c81d2a0_fk_api_assetmodel_VIN` FOREIGN KEY (`parent_id`) REFERENCES `api_assetmodel` (`VIN`),
+  CONSTRAINT `api_assetmodelhistory_VIN_id_3382cd23_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetmodelhistory`
+--
+
+LOCK TABLES `api_assetmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestjustificationmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestjustificationmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestjustificationmodel` (
+  `justification_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`justification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestjustificationmodel`
+--
+
+LOCK TABLES `api_assetrequestjustificationmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestjustificationmodel` DISABLE KEYS */;
+INSERT INTO `api_assetrequestjustificationmodel` VALUES (1,'New Operation'),(2,'Life Cycle Replacement'),(3,'Operational Change'),(4,'Equipment Failure'),(5,'Accident'),(6,'Unexpected');
+/*!40000 ALTER TABLE `api_assetrequestjustificationmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestmodel`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestmodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date_required` datetime(6) NOT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `nonstandard_description` longtext,
+  `vendor_email` varchar(100) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `quantity` int NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `business_unit_id` int NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `equipment_id` int NOT NULL,
+  `justification_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin` (`business_unit_id`),
+  KEY `api_assetrequestmode_created_by_id_d8e64481_fk_api_detai` (`created_by_id`),
+  KEY `api_assetrequestmode_disposal_id_89a7a0e3_fk_api_asset` (`disposal_id`),
+  KEY `api_assetrequestmode_equipment_id_ace308f7_fk_api_equip` (`equipment_id`),
+  KEY `api_assetrequestmode_justification_id_a448f514_fk_api_asset` (`justification_id`),
+  KEY `api_assetrequestmode_location_id_ed98707a_fk_api_locat` (`location_id`),
+  KEY `api_assetrequestmode_modified_by_id_7f4fd728_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetrequestmode_vendor_id_6bd6d19d_fk_api_appro` (`vendor_id`),
+  KEY `api_assetrequestmodel_VIN_id_a420f925_fk_api_assetmodel_VIN` (`VIN_id`),
+  CONSTRAINT `api_assetrequestmode_business_unit_id_1a6162e8_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetrequestmode_created_by_id_d8e64481_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestmode_disposal_id_89a7a0e3_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assetrequestmode_equipment_id_ace308f7_fk_api_equip` FOREIGN KEY (`equipment_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetrequestmode_justification_id_a448f514_fk_api_asset` FOREIGN KEY (`justification_id`) REFERENCES `api_assetrequestjustificationmodel` (`justification_id`),
+  CONSTRAINT `api_assetrequestmode_location_id_ed98707a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetrequestmode_modified_by_id_7f4fd728_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestmode_vendor_id_6bd6d19d_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_assetrequestmodel_VIN_id_a420f925_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestmodel`
+--
+
+LOCK TABLES `api_assetrequestmodel` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetrequestmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assetrequestmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assetrequestmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assetrequestmodelhistory` (
+  `asset_request_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date_required` datetime(6) NOT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `nonstandard_description` longtext,
+  `vendor_email` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `quantity` int NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `asset_request_id` int NOT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `equipment_id` int DEFAULT NULL,
+  `justification_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_request_history_id`),
+  KEY `api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset` (`VIN_id`),
+  KEY `api_assetrequestmode_asset_request_id_eeb3776d_fk_api_asset` (`asset_request_id`),
+  KEY `api_assetrequestmode_business_unit_id_5b84c75a_fk_api_busin` (`business_unit_id`),
+  KEY `api_assetrequestmode_equipment_id_4f536288_fk_api_equip` (`equipment_id`),
+  KEY `api_assetrequestmode_justification_id_cf624510_fk_api_asset` (`justification_id`),
+  KEY `api_assetrequestmode_location_id_18ff3e40_fk_api_locat` (`location_id`),
+  KEY `api_assetrequestmode_modified_by_id_5c2c48c1_fk_api_detai` (`modified_by_id`),
+  KEY `api_assetrequestmode_vendor_id_e6b31e09_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_assetrequestmode_asset_request_id_eeb3776d_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_assetrequestmode_business_unit_id_5b84c75a_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_assetrequestmode_equipment_id_4f536288_fk_api_equip` FOREIGN KEY (`equipment_id`) REFERENCES `api_equipmenttypemodel` (`equipment_type_id`),
+  CONSTRAINT `api_assetrequestmode_justification_id_cf624510_fk_api_asset` FOREIGN KEY (`justification_id`) REFERENCES `api_assetrequestjustificationmodel` (`justification_id`),
+  CONSTRAINT `api_assetrequestmode_location_id_18ff3e40_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assetrequestmode_modified_by_id_5c2c48c1_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assetrequestmode_vendor_id_e6b31e09_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_assetrequestmode_VIN_id_48d61bfd_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assetrequestmodelhistory`
+--
+
+LOCK TABLES `api_assetrequestmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assetrequestmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assetrequestmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettransfer`
+--
+
+DROP TABLE IF EXISTS `api_assettransfer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettransfer` (
+  `asset_transfer_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `justification` longtext NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `pickup_date` date DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `interior_condition` varchar(50) NOT NULL,
+  `interior_condition_details` longtext,
+  `exterior_condition` varchar(50) NOT NULL,
+  `exterior_condition_details` longtext,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `destination_location_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_transfer_id`),
+  KEY `api_assettransfer_created_by_id_ab9cdd92_fk_api_detai` (`created_by_id`),
+  KEY `api_assettransfer_destination_location_51514ea1_fk_api_locat` (`destination_location_id`),
+  KEY `api_assettransfer_disposal_id_dbc94e0f_fk_api_asset` (`disposal_id`),
+  KEY `api_assettransfer_modified_by_id_b584b255_fk_api_detai` (`modified_by_id`),
+  KEY `api_assettransfer_original_location_id_2bc14e49_fk_api_locat` (`original_location_id`),
+  KEY `api_assettransfer_VIN_id_12084905_fk_api_assetmodel_VIN` (`VIN_id`),
+  CONSTRAINT `api_assettransfer_created_by_id_ab9cdd92_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettransfer_destination_location_51514ea1_fk_api_locat` FOREIGN KEY (`destination_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assettransfer_disposal_id_dbc94e0f_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assettransfer_modified_by_id_b584b255_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettransfer_original_location_id_2bc14e49_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assettransfer_VIN_id_12084905_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettransfer`
+--
+
+LOCK TABLES `api_assettransfer` WRITE;
+/*!40000 ALTER TABLE `api_assettransfer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assettransfer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettransfermodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_assettransfermodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettransfermodelhistory` (
+  `asset_transfer_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `justification` longtext NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `pickup_date` date DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `interior_condition` varchar(50) DEFAULT NULL,
+  `interior_condition_details` longtext,
+  `exterior_condition` varchar(50) DEFAULT NULL,
+  `exterior_condition_details` longtext,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `asset_transfer_id` int NOT NULL,
+  `destination_location_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `original_location_id` int DEFAULT NULL,
+  PRIMARY KEY (`asset_transfer_history_id`),
+  KEY `api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset` (`asset_transfer_id`),
+  KEY `api_assettransfermod_destination_location_3ca950b2_fk_api_locat` (`destination_location_id`),
+  KEY `api_assettransfermod_disposal_id_01325a31_fk_api_asset` (`disposal_id`),
+  KEY `api_assettransfermod_modified_by_id_eb45f7a7_fk_api_detai` (`modified_by_id`),
+  KEY `api_assettransfermod_original_location_id_d180fece_fk_api_locat` (`original_location_id`),
+  CONSTRAINT `api_assettransfermod_asset_transfer_id_dc8952a7_fk_api_asset` FOREIGN KEY (`asset_transfer_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`),
+  CONSTRAINT `api_assettransfermod_destination_location_3ca950b2_fk_api_locat` FOREIGN KEY (`destination_location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_assettransfermod_disposal_id_01325a31_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_assettransfermod_modified_by_id_eb45f7a7_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettransfermod_original_location_id_d180fece_fk_api_locat` FOREIGN KEY (`original_location_id`) REFERENCES `api_locationmodel` (`location_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettransfermodelhistory`
+--
+
+LOCK TABLES `api_assettransfermodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_assettransfermodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assettransfermodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettypechecks`
+--
+
+DROP TABLE IF EXISTS `api_assettypechecks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettypechecks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tires` tinyint(1) NOT NULL,
+  `wheels` tinyint(1) NOT NULL,
+  `lights` tinyint(1) NOT NULL,
+  `horn` tinyint(1) NOT NULL,
+  `fluids` tinyint(1) NOT NULL,
+  `fuel` tinyint(1) NOT NULL,
+  `mirrors` tinyint(1) NOT NULL,
+  `glass` tinyint(1) NOT NULL,
+  `fire_extinguisher` tinyint(1) NOT NULL,
+  `overhead_guard` tinyint(1) NOT NULL,
+  `steps` tinyint(1) NOT NULL,
+  `forks` tinyint(1) NOT NULL,
+  `operator_cab` tinyint(1) NOT NULL,
+  `cosmetic_damage` tinyint(1) NOT NULL,
+  `safety_equipment` tinyint(1) NOT NULL,
+  `leaks` tinyint(1) NOT NULL,
+  `brakes` tinyint(1) NOT NULL,
+  `steering` tinyint(1) NOT NULL,
+  `attachments` tinyint(1) NOT NULL,
+  `trailer_air_lines` tinyint(1) NOT NULL,
+  `trailer_light_cord` tinyint(1) NOT NULL,
+  `mud_flaps` tinyint(1) NOT NULL,
+  `electrical_connectors` tinyint(1) NOT NULL,
+  `hydraulic_hoses` tinyint(1) NOT NULL,
+  `air_pressure` tinyint(1) NOT NULL,
+  `boom_extensions` tinyint(1) NOT NULL,
+  `spreader_functions` tinyint(1) NOT NULL,
+  `asset_type_name` varchar(100) NOT NULL,
+  `backup_lights` tinyint(1) NOT NULL,
+  `brake_fluid` tinyint(1) NOT NULL,
+  `headlights` tinyint(1) NOT NULL,
+  `hydraulic_fluid` tinyint(1) NOT NULL,
+  `oil` tinyint(1) NOT NULL,
+  `other_leaks` tinyint(1) NOT NULL,
+  `steering_fluid` tinyint(1) NOT NULL,
+  `transmission_fluid` tinyint(1) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `asset_type_name` (`asset_type_name`),
+  KEY `api_assettypechecks_created_by_id_afdea472_fk_api_detai` (`created_by_id`),
+  KEY `api_assettypechecks_modified_by_id_12ec3feb_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assettypechecks_created_by_id_afdea472_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettypechecks_modified_by_id_12ec3feb_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettypechecks`
+--
+
+LOCK TABLES `api_assettypechecks` WRITE;
+/*!40000 ALTER TABLE `api_assettypechecks` DISABLE KEYS */;
+INSERT INTO `api_assettypechecks` VALUES (1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'vessel',0,0,0,0,0,0,0,0,1,'2023-01-20 02:15:01.895878','2023-01-20 02:15:01.895878',1),(2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'trailer',0,0,0,0,0,0,0,0,1,'2023-01-20 02:15:01.895878','2023-01-20 02:15:01.895878',1);
+/*!40000 ALTER TABLE `api_assettypechecks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettypecheckshistory`
+--
+
+DROP TABLE IF EXISTS `api_assettypecheckshistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettypecheckshistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `asset_type_name` varchar(100) NOT NULL,
+  `tires` tinyint(1) NOT NULL,
+  `wheels` tinyint(1) NOT NULL,
+  `horn` tinyint(1) NOT NULL,
+  `fuel` tinyint(1) NOT NULL,
+  `mirrors` tinyint(1) NOT NULL,
+  `glass` tinyint(1) NOT NULL,
+  `overhead_guard` tinyint(1) NOT NULL,
+  `steps` tinyint(1) NOT NULL,
+  `forks` tinyint(1) NOT NULL,
+  `operator_cab` tinyint(1) NOT NULL,
+  `cosmetic_damage` tinyint(1) NOT NULL,
+  `brakes` tinyint(1) NOT NULL,
+  `steering` tinyint(1) NOT NULL,
+  `attachments` tinyint(1) NOT NULL,
+  `mud_flaps` tinyint(1) NOT NULL,
+  `electrical_connectors` tinyint(1) NOT NULL,
+  `air_pressure` tinyint(1) NOT NULL,
+  `boom_extensions` tinyint(1) NOT NULL,
+  `spreader_functions` tinyint(1) NOT NULL,
+  `lights` tinyint(1) NOT NULL,
+  `headlights` tinyint(1) NOT NULL,
+  `backup_lights` tinyint(1) NOT NULL,
+  `trailer_light_cord` tinyint(1) NOT NULL,
+  `fluids` tinyint(1) NOT NULL,
+  `oil` tinyint(1) NOT NULL,
+  `transmission_fluid` tinyint(1) NOT NULL,
+  `steering_fluid` tinyint(1) NOT NULL,
+  `hydraulic_fluid` tinyint(1) NOT NULL,
+  `brake_fluid` tinyint(1) NOT NULL,
+  `safety_equipment` tinyint(1) NOT NULL,
+  `fire_extinguisher` tinyint(1) NOT NULL,
+  `leaks` tinyint(1) NOT NULL,
+  `hydraulic_hoses` tinyint(1) NOT NULL,
+  `trailer_air_lines` tinyint(1) NOT NULL,
+  `other_leaks` tinyint(1) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `asset_type_checks_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset` (`asset_type_checks_id`),
+  KEY `api_assettypechecksh_modified_by_id_80f02d97_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_assettypechecksh_asset_type_checks_id_8f30fc10_fk_api_asset` FOREIGN KEY (`asset_type_checks_id`) REFERENCES `api_assettypechecks` (`id`),
+  CONSTRAINT `api_assettypechecksh_modified_by_id_80f02d97_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettypecheckshistory`
+--
+
+LOCK TABLES `api_assettypecheckshistory` WRITE;
+/*!40000 ALTER TABLE `api_assettypecheckshistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_assettypecheckshistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_assettypemodel`
+--
+
+DROP TABLE IF EXISTS `api_assettypemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_assettypemodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `overdue_date_variance` int NOT NULL,
+  `due_soon_date_variance` int NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `custom_fields` longtext,
+  `asset_type_checks_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_assettypemodel_created_by_id_be41afef_fk_api_detai` (`created_by_id`),
+  KEY `api_assettypemodel_modified_by_id_a7557b41_fk_api_detai` (`modified_by_id`),
+  KEY `api_assettypemodel_asset_type_checks_id_dd77b5e2_fk_api_asset` (`asset_type_checks_id`),
+  CONSTRAINT `api_assettypemodel_asset_type_checks_id_dd77b5e2_fk_api_asset` FOREIGN KEY (`asset_type_checks_id`) REFERENCES `api_assettypechecks` (`id`),
+  CONSTRAINT `api_assettypemodel_created_by_id_be41afef_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_assettypemodel_modified_by_id_a7557b41_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_assettypemodel`
+--
+
+LOCK TABLES `api_assettypemodel` WRITE;
+/*!40000 ALTER TABLE `api_assettypemodel` DISABLE KEYS */;
+INSERT INTO `api_assettypemodel` VALUES (1,'Vessel',0,-7,'2023-10-17 19:28:14.041482','2023-10-17 19:28:14.041482',NULL,1,1,1),(2,'Trailer',0,-7,'2023-10-17 19:28:14.041482','2023-10-17 19:28:14.041482',NULL,NULL,1,1);
+/*!40000 ALTER TABLE `api_assettypemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_businessunitmodel`
+--
+
+DROP TABLE IF EXISTS `api_businessunitmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_businessunitmodel` (
+  `business_unit_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `accounting_email` varchar(254) NOT NULL,
+  `location_id` int NOT NULL,
+  PRIMARY KEY (`business_unit_id`),
+  KEY `api_businessunitmode_location_id_1fdea960_fk_api_locat` (`location_id`),
+  CONSTRAINT `api_businessunitmode_location_id_1fdea960_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_businessunitmodel`
+--
+
+LOCK TABLES `api_businessunitmodel` WRITE;
+/*!40000 ALTER TABLE `api_businessunitmodel` DISABLE KEYS */;
+INSERT INTO `api_businessunitmodel` VALUES (1,'RCMP E Division','darren.mierau@rcmp-grc.gc.ca',1);
+/*!40000 ALTER TABLE `api_businessunitmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_company`
+--
+
+DROP TABLE IF EXISTS `api_company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_company` (
+  `company_id` char(32) NOT NULL,
+  `company_name` varchar(150) NOT NULL,
+  `company_address` varchar(150) NOT NULL,
+  `company_phone` varchar(50) NOT NULL,
+  `accounting_email` varchar(254) NOT NULL,
+  `software_logo` varchar(1000) NOT NULL,
+  `software_name` varchar(50) NOT NULL,
+  `standard_currency_id` int DEFAULT NULL,
+  PRIMARY KEY (`company_id`),
+  UNIQUE KEY `accounting_email` (`accounting_email`),
+  KEY `api_company_standard_currency_id_7f70e121_fk_api_currency_id` (`standard_currency_id`),
+  CONSTRAINT `api_company_standard_currency_id_7f70e121_fk_api_currency_id` FOREIGN KEY (`standard_currency_id`) REFERENCES `api_currency` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_company`
+--
+
+LOCK TABLES `api_company` WRITE;
+/*!40000 ALTER TABLE `api_company` DISABLE KEYS */;
+INSERT INTO `api_company` VALUES ('b37b68f52d524864babf5840f822a9d1','RCMP','73 Leikin Drive Ottawa ON K1A 0R2','613-993-7267','darren.mierau@rcmp','https://testorion.blob.core.windows.net/template-assets/logos/aukai.png','aukai',2);
+/*!40000 ALTER TABLE `api_company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_currency`
+--
+
+DROP TABLE IF EXISTS `api_currency`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_currency` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `number` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_currency`
+--
+
+LOCK TABLES `api_currency` WRITE;
+/*!40000 ALTER TABLE `api_currency` DISABLE KEYS */;
+INSERT INTO `api_currency` VALUES (1,'USD','','US Dollar'),(2,'CAD','','Canadian Dollar'),(3,'EUR','','Euro');
+/*!40000 ALTER TABLE `api_currency` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_dailyinspection`
+--
+
+DROP TABLE IF EXISTS `api_dailyinspection`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_dailyinspection` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIN` varchar(17) NOT NULL,
+  `inspection_date` date NOT NULL,
+  `pfd_lifejacket_ledger` longtext,
+  `throw_bags` tinyint(1) NOT NULL,
+  `heaving_line` tinyint(1) NOT NULL,
+  `liferings` tinyint(1) NOT NULL,
+  `reboarding_device` tinyint(1) NOT NULL,
+  `watertight_flashlight` tinyint(1) NOT NULL,
+  `pyrotechnic_flares` tinyint(1) NOT NULL,
+  `first_aid_kit` tinyint(1) NOT NULL,
+  `engine_working` tinyint(1) NOT NULL,
+  `marine_vhf_radio` tinyint(1) NOT NULL,
+  `police_radio` tinyint(1) NOT NULL,
+  `epirb_registered` tinyint(1) NOT NULL,
+  `bilge_pump_clear` tinyint(1) NOT NULL,
+  `steering_controls_operable` tinyint(1) NOT NULL,
+  `hatches_operable` tinyint(1) NOT NULL,
+  `training_skills_exercised` tinyint(1) NOT NULL,
+  `drills_entered_logbook` tinyint(1) NOT NULL,
+  `emergency_briefings_conducted` tinyint(1) NOT NULL,
+  `fire_extinguishers_inspected` tinyint(1) NOT NULL,
+  `regular_inspections_completed` tinyint(1) NOT NULL,
+  `electrical_inspections_completed` tinyint(1) NOT NULL,
+  `broken_cracked_lenses` tinyint(1) NOT NULL,
+  `lights_functioning` tinyint(1) NOT NULL,
+  `fuel_connections_good` tinyint(1) NOT NULL,
+  `fuel_containers_stored_properly` tinyint(1) NOT NULL,
+  `ground_tackle_inspected` tinyint(1) NOT NULL,
+  `bitter_end_attached` tinyint(1) NOT NULL,
+  `anchor_secured` tinyint(1) NOT NULL,
+  `welds_bolts_screws_good` tinyint(1) NOT NULL,
+  `grab_lines_good` tinyint(1) NOT NULL,
+  `operators_trained` tinyint(1) NOT NULL,
+  `crew_equipment_trained` tinyint(1) NOT NULL,
+  `vessel_damaged_since_last_report` tinyint(1) NOT NULL,
+  `structural_changes_made_since_last_report` tinyint(1) NOT NULL,
+  `date_created` date NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_dailyinspection_created_by_id_f033ed51_fk_api_detai` (`created_by_id`),
+  KEY `api_dailyinspection_modified_by_id_ccd7e2b7_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_dailyinspection_created_by_id_f033ed51_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_dailyinspection_modified_by_id_ccd7e2b7_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_dailyinspection`
+--
+
+LOCK TABLES `api_dailyinspection` WRITE;
+/*!40000 ALTER TABLE `api_dailyinspection` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_dailyinspection` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_dailyinspectionhistory`
+--
+
+DROP TABLE IF EXISTS `api_dailyinspectionhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_dailyinspectionhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIN` varchar(17) NOT NULL,
+  `inspection_date` date NOT NULL,
+  `pfd_lifejacket_ledger` longtext,
+  `throw_bags` tinyint(1) NOT NULL,
+  `heaving_line` tinyint(1) NOT NULL,
+  `liferings` tinyint(1) NOT NULL,
+  `reboarding_device` tinyint(1) NOT NULL,
+  `watertight_flashlight` tinyint(1) NOT NULL,
+  `pyrotechnic_flares` tinyint(1) NOT NULL,
+  `first_aid_kit` tinyint(1) NOT NULL,
+  `engine_working` tinyint(1) NOT NULL,
+  `marine_vhf_radio` tinyint(1) NOT NULL,
+  `police_radio` tinyint(1) NOT NULL,
+  `epirb_registered` tinyint(1) NOT NULL,
+  `bilge_pump_clear` tinyint(1) NOT NULL,
+  `steering_controls_operable` tinyint(1) NOT NULL,
+  `hatches_operable` tinyint(1) NOT NULL,
+  `training_skills_exercised` tinyint(1) NOT NULL,
+  `drills_entered_logbook` tinyint(1) NOT NULL,
+  `emergency_briefings_conducted` tinyint(1) NOT NULL,
+  `fire_extinguishers_inspected` tinyint(1) NOT NULL,
+  `regular_inspections_completed` tinyint(1) NOT NULL,
+  `electrical_inspections_completed` tinyint(1) NOT NULL,
+  `broken_cracked_lenses` tinyint(1) NOT NULL,
+  `lights_functioning` tinyint(1) NOT NULL,
+  `fuel_connections_good` tinyint(1) NOT NULL,
+  `fuel_containers_stored_properly` tinyint(1) NOT NULL,
+  `ground_tackle_inspected` tinyint(1) NOT NULL,
+  `bitter_end_attached` tinyint(1) NOT NULL,
+  `anchor_secured` tinyint(1) NOT NULL,
+  `welds_bolts_screws_good` tinyint(1) NOT NULL,
+  `grab_lines_good` tinyint(1) NOT NULL,
+  `operators_trained` tinyint(1) NOT NULL,
+  `crew_equipment_trained` tinyint(1) NOT NULL,
+  `vessel_damaged_since_last_report` tinyint(1) NOT NULL,
+  `structural_changes_made_since_last_report` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_dailyinspectionhistory`
+--
+
+LOCK TABLES `api_dailyinspectionhistory` WRITE;
+/*!40000 ALTER TABLE `api_dailyinspectionhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_dailyinspectionhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_deliverycost`
+--
+
+DROP TABLE IF EXISTS `api_deliverycost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_deliverycost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_deliverycost_created_by_id_c17f28d6_fk_api_detai` (`created_by_id`),
+  KEY `api_deliverycost_currency_id_91d26aab_fk_api_currency_id` (`currency_id`),
+  KEY `api_deliverycost_disposal_id_9dc4f78b_fk_api_asset` (`disposal_id`),
+  KEY `api_deliverycost_location_id_4354d4fc_fk_api_locat` (`location_id`),
+  KEY `api_deliverycost_maintenance_id_418648c9_fk_api_maint` (`maintenance_id`),
+  KEY `api_deliverycost_modified_by_id_5500cc05_fk_api_detai` (`modified_by_id`),
+  KEY `api_deliverycost_repair_id_1ba17210_fk_api_repai` (`repair_id`),
+  KEY `api_deliverycost_asset_request_id_4f0d9ded_fk_api_asset` (`asset_request_id`),
+  CONSTRAINT `api_deliverycost_asset_request_id_4f0d9ded_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_deliverycost_created_by_id_c17f28d6_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycost_currency_id_91d26aab_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_deliverycost_disposal_id_9dc4f78b_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_deliverycost_location_id_4354d4fc_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_deliverycost_maintenance_id_418648c9_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_deliverycost_modified_by_id_5500cc05_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycost_repair_id_1ba17210_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_deliverycost`
+--
+
+LOCK TABLES `api_deliverycost` WRITE;
+/*!40000 ALTER TABLE `api_deliverycost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_deliverycost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_deliverycosthistory`
+--
+
+DROP TABLE IF EXISTS `api_deliverycosthistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_deliverycosthistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `asset_request_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `delivery_cost_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset` (`asset_request_id`),
+  KEY `api_deliverycosthist_created_by_id_93a7f210_fk_api_detai` (`created_by_id`),
+  KEY `api_deliverycosthistory_currency_id_5506c51d_fk_api_currency_id` (`currency_id`),
+  KEY `api_deliverycosthist_delivery_cost_id_06598be1_fk_api_deliv` (`delivery_cost_id`),
+  KEY `api_deliverycosthist_disposal_id_b5de59a0_fk_api_asset` (`disposal_id`),
+  KEY `api_deliverycosthist_location_id_6956ae5d_fk_api_locat` (`location_id`),
+  KEY `api_deliverycosthist_maintenance_id_142da7d7_fk_api_maint` (`maintenance_id`),
+  KEY `api_deliverycosthist_modified_by_id_7fb448f4_fk_api_detai` (`modified_by_id`),
+  KEY `api_deliverycosthist_repair_id_7fef1a8d_fk_api_repai` (`repair_id`),
+  CONSTRAINT `api_deliverycosthist_asset_request_id_3c9735d9_fk_api_asset` FOREIGN KEY (`asset_request_id`) REFERENCES `api_assetrequestmodel` (`id`),
+  CONSTRAINT `api_deliverycosthist_created_by_id_93a7f210_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycosthist_delivery_cost_id_06598be1_fk_api_deliv` FOREIGN KEY (`delivery_cost_id`) REFERENCES `api_deliverycost` (`id`),
+  CONSTRAINT `api_deliverycosthist_disposal_id_b5de59a0_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_deliverycosthist_location_id_6956ae5d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_deliverycosthist_maintenance_id_142da7d7_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_deliverycosthist_modified_by_id_7fb448f4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_deliverycosthist_repair_id_7fef1a8d_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_deliverycosthistory_currency_id_5506c51d_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_deliverycosthistory`
+--
+
+LOCK TABLES `api_deliverycosthistory` WRITE;
+/*!40000 ALTER TABLE `api_deliverycosthistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_deliverycosthistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_detaileduser`
+--
+
+DROP TABLE IF EXISTS `api_detaileduser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_detaileduser` (
+  `detailed_user_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(254) NOT NULL,
+  `cost_allowance` int NOT NULL,
+  `image_url` longtext NOT NULL,
+  `agreement_accepted` tinyint(1) NOT NULL,
+  `first_time_login` tinyint(1) NOT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `role_permissions_id` int DEFAULT NULL,
+  PRIMARY KEY (`detailed_user_id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep` (`role_permissions_id`),
+  KEY `api_detaileduser_business_unit_id_7932adec_fk_api_busin` (`business_unit_id`),
+  KEY `api_detaileduser_company_id_4d55f60a_fk_api_company_company_id` (`company_id`),
+  CONSTRAINT `api_detaileduser_business_unit_id_7932adec_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_detaileduser_company_id_4d55f60a_fk_api_company_company_id` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_detaileduser_role_permissions_id_3878b73c_fk_api_rolep` FOREIGN KEY (`role_permissions_id`) REFERENCES `api_rolepermissions` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_detaileduser`
+--
+
+LOCK TABLES `api_detaileduser` WRITE;
+/*!40000 ALTER TABLE `api_detaileduser` DISABLE KEYS */;
+INSERT INTO `api_detaileduser` VALUES (1,'management@skyit.services',999999,'NA',1,0,1,'b37b68f52d524864babf5840f822a9d1',3);
+/*!40000 ALTER TABLE `api_detaileduser` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_detaileduser_location`
+--
+
+DROP TABLE IF EXISTS `api_detaileduser_location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_detaileduser_location` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `detaileduser_id` int NOT NULL,
+  `locationmodel_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_detaileduser_locatio_detaileduser_id_location_0662e2dc_uniq` (`detaileduser_id`,`locationmodel_id`),
+  KEY `api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat` (`locationmodel_id`),
+  CONSTRAINT `api_detaileduser_loc_detaileduser_id_e5cfc688_fk_api_detai` FOREIGN KEY (`detaileduser_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_detaileduser_loc_locationmodel_id_0f0a3f9b_fk_api_locat` FOREIGN KEY (`locationmodel_id`) REFERENCES `api_locationmodel` (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_detaileduser_location`
+--
+
+LOCK TABLES `api_detaileduser_location` WRITE;
+/*!40000 ALTER TABLE `api_detaileduser_location` DISABLE KEYS */;
+INSERT INTO `api_detaileduser_location` VALUES (1,1,1);
+/*!40000 ALTER TABLE `api_detaileduser_location` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_detailedusermodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_detailedusermodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_detailedusermodelhistory` (
+  `detailed_user_history_id` int NOT NULL AUTO_INCREMENT,
+  `date` datetime(6) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `cost_allowance` int NOT NULL,
+  `image_url` longtext NOT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `company_id` char(32) DEFAULT NULL,
+  `role_permissions_id` int DEFAULT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`detailed_user_history_id`),
+  KEY `api_detailedusermode_business_unit_id_c0219409_fk_api_busin` (`business_unit_id`),
+  KEY `api_detailedusermode_company_id_7c62abcc_fk_api_compa` (`company_id`),
+  KEY `api_detailedusermode_role_permissions_id_f60796a1_fk_api_rolep` (`role_permissions_id`),
+  KEY `api_detailedusermode_user_id_458862a4_fk_api_detai` (`user_id`),
+  CONSTRAINT `api_detailedusermode_business_unit_id_c0219409_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_detailedusermode_company_id_7c62abcc_fk_api_compa` FOREIGN KEY (`company_id`) REFERENCES `api_company` (`company_id`),
+  CONSTRAINT `api_detailedusermode_role_permissions_id_f60796a1_fk_api_rolep` FOREIGN KEY (`role_permissions_id`) REFERENCES `api_rolepermissions` (`id`),
+  CONSTRAINT `api_detailedusermode_user_id_458862a4_fk_api_detai` FOREIGN KEY (`user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_detailedusermodelhistory`
+--
+
+LOCK TABLES `api_detailedusermodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_detailedusermodelhistory` DISABLE KEYS */;
+INSERT INTO `api_detailedusermodelhistory` VALUES (1,'2023-10-18 03:47:16.298071','management@skyit.services',999999,'NA',1,'b37b68f52d524864babf5840f822a9d1',3,1);
+/*!40000 ALTER TABLE `api_detailedusermodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_equipmenttypemodel`
+--
+
+DROP TABLE IF EXISTS `api_equipmenttypemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_equipmenttypemodel` (
+  `equipment_type_id` int NOT NULL AUTO_INCREMENT,
+  `model_number` varchar(100) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `asset_type_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `fuel_id` int DEFAULT NULL,
+  `manufacturer_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`equipment_type_id`),
+  KEY `api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset` (`asset_type_id`),
+  KEY `api_equipmenttypemod_created_by_id_c346a1e6_fk_api_detai` (`created_by_id`),
+  KEY `api_equipmenttypemodel_fuel_id_cba9eff5_fk_api_fueltype_id` (`fuel_id`),
+  KEY `api_equipmenttypemod_manufacturer_id_29668e7f_fk_api_asset` (`manufacturer_id`),
+  KEY `api_equipmenttypemod_modified_by_id_da7eef15_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_equipmenttypemod_asset_type_id_3143c189_fk_api_asset` FOREIGN KEY (`asset_type_id`) REFERENCES `api_assettypemodel` (`id`),
+  CONSTRAINT `api_equipmenttypemod_created_by_id_c346a1e6_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_equipmenttypemod_manufacturer_id_29668e7f_fk_api_asset` FOREIGN KEY (`manufacturer_id`) REFERENCES `api_assetmanufacturermodel` (`id`),
+  CONSTRAINT `api_equipmenttypemod_modified_by_id_da7eef15_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_equipmenttypemodel_fuel_id_cba9eff5_fk_api_fueltype_id` FOREIGN KEY (`fuel_id`) REFERENCES `api_fueltype` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_equipmenttypemodel`
+--
+
+LOCK TABLES `api_equipmenttypemodel` WRITE;
+/*!40000 ALTER TABLE `api_equipmenttypemodel` DISABLE KEYS */;
+INSERT INTO `api_equipmenttypemodel` VALUES (1,'JET','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,1,1),(2,'1688','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,2,1),(3,'5.5','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(4,'5.5M','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(5,'5m','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(6,'6.5M T-TOP RHIB','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(7,'757','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(8,'7M T-TOP','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(9,'8M CABIN','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(10,'T-TOP','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,3,1),(11,'JET','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,4,1),(12,'JET','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,5,1),(13,'Rhib','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(14,'10M','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(15,'220','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(16,'220 T-TOP','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(17,'220T-TOP','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(18,'2300','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(19,'2300XL','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(20,'240','TBD','2023-10-17 20:22:26.959818','2023-10-17 20:22:26.959818',NULL,'',1,1,NULL,6,1),(21,'249XL','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,6,1),(22,'280','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,6,1),(23,'290XL','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,6,1),(24,'300','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,6,1),(25,'7.5 M','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,6,1),(26,'T240','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,6,1),(27,'Canoe','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,7,1),(28,'CLIPPER CANOE','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,8,1),(29,'1120-OB','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,9,1),(30,'530','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(31,'540','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(32,'733','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(33,'733 T-TOP','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(34,'753','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(35,'H540','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(36,'H630','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1),(37,'H640 T-TOP','TBD','2023-10-17 20:22:26.960818','2023-10-17 20:22:26.960818',NULL,'',1,1,NULL,10,1);
+/*!40000 ALTER TABLE `api_equipmenttypemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_errorreport`
+--
+
+DROP TABLE IF EXISTS `api_errorreport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_errorreport` (
+  `error_report_id` int NOT NULL AUTO_INCREMENT,
+  `issue_type` varchar(50) NOT NULL,
+  `error_title` varchar(1000) NOT NULL,
+  `error_description` longtext NOT NULL,
+  `steps_to_reproduce` longtext,
+  `date_created` date NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`error_report_id`),
+  KEY `api_errorreport_created_by_id_d3637fe3_fk_api_detai` (`created_by_id`),
+  CONSTRAINT `api_errorreport_created_by_id_d3637fe3_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_errorreport`
+--
+
+LOCK TABLES `api_errorreport` WRITE;
+/*!40000 ALTER TABLE `api_errorreport` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_errorreport` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_errorreportfile`
+--
+
+DROP TABLE IF EXISTS `api_errorreportfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_errorreportfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `error_report_id` int NOT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_errorreportfile_error_report_id_ee964a4f_fk_api_error` (`error_report_id`),
+  CONSTRAINT `api_errorreportfile_error_report_id_ee964a4f_fk_api_error` FOREIGN KEY (`error_report_id`) REFERENCES `api_errorreport` (`error_report_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_errorreportfile`
+--
+
+LOCK TABLES `api_errorreportfile` WRITE;
+/*!40000 ALTER TABLE `api_errorreportfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_errorreportfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fleetguru`
+--
+
+DROP TABLE IF EXISTS `api_fleetguru`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fleetguru` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `process` varchar(50) NOT NULL,
+  `title` varchar(150) NOT NULL,
+  `description` longtext NOT NULL,
+  `image_url` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fleetguru`
+--
+
+LOCK TABLES `api_fleetguru` WRITE;
+/*!40000 ALTER TABLE `api_fleetguru` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fleetguru` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcard`
+--
+
+DROP TABLE IF EXISTS `api_fuelcard`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcard` (
+  `card_id` int NOT NULL AUTO_INCREMENT,
+  `expiration` date DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `assigned_employee_id` varchar(254) DEFAULT NULL,
+  `business_unit_id` int DEFAULT NULL,
+  `issuer_id` varchar(254) DEFAULT NULL,
+  PRIMARY KEY (`card_id`),
+  KEY `api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai` (`assigned_employee_id`),
+  KEY `api_fuelcard_business_unit_id_6843f63b_fk_api_busin` (`business_unit_id`),
+  KEY `api_fuelcard_issuer_id_7a73ca8f_fk_api_detaileduser_email` (`issuer_id`),
+  CONSTRAINT `api_fuelcard_assigned_employee_id_fcb6a40a_fk_api_detai` FOREIGN KEY (`assigned_employee_id`) REFERENCES `api_detaileduser` (`email`),
+  CONSTRAINT `api_fuelcard_business_unit_id_6843f63b_fk_api_busin` FOREIGN KEY (`business_unit_id`) REFERENCES `api_businessunitmodel` (`business_unit_id`),
+  CONSTRAINT `api_fuelcard_issuer_id_7a73ca8f_fk_api_detaileduser_email` FOREIGN KEY (`issuer_id`) REFERENCES `api_detaileduser` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcard`
+--
+
+LOCK TABLES `api_fuelcard` WRITE;
+/*!40000 ALTER TABLE `api_fuelcard` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fuelcard` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcost`
+--
+
+DROP TABLE IF EXISTS `api_fuelcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `volume` double NOT NULL,
+  `volume_unit` varchar(50) NOT NULL,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `fuel_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id` (`fuel_type_id`),
+  KEY `api_fuelcost_location_id_3e8c907b_fk_api_locat` (`location_id`),
+  KEY `api_fuelcost_modified_by_id_f184d7f2_fk_api_detai` (`modified_by_id`),
+  KEY `api_fuelcost_VIN_id_b79a526d_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_fuelcost_created_by_id_9050c739_fk_api_detai` (`created_by_id`),
+  KEY `api_fuelcost_currency_id_4e73dab3_fk_api_currency_id` (`currency_id`),
+  CONSTRAINT `api_fuelcost_created_by_id_9050c739_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fuelcost_currency_id_4e73dab3_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_fuelcost_fuel_type_id_a68c2509_fk_api_fueltype_id` FOREIGN KEY (`fuel_type_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_fuelcost_location_id_3e8c907b_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_fuelcost_modified_by_id_f184d7f2_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fuelcost_VIN_id_b79a526d_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcost`
+--
+
+LOCK TABLES `api_fuelcost` WRITE;
+/*!40000 ALTER TABLE `api_fuelcost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fuelcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fuelcostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_fuelcostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fuelcostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `volume` double NOT NULL,
+  `volume_unit` varchar(50) NOT NULL,
+  `total_cost` double NOT NULL,
+  `taxes` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `fuel_cost_id` int DEFAULT NULL,
+  `fuel_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_fuelcostmodelhistory_currency_id_8bdfe0d9_fk_api_currency_id` (`currency_id`),
+  KEY `api_fuelcostmodelhis_fuel_cost_id_4fb992ed_fk_api_fuelc` (`fuel_cost_id`),
+  KEY `api_fuelcostmodelhis_fuel_type_id_1bb4b854_fk_api_fuelt` (`fuel_type_id`),
+  KEY `api_fuelcostmodelhis_location_id_bf6c4061_fk_api_locat` (`location_id`),
+  KEY `api_fuelcostmodelhis_modified_by_id_f59c2374_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_fuelcostmodelhis_fuel_cost_id_4fb992ed_fk_api_fuelc` FOREIGN KEY (`fuel_cost_id`) REFERENCES `api_fuelcost` (`id`),
+  CONSTRAINT `api_fuelcostmodelhis_fuel_type_id_1bb4b854_fk_api_fuelt` FOREIGN KEY (`fuel_type_id`) REFERENCES `api_fueltype` (`id`),
+  CONSTRAINT `api_fuelcostmodelhis_location_id_bf6c4061_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_fuelcostmodelhis_modified_by_id_f59c2374_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fuelcostmodelhistory_currency_id_8bdfe0d9_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_fuelcostmodelhistory_VIN_id_64ba6882_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fuelcostmodelhistory`
+--
+
+LOCK TABLES `api_fuelcostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_fuelcostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_fuelcostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_fueltype`
+--
+
+DROP TABLE IF EXISTS `api_fueltype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_fueltype` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_fueltype_created_by_id_7ac2889b_fk_api_detai` (`created_by_id`),
+  KEY `api_fueltype_modified_by_id_22b884e4_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_fueltype_created_by_id_7ac2889b_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_fueltype_modified_by_id_22b884e4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_fueltype`
+--
+
+LOCK TABLES `api_fueltype` WRITE;
+/*!40000 ALTER TABLE `api_fueltype` DISABLE KEYS */;
+INSERT INTO `api_fueltype` VALUES (9,'UNLEADED REGULAR','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(10,'MARINE','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(11,'UNREPORTED','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(12,'UNLEADED MID-GRADE','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(13,'DIESEL','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(14,'UNLEADED PREMIUM','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(15,'UNLEADED SUPER','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(16,'MARINE DIESEL','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1),(17,'Not Entered','2023-10-17 16:31:42.573397','2023-10-17 16:31:42.573397',1,1);
+/*!40000 ALTER TABLE `api_fueltype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_inspectiontypemodel`
+--
+
+DROP TABLE IF EXISTS `api_inspectiontypemodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_inspectiontypemodel` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `inspection_name` varchar(50) NOT NULL,
+  `inspection_code` varchar(50) NOT NULL,
+  `required_at` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_inspectiontypemodel`
+--
+
+LOCK TABLES `api_inspectiontypemodel` WRITE;
+/*!40000 ALTER TABLE `api_inspectiontypemodel` DISABLE KEYS */;
+INSERT INTO `api_inspectiontypemodel` VALUES (1,'Mandatory Spring Inspection','SIP-Part-B',500),(2,'MONTHLY Ongoing Inspections and Maintenance','SIP-Part-C',500),(3,'Winterization','SIP-Part-D',500),(4,'Winterization (MEMBER)','SIP-Part-D1',500),(5,'Winterization (CONTRACTOR)','SIP-Part-D2',500);
+/*!40000 ALTER TABLE `api_inspectiontypemodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_insurancecost`
+--
+
+DROP TABLE IF EXISTS `api_insurancecost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_insurancecost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deductible` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_insurancecost_location_id_db265a0a_fk_api_locat` (`location_id`),
+  KEY `api_insurancecost_modified_by_id_061bb451_fk_api_detai` (`modified_by_id`),
+  KEY `api_insurancecost_VIN_id_7e6d575e_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_insurancecost_accident_id_a2a7e128_fk_api_accid` (`accident_id`),
+  KEY `api_insurancecost_created_by_id_faf2bae2_fk_api_detai` (`created_by_id`),
+  KEY `api_insurancecost_currency_id_8973d10c_fk_api_currency_id` (`currency_id`),
+  CONSTRAINT `api_insurancecost_accident_id_a2a7e128_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_insurancecost_created_by_id_faf2bae2_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_insurancecost_currency_id_8973d10c_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_insurancecost_location_id_db265a0a_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_insurancecost_modified_by_id_061bb451_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_insurancecost_VIN_id_7e6d575e_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_insurancecost`
+--
+
+LOCK TABLES `api_insurancecost` WRITE;
+/*!40000 ALTER TABLE `api_insurancecost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_insurancecost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_insurancecostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_insurancecostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_insurancecostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `deductible` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `insurance_cost_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_insurancecostmod_VIN_id_c804804e_fk_api_asset` (`VIN_id`),
+  KEY `api_insurancecostmod_accident_id_9a6dc962_fk_api_accid` (`accident_id`),
+  KEY `api_insurancecostmod_currency_id_0a59edae_fk_api_curre` (`currency_id`),
+  KEY `api_insurancecostmod_insurance_cost_id_9153c60e_fk_api_insur` (`insurance_cost_id`),
+  KEY `api_insurancecostmod_location_id_268f5a48_fk_api_locat` (`location_id`),
+  KEY `api_insurancecostmod_modified_by_id_1edeba66_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_insurancecostmod_accident_id_9a6dc962_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_insurancecostmod_currency_id_0a59edae_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_insurancecostmod_insurance_cost_id_9153c60e_fk_api_insur` FOREIGN KEY (`insurance_cost_id`) REFERENCES `api_insurancecost` (`id`),
+  CONSTRAINT `api_insurancecostmod_location_id_268f5a48_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_insurancecostmod_modified_by_id_1edeba66_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_insurancecostmod_VIN_id_c804804e_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_insurancecostmodelhistory`
+--
+
+LOCK TABLES `api_insurancecostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_insurancecostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_insurancecostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_jobspecification`
+--
+
+DROP TABLE IF EXISTS `api_jobspecification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_jobspecification` (
+  `job_specification_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`job_specification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_jobspecification`
+--
+
+LOCK TABLES `api_jobspecification` WRITE;
+/*!40000 ALTER TABLE `api_jobspecification` DISABLE KEYS */;
+INSERT INTO `api_jobspecification` VALUES (1,'marine vessel'),(2,'vessel trailer');
+/*!40000 ALTER TABLE `api_jobspecification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_laborcost`
+--
+
+DROP TABLE IF EXISTS `api_laborcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_laborcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `base_hourly_rate` double NOT NULL,
+  `total_base_hours` double NOT NULL,
+  `overtime_rate` double NOT NULL,
+  `total_overtime_hours` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_laborcost_location_id_88ec229d_fk_api_locat` (`location_id`),
+  KEY `api_laborcost_maintenance_id_366ad8b9_fk_api_maint` (`maintenance_id`),
+  KEY `api_laborcost_modified_by_id_d6ec089d_fk_api_detai` (`modified_by_id`),
+  KEY `api_laborcost_created_by_id_1a3ecd17_fk_api_detai` (`created_by_id`),
+  KEY `api_laborcost_currency_id_ced7edd3_fk_api_currency_id` (`currency_id`),
+  KEY `api_laborcost_disposal_id_df44d769_fk_api_assetdisposalmodel_id` (`disposal_id`),
+  KEY `api_laborcost_issue_id_3b954f4a_fk_api_assetissuemodel_issue_id` (`issue_id`),
+  CONSTRAINT `api_laborcost_created_by_id_1a3ecd17_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_laborcost_currency_id_ced7edd3_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_laborcost_disposal_id_df44d769_fk_api_assetdisposalmodel_id` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_laborcost_issue_id_3b954f4a_fk_api_assetissuemodel_issue_id` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_laborcost_location_id_88ec229d_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_laborcost_maintenance_id_366ad8b9_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_laborcost_modified_by_id_d6ec089d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_laborcost`
+--
+
+LOCK TABLES `api_laborcost` WRITE;
+/*!40000 ALTER TABLE `api_laborcost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_laborcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_laborcostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_laborcostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_laborcostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `base_hourly_rate` double NOT NULL,
+  `total_base_hours` double NOT NULL,
+  `overtime_rate` double NOT NULL,
+  `total_overtime_hours` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `labor_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre` (`currency_id`),
+  KEY `api_laborcostmodelhi_disposal_id_9c6f3528_fk_api_asset` (`disposal_id`),
+  KEY `api_laborcostmodelhi_issue_id_bb6a1afc_fk_api_asset` (`issue_id`),
+  KEY `api_laborcostmodelhistory_labor_id_2cc63593_fk_api_laborcost_id` (`labor_id`),
+  KEY `api_laborcostmodelhi_location_id_79ca8861_fk_api_locat` (`location_id`),
+  KEY `api_laborcostmodelhi_maintenance_id_e612f7a2_fk_api_maint` (`maintenance_id`),
+  KEY `api_laborcostmodelhi_modified_by_id_3752372f_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_laborcostmodelhi_currency_id_9fcdf08c_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_laborcostmodelhi_disposal_id_9c6f3528_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_laborcostmodelhi_issue_id_bb6a1afc_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_laborcostmodelhi_location_id_79ca8861_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_laborcostmodelhi_maintenance_id_e612f7a2_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_laborcostmodelhi_modified_by_id_3752372f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_laborcostmodelhistory_labor_id_2cc63593_fk_api_laborcost_id` FOREIGN KEY (`labor_id`) REFERENCES `api_laborcost` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_laborcostmodelhistory`
+--
+
+LOCK TABLES `api_laborcostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_laborcostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_laborcostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_licensecost`
+--
+
+DROP TABLE IF EXISTS `api_licensecost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_licensecost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `license_registration` double NOT NULL,
+  `taxes` double NOT NULL,
+  `license_plate_renewal` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_licensecost_location_id_13de6a03_fk_api_locat` (`location_id`),
+  KEY `api_licensecost_modified_by_id_41820a9d_fk_api_detai` (`modified_by_id`),
+  KEY `api_licensecost_VIN_id_30492662_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_licensecost_created_by_id_b691722b_fk_api_detai` (`created_by_id`),
+  KEY `api_licensecost_currency_id_6eea48cf_fk_api_currency_id` (`currency_id`),
+  CONSTRAINT `api_licensecost_created_by_id_b691722b_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_licensecost_currency_id_6eea48cf_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_licensecost_location_id_13de6a03_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_licensecost_modified_by_id_41820a9d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_licensecost_VIN_id_30492662_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_licensecost`
+--
+
+LOCK TABLES `api_licensecost` WRITE;
+/*!40000 ALTER TABLE `api_licensecost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_licensecost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_licensecostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_licensecostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_licensecostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `license_registration` double NOT NULL,
+  `taxes` double NOT NULL,
+  `license_plate_renewal` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `license_cost_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset` (`VIN_id`),
+  KEY `api_licensecostmodel_currency_id_7162ca61_fk_api_curre` (`currency_id`),
+  KEY `api_licensecostmodel_license_cost_id_6cdba7b2_fk_api_licen` (`license_cost_id`),
+  KEY `api_licensecostmodel_location_id_e8ea7596_fk_api_locat` (`location_id`),
+  KEY `api_licensecostmodel_modified_by_id_5d6e8b37_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_licensecostmodel_currency_id_7162ca61_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_licensecostmodel_license_cost_id_6cdba7b2_fk_api_licen` FOREIGN KEY (`license_cost_id`) REFERENCES `api_licensecost` (`id`),
+  CONSTRAINT `api_licensecostmodel_location_id_e8ea7596_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_licensecostmodel_modified_by_id_5d6e8b37_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_licensecostmodel_VIN_id_2e8564f7_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_licensecostmodelhistory`
+--
+
+LOCK TABLES `api_licensecostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_licensecostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_licensecostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_locationmodel`
+--
+
+DROP TABLE IF EXISTS `api_locationmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_locationmodel` (
+  `location_id` int NOT NULL AUTO_INCREMENT,
+  `location_code` varchar(100) NOT NULL,
+  `location_name` varchar(100) NOT NULL,
+  `latitude` double NOT NULL,
+  `longitude` double NOT NULL,
+  PRIMARY KEY (`location_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_locationmodel`
+--
+
+LOCK TABLES `api_locationmodel` WRITE;
+/*!40000 ALTER TABLE `api_locationmodel` DISABLE KEYS */;
+INSERT INTO `api_locationmodel` VALUES (1,'BC','BC',53.726669,-127.647621),(2,'KAMLOOPS','KAMLOOPS',50.67553,-120.33732),(3,'TOFINO','TOFINO',49.15203,-125.90611),(4,'LAKE COWICHAN','LAKE COWICHAN',48.82608,-124.05478),(5,'WEST KELOWNA','WEST KELOWNA',49.86416,-119.56054),(6,'CHASE','CHASE',50.81889,-119.68498),(7,'SHAWNIGAN LAKE','SHAWNIGAN LAKE',48.65277,-123.64358),(8,'NANAIMO','NANAIMO',49.16676,-123.94117),(9,'PORT MCNEILL','PORT MCNEILL',50.59101,-127.08239),(10,'ATLIN','ATLIN',59.57924,-133.68575),(11,'UCLUELET','UCLUELET',48.94147,-125.54839),(12,'KITIMAT','KITIMAT',54.06379,-128.63611),(13,'VICTORIA','VICTORIA',48.42982,-123.36094),(14,'PENDER ISLAND','PENDER ISLAND',48.77757,-123.25012),(15,'OSOYOOS','OSOYOOS',49.03283,-119.46655),(16,'COURTENAY','COURTENAY',49.6841,-124.99095),(17,'GABRIOLA','GABRIOLA',49.17192,-123.84813),(18,'SURREY','SURREY',49.19235,-122.8498),(19,'PRINCE RUPERT','PRINCE RUPERT',54.31467,-130.317),(20,'GOLD RIVER','GOLD RIVER',49.77848,-126.05035),(21,'MAPLE RIDGE','MAPLE RIDGE',49.22186,-122.57988),(22,'MISSION','MISSION',49.1346,-122.32175),(23,'VERNON','VERNON',50.26825,-119.26741),(24,'SECHELT','SECHELT',49.47437,-123.75124),(25,'DELTA','DELTA',49.09464,-123.03978),(26,'INVERMERE','INVERMERE',50.50674,-116.02949),(27,'SICAMOUS','SICAMOUS',50.8385,-118.97779),(28,'FORT ST. JAMES','FORT ST. JAMES',54.44411,-124.25584),(29,'SAYWARD','SAYWARD',50.38387,-125.96125),(30,'BELLA BELLA','BELLA BELLA',52.16062,-128.14537),(31,'PENTICTON','PENTICTON',49.49998,-119.59373),(32,'NELSON','NELSON',49.49229,-117.2952),(33,'100 MILE HOUSE','100 MILE HOUSE',51.64848,-121.29151),(34,'POWELL RIVER','POWELL RIVER',49.83648,-124.5254),(35,'CRESTON','CRESTON',49.09584,-116.51618),(36,'CHILLIWACK','CHILLIWACK',49.15653,-121.93342),(37,'RICHMOND','RICHMOND',49.1663,-123.12368),(38,'WHISTLER','WHISTLER',50.11249,-122.95074),(39,'AGASSIZ','AGASSIZ',49.24014,-121.77046),(40,'CRANBROOK','CRANBROOK',49.51218,-115.76421),(41,'PORT HARDY','PORT HARDY',50.72137,-127.50145),(42,'QUATHIASKI COVE','QUATHIASKI COVE',50.0527,-125.20895),(43,'DAAJING GIIDS','DAAJING GIIDS',53.25527,-132.08391),(44,'COQUITLAM','COQUITLAM',49.28456,-122.77586),(45,'SIDNEY','SIDNEY',48.64044,-123.40016),(46,'NORTH VANCOUVER','NORTH VANCOUVER',49.32113,-123.07416),(47,'MACKENZIE','MACKENZIE',55.33884,-123.09613),(48,'LADYSMITH','LADYSMITH',48.99499,-123.81649),(49,'HUDSON\'S HOPE','HUDSON\'S HOPE',56.03679,-121.90774),(50,'ALERT BAY','ALERT BAY',50.58484,-126.92644),(51,'GRAND FORKS','GRAND FORKS',49.03381,-118.43548),(52,'KELOWNA','KELOWNA',49.88949,-119.47816),(53,'PORT ALBERNI','PORT ALBERNI',49.23454,-124.80577),(54,'MASSET','MASSET',54.01146,-132.14325),(55,'REVELSTOKE','REVELSTOKE',50.99735,-118.19631),(56,'SALT SPRING ISLAND','SALT SPRING ISLAND',48.81791,-123.51009),(57,'BURNS LAKE','BURNS LAKE',54.23392,-125.76674),(58,'SALMON ARM','SALMON ARM',50.6994,-119.27548);
+/*!40000 ALTER TABLE `api_locationmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenanceforecastrules`
+--
+
+DROP TABLE IF EXISTS `api_maintenanceforecastrules`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenanceforecastrules` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date_created` date NOT NULL,
+  `date_updated` date NOT NULL,
+  `hour_cycle` double NOT NULL,
+  `mileage_cycle` double NOT NULL,
+  `time_cycle` double NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `inspection_type_id` int NOT NULL,
+  `location_id` int NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_maintenanceforec_VIN_id_43d27b29_fk_api_asset` (`VIN_id`),
+  KEY `api_maintenanceforec_created_by_id_7b4190e3_fk_api_detai` (`created_by_id`),
+  KEY `api_maintenanceforec_inspection_type_id_4c2e50e0_fk_api_inspe` (`inspection_type_id`),
+  KEY `api_maintenanceforec_location_id_7d1db767_fk_api_locat` (`location_id`),
+  KEY `api_maintenanceforec_modified_by_id_0cb09b5d_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_maintenanceforec_created_by_id_7b4190e3_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenanceforec_inspection_type_id_4c2e50e0_fk_api_inspe` FOREIGN KEY (`inspection_type_id`) REFERENCES `api_inspectiontypemodel` (`id`),
+  CONSTRAINT `api_maintenanceforec_location_id_7d1db767_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_maintenanceforec_modified_by_id_0cb09b5d_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenanceforec_VIN_id_43d27b29_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenanceforecastrules`
+--
+
+LOCK TABLES `api_maintenanceforecastrules` WRITE;
+/*!40000 ALTER TABLE `api_maintenanceforecastrules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_maintenanceforecastrules` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenanceforecastruleshistory`
+--
+
+DROP TABLE IF EXISTS `api_maintenanceforecastruleshistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenanceforecastruleshistory` (
+  `maintenance_forecast_history_id` int NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `hour_cycle` double NOT NULL,
+  `mileage_cycle` double NOT NULL,
+  `time_cycle` double NOT NULL,
+  `maintenance_forecast_id` int NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`maintenance_forecast_history_id`),
+  KEY `api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint` (`maintenance_forecast_id`),
+  KEY `api_maintenanceforec_modified_by_id_679c2f26_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_maintenanceforec_maintenance_forecast_2b1d7f75_fk_api_maint` FOREIGN KEY (`maintenance_forecast_id`) REFERENCES `api_maintenanceforecastrules` (`id`),
+  CONSTRAINT `api_maintenanceforec_modified_by_id_679c2f26_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenanceforecastruleshistory`
+--
+
+LOCK TABLES `api_maintenanceforecastruleshistory` WRITE;
+/*!40000 ALTER TABLE `api_maintenanceforecastruleshistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_maintenanceforecastruleshistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenancerequestfile`
+--
+
+DROP TABLE IF EXISTS `api_maintenancerequestfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenancerequestfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `maintenance_request_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai` (`created_by_id`),
+  KEY `api_maintenancereque_maintenance_request__dfdeb7ab_fk_api_maint` (`maintenance_request_id`),
+  CONSTRAINT `api_maintenancereque_created_by_id_4a69c2fe_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenancereque_maintenance_request__dfdeb7ab_fk_api_maint` FOREIGN KEY (`maintenance_request_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenancerequestfile`
+--
+
+LOCK TABLES `api_maintenancerequestfile` WRITE;
+/*!40000 ALTER TABLE `api_maintenancerequestfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_maintenancerequestfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenancerequestmodel`
+--
+
+DROP TABLE IF EXISTS `api_maintenancerequestmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenancerequestmodel` (
+  `maintenance_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `in_house` tinyint(1) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `date_completed` datetime(6) DEFAULT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `requested_delivery_date` datetime(6) DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `assigned_vendor_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `inspection_type_id` int NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `description` longtext NOT NULL,
+  PRIMARY KEY (`maintenance_id`),
+  KEY `api_maintenancereque_VIN_id_50b77888_fk_api_asset` (`VIN_id`),
+  KEY `api_maintenancereque_assigned_vendor_id_02b819e7_fk_api_appro` (`assigned_vendor_id`),
+  KEY `api_maintenancereque_created_by_id_8181a9ca_fk_api_detai` (`created_by_id`),
+  KEY `api_maintenancereque_inspection_type_id_f5a6ad64_fk_api_inspe` (`inspection_type_id`),
+  KEY `api_maintenancereque_location_id_945bb3c1_fk_api_locat` (`location_id`),
+  KEY `api_maintenancereque_modified_by_id_f7a66dc4_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_maintenancereque_assigned_vendor_id_02b819e7_fk_api_appro` FOREIGN KEY (`assigned_vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_maintenancereque_created_by_id_8181a9ca_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenancereque_inspection_type_id_f5a6ad64_fk_api_inspe` FOREIGN KEY (`inspection_type_id`) REFERENCES `api_inspectiontypemodel` (`id`),
+  CONSTRAINT `api_maintenancereque_location_id_945bb3c1_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_maintenancereque_modified_by_id_f7a66dc4_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_maintenancereque_VIN_id_50b77888_fk_api_asset` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenancerequestmodel`
+--
+
+LOCK TABLES `api_maintenancerequestmodel` WRITE;
+/*!40000 ALTER TABLE `api_maintenancerequestmodel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_maintenancerequestmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_maintenancerequestmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_maintenancerequestmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_maintenancerequestmodelhistory` (
+  `maintenance_history_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `date_completed` date DEFAULT NULL,
+  `estimated_delivery_date` date DEFAULT NULL,
+  `requested_delivery_date` date DEFAULT NULL,
+  `vendor_contacted_date` date DEFAULT NULL,
+  `available_pickup_date` date DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `assigned_vendor_id` int DEFAULT NULL,
+  `inspection_type_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`maintenance_history_id`),
+  KEY `api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro` (`assigned_vendor_id`),
+  KEY `api_maintenancereque_inspection_type_id_cbbfad63_fk_api_inspe` (`inspection_type_id`),
+  KEY `api_maintenancereque_location_id_9de4fbdf_fk_api_locat` (`location_id`),
+  KEY `api_maintenancereque_maintenance_id_94b8ca43_fk_api_maint` (`maintenance_id`),
+  KEY `api_maintenancereque_modified_by_id_8c9621ac_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_maintenancereque_assigned_vendor_id_09af396c_fk_api_appro` FOREIGN KEY (`assigned_vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_maintenancereque_inspection_type_id_cbbfad63_fk_api_inspe` FOREIGN KEY (`inspection_type_id`) REFERENCES `api_inspectiontypemodel` (`id`),
+  CONSTRAINT `api_maintenancereque_location_id_9de4fbdf_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_maintenancereque_maintenance_id_94b8ca43_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_maintenancereque_modified_by_id_8c9621ac_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_maintenancerequestmodelhistory`
+--
+
+LOCK TABLES `api_maintenancerequestmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_maintenancerequestmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_maintenancerequestmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_notificationconfiguration`
+--
+
+DROP TABLE IF EXISTS `api_notificationconfiguration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_notificationconfiguration` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `fields` longtext,
+  `custom_text` longtext,
+  `triggers` longtext,
+  `recipient_type` varchar(50) NOT NULL,
+  `users` longtext,
+  `locations` longtext,
+  `business_units` longtext,
+  `roles` longtext,
+  `date_modified` datetime(6) NOT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_notificationconf_modified_by_id_0d1b5ca6_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_notificationconfiguration`
+--
+
+LOCK TABLES `api_notificationconfiguration` WRITE;
+/*!40000 ALTER TABLE `api_notificationconfiguration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_notificationconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_parts`
+--
+
+DROP TABLE IF EXISTS `api_parts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_parts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `part_number` varchar(100) NOT NULL,
+  `part_name` varchar(100) NOT NULL,
+  `quantity` int NOT NULL,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_parts_created_by_id_8d88feb8_fk_api_detai` (`created_by_id`),
+  KEY `api_parts_currency_id_31be192f_fk_api_currency_id` (`currency_id`),
+  KEY `api_parts_disposal_id_8471b0ca_fk_api_assetdisposalmodel_id` (`disposal_id`),
+  KEY `api_parts_issue_id_75453a17_fk_api_assetissuemodel_issue_id` (`issue_id`),
+  KEY `api_parts_location_id_675c79a9_fk_api_locationmodel_location_id` (`location_id`),
+  KEY `api_parts_maintenance_id_3be00de0_fk_api_maint` (`maintenance_id`),
+  KEY `api_parts_modified_by_id_fc2414a8_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_parts_created_by_id_8d88feb8_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_parts_currency_id_31be192f_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_parts_disposal_id_8471b0ca_fk_api_assetdisposalmodel_id` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_parts_issue_id_75453a17_fk_api_assetissuemodel_issue_id` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_parts_location_id_675c79a9_fk_api_locationmodel_location_id` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_parts_maintenance_id_3be00de0_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_parts_modified_by_id_fc2414a8_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_parts`
+--
+
+LOCK TABLES `api_parts` WRITE;
+/*!40000 ALTER TABLE `api_parts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_parts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_partsmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_partsmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_partsmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `part_number` varchar(100) NOT NULL,
+  `part_name` varchar(100) NOT NULL,
+  `quantity` int NOT NULL,
+  `price` double NOT NULL,
+  `taxes` double NOT NULL,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `currency_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `issue_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `parts_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id` (`currency_id`),
+  KEY `api_partsmodelhistor_disposal_id_78da58e1_fk_api_asset` (`disposal_id`),
+  KEY `api_partsmodelhistor_issue_id_7708c488_fk_api_asset` (`issue_id`),
+  KEY `api_partsmodelhistor_location_id_2c2991fe_fk_api_locat` (`location_id`),
+  KEY `api_partsmodelhistor_maintenance_id_cd17ac11_fk_api_maint` (`maintenance_id`),
+  KEY `api_partsmodelhistor_modified_by_id_d6a9f159_fk_api_detai` (`modified_by_id`),
+  KEY `api_partsmodelhistory_parts_id_ba93e01e_fk_api_parts_id` (`parts_id`),
+  CONSTRAINT `api_partsmodelhistor_disposal_id_78da58e1_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_partsmodelhistor_issue_id_7708c488_fk_api_asset` FOREIGN KEY (`issue_id`) REFERENCES `api_assetissuemodel` (`issue_id`),
+  CONSTRAINT `api_partsmodelhistor_location_id_2c2991fe_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_partsmodelhistor_maintenance_id_cd17ac11_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_partsmodelhistor_modified_by_id_d6a9f159_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_partsmodelhistory_currency_id_a606df9b_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_partsmodelhistory_parts_id_ba93e01e_fk_api_parts_id` FOREIGN KEY (`parts_id`) REFERENCES `api_parts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_partsmodelhistory`
+--
+
+LOCK TABLES `api_partsmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_partsmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_partsmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_rentalcost`
+--
+
+DROP TABLE IF EXISTS `api_rentalcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_rentalcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_updated` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id` (`repair_id`),
+  KEY `api_rentalcost_VIN_id_70e51830_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_rentalcost_accident_id_87ebc25f_fk_api_accid` (`accident_id`),
+  KEY `api_rentalcost_created_by_id_a458d221_fk_api_detai` (`created_by_id`),
+  KEY `api_rentalcost_currency_id_500e53df_fk_api_currency_id` (`currency_id`),
+  KEY `api_rentalcost_location_id_1efbd134_fk_api_locat` (`location_id`),
+  KEY `api_rentalcost_maintenance_id_9237c325_fk_api_maint` (`maintenance_id`),
+  KEY `api_rentalcost_modified_by_id_0a505810_fk_api_detai` (`modified_by_id`),
+  CONSTRAINT `api_rentalcost_accident_id_87ebc25f_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_rentalcost_created_by_id_a458d221_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_rentalcost_currency_id_500e53df_fk_api_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_rentalcost_location_id_1efbd134_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_rentalcost_maintenance_id_9237c325_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_rentalcost_modified_by_id_0a505810_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_rentalcost_repair_id_bffbdf9c_fk_api_repairsmodel_repair_id` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_rentalcost_VIN_id_70e51830_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_rentalcost`
+--
+
+LOCK TABLES `api_rentalcost` WRITE;
+/*!40000 ALTER TABLE `api_rentalcost` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_rentalcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_rentalcostmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_rentalcostmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_rentalcostmodelhistory` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_cost` double NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `VIN_id` varchar(100) DEFAULT NULL,
+  `accident_id` int DEFAULT NULL,
+  `currency_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `maintenance_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `rental_cost_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_rentalcostmodelh_accident_id_a69d45ed_fk_api_accid` (`accident_id`),
+  KEY `api_rentalcostmodelh_currency_id_d08ff758_fk_api_curre` (`currency_id`),
+  KEY `api_rentalcostmodelh_location_id_939da8fa_fk_api_locat` (`location_id`),
+  KEY `api_rentalcostmodelh_maintenance_id_e9f9565d_fk_api_maint` (`maintenance_id`),
+  KEY `api_rentalcostmodelh_modified_by_id_3b0dbc48_fk_api_detai` (`modified_by_id`),
+  KEY `api_rentalcostmodelh_rental_cost_id_794e94d2_fk_api_renta` (`rental_cost_id`),
+  KEY `api_rentalcostmodelh_repair_id_bfb01785_fk_api_repai` (`repair_id`),
+  CONSTRAINT `api_rentalcostmodelh_accident_id_a69d45ed_fk_api_accid` FOREIGN KEY (`accident_id`) REFERENCES `api_accidentmodel` (`accident_id`),
+  CONSTRAINT `api_rentalcostmodelh_currency_id_d08ff758_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`),
+  CONSTRAINT `api_rentalcostmodelh_location_id_939da8fa_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_rentalcostmodelh_maintenance_id_e9f9565d_fk_api_maint` FOREIGN KEY (`maintenance_id`) REFERENCES `api_maintenancerequestmodel` (`maintenance_id`),
+  CONSTRAINT `api_rentalcostmodelh_modified_by_id_3b0dbc48_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_rentalcostmodelh_rental_cost_id_794e94d2_fk_api_renta` FOREIGN KEY (`rental_cost_id`) REFERENCES `api_rentalcost` (`id`),
+  CONSTRAINT `api_rentalcostmodelh_repair_id_bfb01785_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_rentalcostmodelhistory_VIN_id_c83a2cb4_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_rentalcostmodelhistory`
+--
+
+LOCK TABLES `api_rentalcostmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_rentalcostmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_rentalcostmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_repairfile`
+--
+
+DROP TABLE IF EXISTS `api_repairfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_repairfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `repair_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_repairfile_created_by_id_e6fffdd7_fk_api_detai` (`created_by_id`),
+  KEY `api_repairfile_repair_id_19d4f16c_fk_api_repairsmodel_repair_id` (`repair_id`),
+  CONSTRAINT `api_repairfile_created_by_id_e6fffdd7_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairfile_repair_id_19d4f16c_fk_api_repairsmodel_repair_id` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_repairfile`
+--
+
+LOCK TABLES `api_repairfile` WRITE;
+/*!40000 ALTER TABLE `api_repairfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_repairfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_repairsmodel`
+--
+
+DROP TABLE IF EXISTS `api_repairsmodel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_repairsmodel` (
+  `repair_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `in_house` tinyint(1) NOT NULL,
+  `description` longtext NOT NULL,
+  `is_refurbishment` tinyint(1) NOT NULL,
+  `requested_delivery_date` datetime(6) DEFAULT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `date_completed` datetime(6) DEFAULT NULL,
+  `down_time` double DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `is_urgent` tinyint(1) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `VIN_id` varchar(100) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `disposal_id` int DEFAULT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`repair_id`),
+  KEY `api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN` (`VIN_id`),
+  KEY `api_repairsmodel_created_by_id_132af9d7_fk_api_detai` (`created_by_id`),
+  KEY `api_repairsmodel_disposal_id_c9f681ab_fk_api_asset` (`disposal_id`),
+  KEY `api_repairsmodel_location_id_baf19500_fk_api_locat` (`location_id`),
+  KEY `api_repairsmodel_modified_by_id_de30d9ec_fk_api_detai` (`modified_by_id`),
+  KEY `api_repairsmodel_vendor_id_11d778d3_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_repairsmodel_created_by_id_132af9d7_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairsmodel_disposal_id_c9f681ab_fk_api_asset` FOREIGN KEY (`disposal_id`) REFERENCES `api_assetdisposalmodel` (`id`),
+  CONSTRAINT `api_repairsmodel_location_id_baf19500_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_repairsmodel_modified_by_id_de30d9ec_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairsmodel_vendor_id_11d778d3_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`),
+  CONSTRAINT `api_repairsmodel_VIN_id_93706939_fk_api_assetmodel_VIN` FOREIGN KEY (`VIN_id`) REFERENCES `api_assetmodel` (`VIN`)
+) ENGINE=InnoDB AUTO_INCREMENT=101756160 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_repairsmodel`
+--
+
+LOCK TABLES `api_repairsmodel` WRITE;
+/*!40000 ALTER TABLE `api_repairsmodel` DISABLE KEYS */;
+INSERT INTO `api_repairsmodel` VALUES (10578394,'10578394','2005-09-06 00:00:00.000000','2023-10-24 00:00:00.000000',0,'9/6/2005 16:23',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC63292B303',1,NULL,39,NULL,91),(11106740,'11106740','2005-12-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'12/29/2005 8:50',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK23002A003',1,NULL,50,NULL,68),(12367365,'12367365','2006-08-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'8/29/2006 15:37',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54147A505',1,NULL,47,NULL,90),(13874552,'13874552','2007-05-24 00:00:00.000000','2023-10-24 00:00:00.000000',0,'5/24/2007 9:53',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54114C202',1,NULL,31,NULL,124),(20073892,'20073892','2009-04-13 00:00:00.000000','2023-10-24 00:00:00.000000',0,'04/13/2009 7:19 PM 04/13/2009 07:20 PM : W/O # 13743 ... INSTALLED DECALS ON SIDE OF BOAT AS-PER CLIENT 04/13/2009 07:21 PM : GAVE AUTH P/O # FOR $147.00 TX INC .. PAID ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK23004F003',1,NULL,12,NULL,82),(63832724,'63832724','2016-11-30 00:00:00.000000','2023-10-24 00:00:00.000000',0,'11/30/2016 1:10 PM 11/30/2016 01:10 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $4,842.63 including PO (63832724)<br> 11/29/2016 12:00 AM 11/30/2016 01:03 PM : VDR HAD TO REPAIR TUBE, HAD HOLE...VDR STATES HAD TO SERVICE ENGINES AND TRAILER...VDR HAD TO SUBLET PROP FOR REPAIR, DAMAGED 11/30/2016 01:03 PM : WO# REP4343...VDR STATES WAS AUTH BY RICHARD PAMNETON....PH# 604-703-2548...ISSUED REF#...NO AUTH GIVEN...SENT FOR AUTH...ATF... 11/30/2016 01:10 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $4,842.63 INCLUDING PO (63832724) 12/01/2016 10:42 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $4,842.63, APPROVER: EDIV_FLEET_MGMT.PO3.EDIV1@RCMP-GRC.GC.CA 12/01/2016 10:42 AM : AUTO_RESPONSE: VENDOR EMAILED  STEPHEN.SLEIGH@ZODIACMILPRO.COM 05/29/2017 03:43 PM : CIB...STEPHEN ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54110A202',1,NULL,33,NULL,56),(69105949,'69105949','2017-10-30 00:00:00.000000','2023-10-24 00:00:00.000000',0,'10/30/2017 6:00 PM 10/30/2017 06:04 PM : IV STATED IN FOR 100 HR PM - WILL BE REPLACING LOWER UNIT OIL , ENGINE OIL AND FILTER AND FUEL FILTER AND ADDING FUEL STABILIZER,, UNIT NEEDED A NEW ANCHOR DANFORM -  MUSHROOM  AS BOAT IS DIVEBOAT - HAS TO BE STATIONARY, REPLACMENT HATCH FOR ANCHOR,, FLARES WERE EXPIRED ,, 10/30/2017 06:17 PM : PO APPROVED FOR $1,451.23 BY ARI ON 10/30/2017 10/30/2017 06:18 PM : WO# 206076 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,138,0,'Delivered','QLV85MRCJ305',1,NULL,25,NULL,4),(69818361,'69818361','2017-12-11 00:00:00.000000','2023-10-24 00:00:00.000000',0,'11/09/2017 12:00 AM 12/11/2017 12:27 PM : 100 HR SERVICE WINTERIZE <> COOLANT ANODES & GROMMETS 12/11/2017 12:35 PM : WO # 34508  PM DECLINED ATF  PO ISSUED PD $ 1343.28 TI 12/11/2017 12:37 PM : PO APPROVED FOR $1,343.28 BY ARI ON 12/11/2017 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54160C606',1,NULL,8,NULL,34),(71577324,'71577324','2018-03-28 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/28/2018 7:00 PM 03/28/2018 07:49 PM : LOF AND INSP.. SPARK PLUGS AND FUEL FILTER.. REPLACED LAMP UNIT ON TRAILER.. 03/28/2018 07:49 PM : WO  6354... NO HISTORY.. ISSUED PO AND PAID $568.90AT..  03/28/2018 07:53 PM : PO APPROVED FOR $568.90 BY ARI ON 03/28/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV75MRCJ305',1,NULL,7,NULL,5),(71595866,'71595866','2018-03-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'04/03/2018 10:32 AM 04/03/2018 10:32 AM : MACHINE ANSWERED, LEFT MESSAGE. CALLED AT: 2503362430. PO #: 71595866. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 04/03/2018 10:27 AM 04/03/2018 10:27 AM : CONNECTED. CALLED AT: 2503362430. PO #: 71595866. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 03/29/2018 9:25 PM 03/29/2018 09:25 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $5,030.81 including PO (71595866)<br> 11/20/2017 3:00 AM 03/29/2018 09:17 PM : WO# 1845 ..NO MEETER READINGS..ATF\n\nISSUED REF#\n\nSENT FOR AUTHORISATION. 03/29/2018 09:18 PM : SWAP & INSTALL ISOLATION UNIT, ONE FITTED NOT COMPLIENT.. FITTED CIRCUIT BREAKER.. DEPTH SOUNDER REPLACED & ADAPTOR CABLE.. INVESTIGATE HEATER INOP, REFERRED TO FITTING COMPANY.. BONDED FUEL TANKS.. REPLACED HORN.. 03/29/2018 09:25 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $5,030.81 INCLUDING PO (71595866) 04/03/2018 10:20 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $5,030.81, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1,0,'Delivered','QEK24008J013',1,NULL,19,NULL,9),(71595881,'71595881','2018-03-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'04/03/2018 10:40 AM 04/03/2018 10:40 AM : MACHINE ANSWERED, LEFT MESSAGE. CALLED AT: 2503362430. PO #: 71595881. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 04/03/2018 10:37 AM 04/03/2018 10:37 AM : CONNECTED. CALLED AT: 2503362430. PO #: 71595881. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 03/29/2018 9:55 PM 03/29/2018 09:55 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $8,083.32 including PO (71595881)<br> 02/07/2018 3:00 AM 03/29/2018 09:43 PM : WO# 1851 ..NO MEETER READINGS\n\nISSUED REF#\n\nSENT FOR AUTHORISATION. 03/29/2018 09:46 PM : BOTH VHF & POLICE ANTENNAS STORED INCORRECTLY & FROZE, SUPPLIED 1X & CLIENT SUPPLIED 1X, REPLACED COAX CABLES.. REPLACED BATT CHARGER.. AC NON COMPLIANT, RE-WIRE & INSTALL BREAKER.. INSTALL GFI FOR BATT CHARGER & BLOCK HEATER.. FAILED DSM, REPLACED WITH CLIENT SUPPLIED.. PRO RATED LODGINGS/TRAVEL 03/29/2018 09:55 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $8,083.32 INCLUDING PO (71595881) 04/03/2018 10:21 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $8,083.32, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1,0,'Delivered','QEK23007E004',1,NULL,19,NULL,9),(71648161,'71648161','2018-04-03 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/16/2018 3:00 AM 04/03/2018 07:28 PM : INV# 1858 -- FRANK BURNS CONTRACTING AGENT-- ISSUED PAID AND CLOSED PO FOR $2412.90 AT 04/03/2018 07:28 PM : PARTS PURCHASE ONLY 04/03/2018 07:33 PM : PO APPROVED FOR $2,412.90 BY ARI ON 04/03/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK28007G008',1,NULL,18,NULL,9),(71648174,'71648174','2018-04-03 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/16/2018 3:00 AM 04/03/2018 07:35 PM : INV# 1859 -- ORDERED BY FRANK BURNS CONTRACTING AGENT -- ISSUED PAID AND CLOSED PO FOR $2412.90 AT 04/03/2018 07:35 PM : PARTS PURCHASE ONLY 04/03/2018 07:37 PM : PO APPROVED FOR $2,412.90 BY ARI ON 04/03/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK29010H013',1,NULL,18,NULL,9),(71648192,'71648192','2018-04-03 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/16/2018 3:00 AM 04/03/2018 07:46 PM : INV# 1854 --  ORDERED BY FRANK BURNS CONTRACTING AGENT -- ISSUED PAID AND CLOSED PO FOR $1783.95 AT 04/03/2018 07:47 PM : PARTS PURCHASE. ONLY 04/03/2018 07:48 PM : PO APPROVED FOR $1,783.95 BY ARI ON 04/03/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24017K617',1,NULL,16,NULL,9),(71648200,'71648200','2018-04-03 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/16/2018 3:00 AM 04/03/2018 07:50 PM : INV# 1856 -- ORDERED BY FRANK BURNS CONTRACTING AGENT  -- ISSUED PAID AND CLOSED PO FOR $1783.95 AT 04/03/2018 07:51 PM : PARTS PURCHASE ONLY 04/03/2018 07:52 PM : PO APPROVED FOR $1,783.95 BY ARI ON 04/03/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24016K617',1,NULL,24,NULL,9),(72281252,'72281252','2018-05-14 00:00:00.000000','2023-10-24 00:00:00.000000',0,'05/14/2018 2:13 PM 05/14/2018 02:16 PM : M/V Titan running poorly,   called to dock -  coding for low voltage-actuator voltage.   Replaced fuse on battery, bolt on amg fuse  05/14/2018 02:21 PM : Labour / call out charge 05/14/2018 02:28 PM : PO APPROVED FOR $279.15 BY ARI ON 05/14/2018 05/14/2018 02:28 PM : REVIEWED - REPAIRS ARE BELOW DRIVER LIMIT ($850) - AUTHORIZED $279.15 BTX... 05/14/2018 02:28 PM : VENDOR EMAIL SENT.  TO: SRMARINE@TELUS.NET.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK22017K007',1,NULL,9,NULL,110),(73975637,'73975637','2018-08-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'08/24/2018 12:00 AM 08/29/2018 12:43 PM : WO#5389... PM DUE.. ISSUED PO FOR $592.56AT 08/29/2018 12:44 PM : iN FOR WATER ALARM GOING OFF.. VDR HAS REPLACED THE ALARM FOR FAILURE... VDR HAS RPL THE HORN.. REPAIRED THE WIRING TO THE FUEL GAUGE.. REATTCHED WINDOW LATCH... CLEAN SPONSECE.. 08/29/2018 12:46 PM : PO APPROVED FOR $592.56 BY ARI ON 08/29/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK22011A005',1,NULL,41,NULL,73),(74510027,'74510027','2018-10-03 00:00:00.000000','2023-10-24 00:00:00.000000',0,'10/03/2018 1:20 PM 10/03/2018 01:21 PM : Low voltage alarm, \nelectrical 10/03/2018 01:40 PM : PO APPROVED FOR $1,261.48 BY ARI ON 10/03/2018 10/03/2018 01:40 PM : VENDOR EMAIL SENT.  TO: steve@allenmarine.ca.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,85,0,'Delivered','QBSY9874C111',1,NULL,8,NULL,51),(74847392,'74847392','2018-10-24 00:00:00.000000','2023-10-24 00:00:00.000000',0,'10/24/2018 7:00 PM 10/24/2018 07:02 PM : PM SVC AND WINTERIZE....... 10/24/2018 07:02 PM : WO# 4394........\n\n 10/24/2018 07:05 PM : REPLACED BROKEN RADAR REFLECTOR ..... 10/24/2018 07:06 PM : PO APPROVED FOR $459.81 BY ARI ON 10/24/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV15MRCA305',1,NULL,4,NULL,33),(75253360,'75253360','2018-11-20 00:00:00.000000','2023-10-24 00:00:00.000000',0,'10/31/2018 12:00 AM 11/20/2018 01:04 PM : INV  14079.. ISSUED PO AND PAID $2325.07 11/20/2018 01:05 PM : DRIVERS COMPLAINING THAT THE S BAR NOT WORKING.. DIAGNOSED AND FOUND THAT PROBLEM NOT PRESENT.. NO ISSUES.. \nSERVICED BOATS.. 11/20/2018 01:07 PM : PO APPROVED FOR $2,325.07 BY ARI ON 11/20/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1001,0,'Delivered','QEK24012M314',1,NULL,14,NULL,2),(75546079,'75546079','2018-12-06 00:00:00.000000','2023-10-24 00:00:00.000000',0,'11/23/2018 12:00 PM 12/06/2018 01:37 PM : INV# 42274....PM CHECK...ATF..11/23/2018\nPAID FOR $496.85 12/06/2018 01:38 PM : WINTER SERVICE \nDRAIN WATER - SERVICE BOAT AND TRAILER  - INSTALL NEW TARP 12/06/2018 01:42 PM : PO APPROVED FOR $496.85 BY ARI ON 12/06/2018 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV45MRCC305',1,NULL,28,NULL,27),(76372672,'76372672','2019-01-31 00:00:00.000000','2023-10-24 00:00:00.000000',0,'12/12/2018 3:00 AM 01/31/2019 12:25 PM : REAR MOTOR INOP, PROP DAMAGED IN LOW WATER - REQ\'S PROP 01/31/2019 12:25 PM : WO# 49159... NO MEETER READINGS\n\nISSUED AND PAID PO....$460.27AT 01/31/2019 12:30 PM : PO APPROVED FOR $460.27 BY ARI ON 01/31/2019 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC531070696',1,NULL,15,NULL,22),(76463677,'76463677','2019-02-05 00:00:00.000000','2023-10-24 00:00:00.000000',0,'02/22/2019 3:08 PM 02/22/2019 03:08 PM : REPAIR APPROVED. CALLED AT: 2503362430. PO #: 76799455. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 02/22/2019 3:07 PM 02/22/2019 03:07 PM : CONNECTED. CALLED AT: 2503362430. PO #: 76799455. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 02/22/2019 2:14 PM 02/22/2019 02:14 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $6,631.67 including PO (76799455)<br> 02/05/2019 3:38 PM 02/05/2019 03:46 PM : Diagnose and Repair No Power at Dash.  Pick up Boat at the Coast Guard Dock, haul out boat and trailer to shop.  Found main power fuse for dash blown.  Disconnect and remove fuse holder.  Wire in proper Breaker in battery compartment that can be reset.  Test for power - now has power.  Test all electrical and accessories.  Found bulbs blown for rooftop flashing lights - replace bulbs with new, test operation - still not operating.  diagnose circuit board is badly corroded and light fixture requires replacing.  Customer to source fixture, new bulbs placed in boat as spares (under rear seat).  Stbd rear deck light not operating - diagnose fixture corroded out.  Place new light on order.  \n\nPack up tools and new light when received.  Pick up keys at Station.  Service call to dock and wire in new light with heat shrink butt connectors, test operation - ok.  Stay-strap up and secure wiring - ok.  Return keys to station, return to shop.    02/05/2019 03:55 PM : While boat out of the water at the shop, power wash hull and transom to remove marine growth and debris. Clean power wash bay and dispose of growth.  Also, while boat out of the water, replace all sacrificial anodes on both motors and on hull with new.  Launch boat following service and repairs.  Deliver boat to Coast Guard Dock and return to shop.  Anodes listed as Forklift Consumables.  4 anodes each motor replaced and 1 hull anodes - total of 9 anodes replaced. 02/05/2019 04:37 PM : PO APPROVED FOR $1,869.05 BY ARI ON 02/05/2019 02/05/2019 04:37 PM : VENDOR EMAIL SENT.  TO: adminrodpower@telus.net.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,570,0,'Delivered','QEK22009A005',1,NULL,3,NULL,39),(76779885,'76779885','2019-02-21 00:00:00.000000','2023-10-24 00:00:00.000000',0,'08/01/2018 3:00 AM 02/21/2019 01:11 PM : WO# 1902.......NO HOURS RECORDED....ATF ( ASKED WHY ATF SO LONG - VDR STATED HE WAS BUSY  ) \n.....VDR STATES APPROVED BY FRANK BURNES ..... 02/21/2019 01:12 PM : NAV SYSTEM FAILED ....REPLACEED .... 02/21/2019 01:18 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $9,962.52 INCLUDING PO (76779885) 02/21/2019 01:27 PM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $9,962.52, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK22007J005',1,NULL,6,NULL,9),(76823771,'76823771','2019-02-25 00:00:00.000000','2023-10-24 00:00:00.000000',0,'02/25/2019 10:49 AM 02/25/2019 10:49 AM : REPAIR APPROVED. CALLED AT: 2503362430. PO #: 76823771. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 02/25/2019 10:47 AM 02/25/2019 10:47 AM : CONNECTED. CALLED AT: 2503362430. PO #: 76823771. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 02/25/2019 9:48 AM 02/25/2019 09:48 AM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $7,878.63 including PO (76823771)<br> 10/28/2018 12:00 AM 02/25/2019 09:21 AM : INV #1928...*ATF*...SENT FOR APPROVAL... 02/25/2019 09:24 AM : REPAIRS AS REQUESTED BY FRANK BURNS...\nUCLEULET RE: ELECTRICAL REPAIRS, BATTERY CHARGER, GROUND LOOP, INCORRECT AC WIRING FROM FACTORY RE-CONFIGURED.\nON SITE REPAIR TO UCLUELET AND TOFINO, BC... 02/25/2019 09:48 AM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $7,878.63 INCLUDING PO (76823771) 02/25/2019 10:34 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $7,878.63, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24013L415',1,NULL,11,NULL,9),(76976234,'76976234','2019-03-04 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/05/2019 11:48 AM 03/05/2019 11:48 AM : MACHINE ANSWERED, LEFT MESSAGE. CALLED AT: 2503362430. PO #: 76976307. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 03/05/2019 11:48 AM 03/05/2019 11:48 AM : REPAIR APPROVED. CALLED AT: 2503362430. PO #: 76976234. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 03/05/2019 11:47 AM 03/05/2019 11:47 AM : CONNECTED. CALLED AT: 2503362430. PO #: 76976307. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 03/05/2019 11:46 AM 03/05/2019 11:46 AM : CONNECTED. CALLED AT: 2503362430. PO #: 76976234. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 03/04/2019 6:09 PM 03/04/2019 06:09 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $7,941.89 including PO (76976307)<br> 03/04/2019 5:58 PM 03/04/2019 05:58 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $2,692.89 including PO (76976234)<br> 10/15/2018 12:00 AM 03/04/2019 05:43 PM : INV # 1912 - ATF PM DECLINED - WORK AUTHORIZED AT THE SHOP LEVEL BY FRANK BURNS...\nVERIFIED TOTAL OF $2,692.89 TX IN - OVERLIMIT - NEEDS F/A APPROVAL... 03/04/2019 05:51 PM : D/C WHY THE REFUSE WASTE HOLDING TANK WILL NOT PUMP OUT/EMPTY - REPLACED PUMP...\nVENDOR NOTES THAT THIS NEW PUMP ALSO FAILED SO THEY HAD TO REPLACE THE WHOLE REFUSE WASTE HOLDING TANK WHICH COMES WITH A NEW PUMP & CREDITED THE PREVIOUSLY INSTALLED PUMP... 03/04/2019 05:58 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $2,692.89 INCLUDING PO (76976234) 03/05/2019 11:33 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $2,692.89, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK30001A006',1,NULL,8,NULL,9),(79178061,'79178061','2019-07-22 00:00:00.000000','2023-10-24 00:00:00.000000',0,'07/23/2019 11:16 AM 07/23/2019 11:16 AM : MACHINE ANSWERED, LEFT MESSAGE. CALLED AT: 2503362430. PO #: 79178061. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 07/23/2019 11:15 AM 07/23/2019 11:15 AM : CONNECTED. CALLED AT: 2503362430. PO #: 79178061. FIRST_NAME_CALLED: BRAD. LAST_NAME_CALLED:  <br> 07/22/2019 7:27 PM 07/22/2019 07:27 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $3,224.59 including PO (79178061)<br> 07/12/2019 3:00 AM 07/22/2019 07:14 PM : INV#1973....PM OK...ATF....REQUIRES AUTH FOR $3224.59BT...SENT FOR AUTH...ISSUED REF # 07/22/2019 07:15 PM : SERVICE CALL TO CLIENT YARD,TRAVELED FROM VICTORIA TO VANCOUVER,REQUIRED FERRY TOLLS AND ACCOMIDATION...INSTALLED ELCI BREAKER AND GALVANIC ISOLATOR...REQUIRED TO MEET STANDARD ABYC AND TP1332 COMPLIANCE...VENDOR STATE AUTH BY FRANK BURNS 07/22/2019 07:27 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $3,224.59 INCLUDING PO (79178061) 07/23/2019 11:08 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $3,224.59, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK22008J005',1,NULL,46,NULL,9),(79414131,'79414131','2019-08-06 00:00:00.000000','2023-10-24 00:00:00.000000',0,'08/06/2019 3:57 PM 08/06/2019 03:58 PM : Replace damaged jockey seat cover. 08/06/2019 03:59 PM : Initial negotiation rejected by supplier. Please review parts pricing and labor time(s) accordingly. 08/06/2019 03:59 PM : PO pending acceptance from vendor for $264.09 08/06/2019 03:59 PM : VENDOR EMAIL SENT.  TO: admin@liquidmetalmarine.com.  SUBJECT: REPAIR AUTHORIZATION 08/06/2019 04:07 PM : PO APPROVED FOR $500.00 BY ARI ON 08/06/2019 08/06/2019 04:07 PM : VENDOR EMAIL SENT.  TO: admin@liquidmetalmarine.com.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV105MRH405',1,NULL,16,NULL,1),(79875337,'79875337','2019-09-04 00:00:00.000000','2023-10-24 00:00:00.000000',0,'09/03/2019 12:00 AM 09/04/2019 04:46 PM : FAILED GPS 09/04/2019 04:46 PM : WO# 1983...ISSUED PO AND PAID $1,280.74 TAX IN\n 09/04/2019 04:47 PM : PO APPROVED FOR $1,280.74 BY ARI ON 09/04/2019 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24014J414',1,NULL,14,NULL,9),(80941921,'80941921','2019-11-13 00:00:00.000000','2023-10-24 00:00:00.000000',0,'11/20/2019 11:48 AM 11/20/2019 11:48 AM : HUMAN ANSWERED, BUT HUNG UP. CALLED AT: 2505638891. PO #: 80941921. FIRST_NAME_CALLED: ROBON. LAST_NAME_CALLED:  <br> 11/20/2019 11:45 AM 11/20/2019 11:45 AM : CONNECTED. CALLED AT: 2505638891. PO #: 80941921. FIRST_NAME_CALLED: ROBON. LAST_NAME_CALLED:  <br> 11/13/2019 5:22 PM 11/13/2019 05:22 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $2,690.77 including PO (80941921)<br> 11/13/2019 4:00 PM 11/13/2019 04:54 PM : SERVICE BOTH ENGINE\'S  INBOARD  AND 9.9 KICKER 11/13/2019 05:01 PM : SERVICE THE TRAILER    - ONE HUB CAP WAS CRACKED  BEARINGS ARE PITTED    THE LUG NUTS HAVE BEEN OVER TIGHEN 11/13/2019 05:08 PM : WINTERIZE  AND INSP THE JET WEAR RINGS 11/13/2019 05:13 PM : INSTALL THE DECALS ON THE KICKER ENGINE 11/13/2019 05:15 PM : REPAIR AND REPLACE THE TRAILER LIGHTS 11/13/2019 05:19 PM : WO #  293160  11/13/2019 05:22 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $2,690.77 INCLUDING PO (80941921) 11/20/2019 11:39 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $2,690.77, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA 11/20/2019 01:43 PM : CALLOUT: SPOKE TO S/A ROBIN, AUTH @$ 2564.56 BFT.   PO #  RELEASED. PAID @$2690.77WT  ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,80,0,'Delivered','QSMJT724D414',1,NULL,28,NULL,32),(82970498,'82970498','2020-03-24 00:00:00.000000','2023-10-24 00:00:00.000000',0,'01/23/2020 3:00 AM 03/24/2020 07:42 PM : INV#2021....PM ICON ON....ATF...ISSUED PO AND PAID FOR $2475.15AT 03/24/2020 07:44 PM : SERVICE CALL TO CLIENT YARD IN PORT COQUITLAM BC  FOR REPAIRS.....INSTALL VHF RADIO AND REPAIR VHF ANTENNA AN COAX...REPLACED HYDROSTATIC RELEASE 03/24/2020 07:48 PM : PO APPROVED FOR $2,475.15 BY ARI ON 03/24/2020 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLVKT302G711',1,NULL,44,NULL,9),(84103280,'84103280','2020-06-15 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/08/2020 12:00 AM 06/15/2020 01:44 PM : WO# 53688... PARTS ONLY, ATF ..  PARTS ONLY ORDERED BY KELLY DEAN  06/15/2020 01:45 PM : HATCH SPRING IS  BROKEN.. 06/15/2020 01:48 PM : PO APPROVED FOR $89.48 BY ARI ON 06/15/2020 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1,0,'Delivered','QLVKJ315J920',1,NULL,38,NULL,1),(84167552,'84167552','2020-06-19 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/19/2020 12:00 PM 06/19/2020 12:08 PM : 2 TIRES - SEPERATED BELTS  - SIZE ST 205/75/14  GOODYEAR ENDURANCE 06/19/2020 12:08 PM : VENDOR HAS BEEN MODIFIED FROM LV000155CC TO TG167808CC 06/19/2020 12:12 PM : PO APPROVED FOR $290.70 BY ARI ON 06/19/2020 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV35MRCC305',1,NULL,52,NULL,36),(85603100,'85603100','2020-09-30 00:00:00.000000','2023-10-24 00:00:00.000000',0,'09/30/2020 6:00 PM 09/30/2020 06:21 PM : WO# 73260 .....PRE AUTH .... ISSUED PO $ 1236.01 BT  09/30/2020 06:22 PM : IN FOR HORN INOP ...HIGH WATER LEVEL SYSTEM ALARM ..   OVERFLOW PUMP , INOP .. REPLACE 09/30/2020 06:27 PM : PO APPROVED FOR $1,236.01 BY ARI ON 09/30/2020 03/30/2021 02:46 PM : .SA CB TO CLOSE 03/30/2021 02:46 PM : PO APPROVED FOR $1,379.93 BY ARI ON 03/30/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54140H405',1,NULL,17,NULL,34),(87997020,'87997020','2021-02-24 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/01/2021 5:14 PM 03/01/2021 05:14 PM : Auto_response: Client Authorization Process has been restarted, REQUESTED AMOUNT $5,480.06 including PO (87997020)<br> 02/24/2021 11:33 AM 02/24/2021 11:33 AM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $5,409.75 including PO (87997020)<br> 02/24/2021 11:00 AM 02/24/2021 11:15 AM : DOT INSPECTION 02/24/2021 11:15 AM : W/O#  136957....... 02/24/2021 11:16 AM : ALL BRAKES @ 0MM  - TANDEMS WHEELS ----  COME AS LOADED ASSEMBLIES [PADS /ROTORS ]  FOR EACH WHEEL\nMARINE GREASE\nREQUIRES BRAKE FLUSH - WATER CONTAMINATED 02/24/2021 11:20 AM : TONGUE JACK SEIZED SOLID -  REPLACE 02/24/2021 11:21 AM : REAR LH TAIL LIGHT INOP - CORRODED - REPLACE\nREPAIR CORRODED WIRING 02/24/2021 11:24 AM : TRAILER PLUG CORRODED - REPLACE\nSAFETY TURN BUCKLE [BOAT HOLDOWN] BROKEN - REPLACE 02/24/2021 11:25 AM : BREAKAWAY BATTERY NOT HOLDING CHARGE - REPLACE - NO LABOUR CHARGED 02/24/2021 11:27 AM : ALL TIRES @ 3/32       [ 11 YEARS OLD ]  - REPLACE \nGOODYEAR ENDURANCE    ST235 80R16        P/C #  724 858 519 02/24/2021 11:33 AM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $5,409.75 INCLUDING PO (87997020) 02/24/2021 07:40 PM : - IV CB TO CHECK STATUS, ADVISED STILL IN APPROVAL PROCESS 03/01/2021 02:25 PM : PO APPROVED FOR $5,409.75 BY FRANK BURNS ON 03/01/2021 03/01/2021 02:29 PM : F/A MR FRANK BURNS CALLING IN TO AUTHORIZE THIS ONE.. P/O AT $ 5,409.75 B/TX\nCALLED OUT TO SHOP TO ISSUE P/O SPOKE WITH DAVID ISSUED P/O FOR $ 5,409.75 B/TX 03/01/2021 05:12 PM : DRV REQ L/[P LHOLDER --- DRV REQ NEW HITCH FOR TRAILER -- WANTS 1/2IN CLEVIS W/PIN 03/01/2021 05:14 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN RESTARTED, REQUESTED AMOUNT $5,480.06 INCLUDING PO (87997020) 03/01/2021 06:03 PM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $5,480.06, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA 03/01/2021 06:05 PM : LEFT MSG FOR DAVID.ADVISED OF NEW AMOUNT BFT 5,480.06$ ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24005B011',1,NULL,19,NULL,16),(88372666,'88372666','2021-03-22 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/22/2021 2:33 PM 03/22/2021 02:33 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $2,609.50 including PO (88372666)<br> 03/18/2021 12:00 PM 03/22/2021 01:42 PM : 03/18/21 Espar heater intermittent - \nTest operation of heater - find heater will run for a while then shut off. Connect Espar heater scan tool and scan for faults. Find stored faults #11, #52 & #53. Clear faults and run up heater until faults return. Find fault #53 returns. Inspect fuel filter - find filter is plugged. Remove faulty fuel filter and install new fuel filter. Clear faults and run up heater - find fault #52 is active. Pump out fuel tank and fill with fuel. Run up heater - find fuel pump is leaking and pumping fuel into bilge. Remove faulty fuel pump and install new fuel pump. Run up heater - find heater is working properly, no faults or leaks detected. Clean out fuel from bilge.\n 03/22/2021 01:45 PM : 03/18/21 100 hour service - \nPick up trailer, haul out boat at 4th Street dock and trailer to shop for 100 hour service. Perform 100 hour fluid and filter service. Run up both engines, test operation of: start, idle, shift, throttle and water pumps - all okay. \n\nClean up, haul boat to 4th Street dock and launch. Tie up in loading zone. Turn off battery switch and lock cabin door. Drop off trailer and return to shop. Drop off keys with service manager for customer pick up.  03/22/2021 02:30 PM : 22007002 - DIFFERENTIAL OIL, (PER QUART / LITER) - PARTS - THIS ITEM IS NOT DUE FOR SERVICE AND HAS BEEN REJECTED.   03/22/2021 02:31 PM : APC REVIEW:  ATF.....PO SENT FOR F/A APPROVAL $2,609.50 BT 03/22/2021 02:33 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $2,609.50 INCLUDING PO (88372666) 03/22/2021 02:57 PM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $2,609.50, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA 03/22/2021 02:57 PM : AUTO_RESPONSE: VENDOR EMAILED  ADMINRODPOWER@TELUS.NET ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,125,0,'Delivered','QEK28008K010',1,NULL,3,NULL,39),(88461050,'88461050','2021-03-27 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/27/2021 4:00 PM 03/27/2021 04:20 PM : IV CLLD FOR PO - STS GOT AUTH FOR THESE PARTS TO BE SHIPPED FROM RYAN POLLARD - APPROVED  03/27/2021 04:21 PM : PARTS ONLY & FREIGHT - SHIPPED TO PRINCE RUPERT LOCATION \nVHF ANTENNA\n6 IN CABIN LED LIGHT BULBS 03/27/2021 04:22 PM : PO APPROVED FOR $453.09 BY ARI ON 03/27/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK22012A005',1,NULL,28,NULL,9),(88461082,'88461082','2021-03-27 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/27/2021 5:00 PM 03/27/2021 05:08 PM : GPS FAILURE - REPLACED GPS ANTENNA WITH RCMP SPARE HE HAD \nREPLACED BATTERY\nTRAVEL TO AND FROM VESSEL\nRADAR FAILED - REPLACED WITH ANOTHER USED RADAR - HAD TO MAKE CUSTOM BRACKET\nFAILED MAP LIGHT 03/27/2021 05:11 PM : IV CLLD FOR PO - STS GOT AUTH FOR THESE REPAIRS FROM RYAN POLLARD - APPROVED PO \n\nWO# 2064 03/27/2021 05:11 PM : PO APPROVED FOR $1,487.05 BY ARI ON 03/27/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK30006E009',1,NULL,13,NULL,9),(88461105,'88461105','2021-03-27 00:00:00.000000','2023-10-24 00:00:00.000000',0,'09/14/2020 11:54 AM 09/14/2020 11:54 AM : Auto_response: Client Authorization Process has been restarted, REQUESTED AMOUNT $9,483.03 including PO (84694973)<br> 09/11/2020 5:39 PM 09/11/2020 05:39 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $9,521.64 including PO (84694973)<br> 08/31/2020 1:00 AM 03/27/2021 05:51 PM : INVOICE # 2065  03/27/2021 05:51 PM : IV STS THEY REPAIRED AND REPLACED RAD ARE SCANNER 03/27/2021 05:53 PM : PO APPROVED FOR $2,498.99 BY ARI ON 03/27/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK28006B008',1,NULL,18,NULL,9),(88461348,'88461348','2021-03-27 00:00:00.000000','2023-10-24 00:00:00.000000',0,'08/27/2020 1:00 AM 03/27/2021 06:52 PM : IV STATES REWIRE  BILCH PUMP , AND REMOGRAM HARD WEAR 03/27/2021 06:54 PM : PO APPROVED FOR $1,662.49 BY ARI ON 03/27/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24927E003',1,NULL,20,NULL,9),(88461357,'88461357','2021-03-27 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/23/2020 1:00 AM 03/27/2021 07:29 PM : IV STS REPLACED HYDROSTATIC RELEASE, 03/27/2021 07:30 PM : PO APPROVED FOR $226.29 BY ARI ON 03/27/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK22016K007',1,NULL,45,NULL,9),(89017867,'89017867','2021-05-04 00:00:00.000000','2023-10-24 00:00:00.000000',0,'05/04/2021 8:52 PM 05/04/2021 08:52 PM : regular summerization services 05/04/2021 08:55 PM : PO APPROVED FOR $119.45 BY ARI ON 05/04/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV103RJA612',1,NULL,5,NULL,12),(89501744,'89501744','2021-06-02 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/02/2021 4:48 PM 06/02/2021 04:48 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $4,867.04 including PO (89501744)<br> 06/02/2021 1:36 PM 06/02/2021 01:36 PM : INSPECTION ON TRAILER\n- LOAD TRAILER ONTO TRUCK & DRIVE DOWN TO SWAP BOAT, RETURN TO SHOP - PULL AND INSPECT WHEELS, BRAKES, BEARINGS - BUILD PARTS LIST FOR TRAILER - CLEAN HUBS & BEARINGS - REMOVE ALL BACKING PLATES; REPLACE 2 BRAKE LINES - INSTALL NEW BEARING RACES - PACK WHEEL BEARINGS - INSTALL SEALS, HUBS - SET BEARINGS & BRAKES; BLEED BRAKES  06/02/2021 01:52 PM : - DIAG LIGHTS; REPAIR 7 WIRE PLUG AND LIGHTS - REPLACE/REWIRE REAR TRIO LIGHT BAR\n 06/02/2021 02:27 PM : 1E001009 - PM B INSPECTION - LABOR - HELLO, YOU DID THE SAME PM B INSP IN APRIL 17, 2021 AT  SAME HOURS READING  = 1719 HRS..YOUR  INVOICE #  72274 .  PLEASE ADVISE.  THANK YOU  06/02/2021 02:28 PM : APC  REVIEWED,  LINE #  3.1 = NEEDS MORE NOTES  06/02/2021 02:28 PM : VENDOR EMAIL SENT.  TO: prodsl@telus.net;prodsl@telus.net.  SUBJECT: REPAIR AUTHORIZATION 06/02/2021 02:28 PM : WAITING FOR VENDOR NOTES 06/02/2021 04:45 PM : 1E001009 - PM B INSPECTION - LABOR - THIS IS FOR REPAIRS TO THEIR BOAT TRAILER NOT THE BOAT. THEY USE THE SAME CARD NUMBER FOR THE TRAILER. 06/02/2021 04:48 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $4,867.04 INCLUDING PO (89501744) 06/02/2021 04:48 PM : PC REVIEW . THIS IS FOR BOAT TRAILER REPAIR NOT THE BOAT IT SELF. 06/02/2021 04:48 PM : PO IS PENDING FA INFORMATION 06/02/2021 04:58 PM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $4,867.04, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA 06/02/2021 04:58 PM : AUTO_RESPONSE: VENDOR EMAILED  PRODSL@TELUS.NET;PRODSL@TELUS.NET ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1719,0,'Delivered','QEK23006K004-XL',1,NULL,30,NULL,68),(89508708,'89508708','2021-06-02 00:00:00.000000','2023-10-24 00:00:00.000000',0,'05/07/2021 12:00 PM 06/02/2021 06:55 PM : INSTALL DIESEL POWERED CABIN HEATERS IN BOAT\nMAY 7: - BEGIN INSTALL OF ESPAR HEATER MAY 10: - INSTALL HEATER ROUTE EXHAUST - TEST SYSTEM - START ROUTING OF VENT LINES - SECURE WIRING MAY 11: - ROUTE HEATER LINES - TEST, ALL FUNCTIONS WORKING - SECURE WIRING - WRAP EXHAUST IN HEADER TAPE, RUN UNIT TO BURN OFF SMELL OF NEW HEATER\nHEATER COST - $2475.00\nINSTALLATION PARTS - $858.17 - HOSE, WIRE, CLAMPS, EXHAUST WRAP, FUEL HOSE ECT.\n 06/02/2021 07:19 PM : APC REVIEW. PERAMETER: UPFITTING NOT ALLOWED ON ARI CARD 06/02/2021 07:33 PM : 44015001 - ELECTRIC FUEL HEATER - LABOR - UPFITTING NOT ALLOWED ON ARI CARD. 06/02/2021 07:33 PM : 44015001 - ELECTRIC FUEL HEATER - PARTS - UPFITTING NOT ALLOWED ON ARI CARD. 06/02/2021 07:33 PM : 53999A13 - SHOP SUPPLIES - PARTS - UPFITTING NOT ALLOWED ON ARI CARD 06/02/2021 07:39 PM : IV STEVE CHECKING ON REJECTION, CLD SOD ZACH BRINSON, ADVISED IF OE NOT AVAILABLE WOULD NOT BE CONCIDERED UPFIT, SEND TO FA FOR APPROVAL 06/02/2021 07:50 PM : IV STEVE STS THIS IS NOT AN UPFIT ELECTRIC HEATER THAT WAS NOT AVAILABLE, REPLACING WITH DIESEL HEATER, WANTS SUBMITTED, HAVE DONE OTHER WITH NO ISSUES 06/02/2021 07:52 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $6,182.17 INCLUDING PO (89508708) 06/03/2021 10:36 AM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $6,182.17, APPROVER: FRANK.BURNS@RCMP-GRC.GC.CA 06/03/2021 10:36 AM : AUTO_RESPONSE: VENDOR EMAILED  PRODSL@TELUS.NET;PRODSL@TELUS.NET ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1908,0,'Delivered','QEK23005K004',1,NULL,30,NULL,68),(89822008,'89822008','2021-06-24 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/24/2021 1:25 PM 06/24/2021 01:29 PM : Repair oil leak, replace contaminated injection oil (supply 4 spare oil jugs), reverse is stuck, get kicker running, repair wiper as needed. 06/24/2021 02:28 PM : PC REVIEW 06/24/2021 02:29 PM : 1E001002 - ENGINE OIL, (PER QUART / LITER) - PREVENTIVE MAINT. - LAST SERVICE LABOR WAS 4.4 HRS  06/24/2021 02:29 PM : 1E001008 - PM A INSPECTION - LABOR -  3 C\'S MISSING 1 OR MORE. DRIVER COMPLAINT - CAUSE, WHY PART NEEDS REPLACED - CORRECTION, DETAILED STEPS TO REPAIR FOR LABOR OF 6.24 HRS  06/24/2021 02:29 PM : VENDOR EMAIL SENT.  TO: tom@trailblaznpower.com.  SUBJECT: REPAIR AUTHORIZATION 06/24/2021 02:29 PM : WAITING FOR VENDOR NOTES 06/24/2021 03:34 PM : VENDOR TOM CALLED TO UDPATE 06/24/2021 03:36 PM : 1 10L CONTAINERS OF OIL + 4 10L EXTRA CONTAINERS 06/24/2021 03:38 PM : PO APPROVED FOR $1,605.50 BY ARI ON 06/24/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,147,0,'Delivered','QBSY0467C212',1,NULL,49,NULL,50),(90351576,'90351576','2021-08-03 00:00:00.000000','2023-10-24 00:00:00.000000',0,'08/03/2021 7:00 PM 08/03/2021 07:05 PM : DRIVER CALLED AND STATED THAT THE CHART PLOTTER IS NOT OPERATING CORRECT, IV WENT TO LOCATION TO DIAG WAS ABLE TO DETERMINE THAT THE TRANSDUCER WAS THE PROBLEM. HAD TO WAIT FOR BOAT TO BE REMOVED FROM THE WATER AND BROUGHT TO THE SHOP. HE WAS ABLE TO SEE TRANSDUCER WAS DAMAGED. HE WILL REPLACE 08/03/2021 07:09 PM : PO APPROVED FOR $2,369.00 BY ARI ON 08/03/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1,0,'Delivered','QEK24018K617',1,NULL,48,NULL,9),(90932487,'90932487','2021-09-15 00:00:00.000000','2023-10-24 00:00:00.000000',0,'',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC63290B303',1,NULL,56,NULL,103),(91695468,'91695468','2021-10-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'07/15/2021 1:00 AM 10/29/2021 05:03 PM : VENDOR HAS BEEN MODIFIED FROM 038425CC TO 039152CC 10/29/2021 05:04 PM : PROP WRENCH ORDERED FOR BOAT IN JULY 2021, ORDERED BY DAVID WALCHUCK 10/29/2021 05:20 PM : WINTERIZED BOAT 10/29/2021 05:22 PM : PO APPROVED FOR $994.28 BY ARI ON 10/29/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,200,0,'Delivered','QLV65MRCF305',1,NULL,58,NULL,26),(91988040,'91988040','2021-11-19 00:00:00.000000','2023-10-24 00:00:00.000000',0,'11/19/2021 11:51 AM 11/19/2021 11:52 AM : Boat is here for annual trailer inspection.The price includes cleaning and re-packing wheel bearings. 11/19/2021 11:53 AM : PO APPROVED FOR $180.00 BY ARI ON 11/19/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54161C606',1,NULL,2,NULL,122),(92040739,'92040739','2021-11-23 00:00:00.000000','2023-10-24 00:00:00.000000',0,'11/23/2021 12:09 PM 11/23/2021 12:09 PM : S/A BRAD CALLED FOR PO, TRANSFER TO CAN<br> 11/08/2021 12:00 AM 11/23/2021 12:14 PM : WO #2179,.   ISSUED P/O  AND PAID $1090.10  A/T ,.  11/23/2021 12:15 PM : ESPAR  FURNACE INOP ,.  DIAG ,.. CLEAN  FUEL SYSYTEM  ,  BAD  FUEL ,.  >  RESET ,  > OK  ,. 11/23/2021 12:18 PM : PO APPROVED FOR $1,090.10 BY ARI ON 11/23/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK30014A717',1,NULL,13,NULL,9),(92061933,'92061933','2021-11-24 00:00:00.000000','2023-10-24 00:00:00.000000',0,'09/28/2021 12:00 AM 11/24/2021 12:58 PM : WO 24358 11/24/2021 12:59 PM : WINTERIZE/SERVICE  ,,   SHRINK WRAP AND STORAGE -  PER PARAMETER BOAT STORAGE NOT PROCESSED ON ARI CARD 11/24/2021 01:07 PM : PO APPROVED FOR $361.73 BY ARI ON 11/24/2021 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC63291B303',1,NULL,51,NULL,102),(92330496,'92330496','2021-12-14 00:00:00.000000','2023-10-24 00:00:00.000000',0,'12/14/2021 6:32 PM 12/14/2021 06:33 PM : Troubleshoot heater issue.  Found that the water flow to heater was weak.  Checked hoses, doesn\'t seem to be blocked.  Removed expansion chamber and found failed gasket.  Ordered parts.  Found multiple broken hose clamps and leaking hoses.  Replaced nylock nuts that held expansion chamber down as they were melted.  Replaced heater ducting under dash as it was all falling apart.   12/14/2021 07:01 PM : PO APPROVED FOR $1,112.92 BY ARI ON 12/14/2021 12/14/2021 07:01 PM : VENDOR EMAIL SENT.  TO: accounts@seasport.ca;controller@seasport.ca.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,432,0,'Delivered','XMP75447A515',1,NULL,8,NULL,23),(92931433,'92931433','2022-01-25 00:00:00.000000','2023-10-24 00:00:00.000000',0,'01/25/2022 4:19 PM 01/25/2022 04:19 PM : Auto_response: Client Authorization Process has been started, REQUESTED AMOUNT $2,789.40 including PO (92931433)<br> 01/17/2022 12:00 PM 01/25/2022 04:11 PM : INV# 54067...ATF...SENT FOR APPROVAL...\nVDR NOTED REPAIRS ARE COMPLETED... 01/25/2022 04:12 PM : D/C ENGINE SPUTTERING, FUEL DELIVERY ISSUE...DIAG... DRAIN AND FLUSH FUEL TANK...CONTAMINATED FUEL IN TANK...PIECES OF DEBRIS, OLD GASKET MATERIAL IN TANK..REPLACE FUEL FITTINGS, PLUGGED... 01/25/2022 04:19 PM : AUTO_RESPONSE: CLIENT AUTHORIZATION PROCESS HAS BEEN STARTED, REQUESTED AMOUNT $2,789.40 INCLUDING PO (92931433) 01/25/2022 04:28 PM : AUTO_RESPONSE: AUTHORIZED BY CLIENT - $2,789.40, APPROVER: ANNA.PAUL@RCMP-GRC.GC.CA 01/25/2022 04:28 PM : AUTO_RESPONSE: VENDOR EMAILED  ADMIN@LIQUIDMETALMARINE.COM 01/25/2022 05:05 PM : PO APPROVED FOR $2,928.87 BY tax  ON 01/25/2022 01/25/2022 05:06 PM : VENDOR CALLED TO CLOSE OUT VEHICLE ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK24937H006',1,NULL,8,NULL,1),(93675921,'93675921','2022-03-15 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/15/2022 7:00 PM 03/15/2022 07:35 PM : IV CALLED GPS INOP.  FOUND STATES GPS PUCK FAILED,. 03/15/2022 07:37 PM : PO APPROVED FOR $1,216.55 BY ARI ON 03/15/2022 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC73387B494',1,NULL,37,NULL,9),(93868888,'93868888','2022-03-29 00:00:00.000000','2023-10-24 00:00:00.000000',0,'03/28/2022 3:00 PM 03/29/2022 04:39 PM : 03/28/22 - ENGINE SPUTTERING - CUSTOMER DROPS OFF BOAT AT RPM FOR SERVICE. MOVE BOAT INTO SERVICE BAY. INSPECT ENGINE - DIAGNOSE #1 SPARK PLUG LEAD IS PULLED OUT OF BOOT. ATTEMPT TO ORDER NEW SPARK PLUG LEAD - PARTS ARE NO LONGER AVAILABLE. CUT BACK SPARK PLUG LEAD TO CLEAN WIRE AND RE-INSTALL CONNECTOR AS REQUIRED. INSPECT FUEL LINES - FIND FUEL LINE IS SPLICED AND IMPROPER THREADED COUPLER IS INSTALLED AT FUEL TANK. DISCONNECT RIGGING TUBE AND REPLACE FUEL LINE FROM FUEL TANK TO RACOR AND RACOR TO ENGINE. INSTALL NEW PRIMER BALL AND FITTINGS AS REQUIRED. FIND CONTROL CABLES ARE CORRODED AND CHAFED. REMOVE EXISTING CONTROL CABLES AND INSTALL NEW CONTROL CABLES VIA DIFFICULT ACCESS. RUN UP ENGINE, TEST OPERATION OF START, IDLE, SHIFT, THROTTLE AND WATER PUMP - ALL OK. CLEAN UP AND PARK BOAT IN LOWER YARD WITH BOW FACING UPHILL FOR CUSTOMER PICK UP. READY FOR CUSTOMER PICK UP. DROP OFF KEYS WITH SERVICE MANAGER.  03/29/2022 04:56 PM : *** (HPC REVIEW) *** ?C SEE DETAILED VENDOR JOB NOTES ?C AUTH. TOTAL -- $ 1477.16 03/29/2022 04:57 PM : PO APPROVED FOR $1,477.16 BY HOLMAN ON 03/29/2022 03/29/2022 04:57 PM : VENDOR EMAIL SENT.  TO: adminrodpower@telus.net.  SUBJECT: REPAIR ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,387,0,'Delivered','XDC54111B202',1,NULL,11,NULL,39),(95036008,'95036008','2022-06-09 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/09/2022 11:30 PM 06/09/2022 11:32 PM : The bilge pump and strobe light was not functioning.  I diagnosed corrosion at the switch and connections. I cleaned the switch contacts and tested operation after.  06/09/2022 11:44 PM : PO APPROVED FOR $137.50 BY HOLMAN ON 06/09/2022 06/09/2022 11:44 PM : VENDOR EMAIL SENT.  TO: will@shiptechmarine.com.  SUBJECT: REPAIR AUTHORIZATION 06/10/2022 12:10 AM : APC REVIEWED  06/10/2022 12:10 AM : PO APPROVED FOR $152.64 BY HOLMAN ON 06/10/2022 06/10/2022 12:10 AM : VENDOR EMAIL SENT.  TO: will@shiptechmarine.com.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,472,0,'Delivered','XDC54003C797',1,NULL,8,NULL,55),(95036030,'95036030','2022-06-09 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/09/2022 11:53 PM 06/09/2022 11:53 PM : The pod mounted bilge pump is not functioning, Replaced bilge pump assembly and tested operations. 06/10/2022 12:08 AM : PO APPROVED FOR $110.00 BY HOLMAN ON 06/10/2022 06/10/2022 12:08 AM : VENDOR EMAIL SENT.  TO: will@shiptechmarine.com.  SUBJECT: REPAIR AUTHORIZATION 06/10/2022 12:18 AM : PO APPROVED FOR $125.36 BY HOLMAN ON 06/10/2022 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,704,0,'Delivered','QEK24938J006',1,NULL,8,NULL,55),(95177662,'95177662','2022-06-20 00:00:00.000000','2023-10-24 00:00:00.000000',0,'04/06/2022 3:00 AM 06/20/2022 06:41 PM : WO# 1168......ATF.... 06/20/2022 06:42 PM : SUMMERIZATION ......PM SVC / FUEL FILTER  LEG OIL CLEAN - WASH IN/ OUT....CHARGE BATTTEIES AND CHECK WATERPUMPS .... 06/20/2022 06:48 PM : PO APPROVED FOR $1,492.27 BY HOLMAN ON 06/20/2022 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLVKJ317J920',1,NULL,15,NULL,22),(96686717,'96686717','2022-10-06 00:00:00.000000','2023-10-24 00:00:00.000000',0,'10/06/2022 3:04 PM 10/06/2022 03:07 PM : RCMP VESSEL TITAN 240 VESSEL \n\n   10/06/2022 03:07 PM : RCMP VESSEL TITAN 240 VESSEL \nCUSTOMER NOTED ANCHOR LIGHT IS VERY DIM, GPS TAKING TOO LONG TO AQUIRE POSITION, AND VHF RADIO SYSTEM IS NO LONGER RECEIVING GPS POSITION ANYMORE. \n-PICKED UP BOAT FROM MARINA, PUT ON TRAILER.\n-TESTED ANCHOR LIGHT, MOST LEDS BURNT OUT, ORDERED NEW ANCHOR LIGHT.\n-TESTED SPOTLIGHT, ONE BULB BURNT OUT, ORDERED NEW BULB\n-CHECKED OUT GPS SYSTEM, GPS NOT RECOGNIZING EXT GPS ANTENNA, GPS SYSTEM WAS USING INTERNAL ANTENNA WHICH TAKES ALOT LONGER TO AQUIRE POSITION. TESTED GPS SYSTEM WITH USED/WORKING ANTENNA WE HAD ON HAND AND IT AQUIRED POSITION VERY QUICKLY. ORDERED NEW ANTENNA. LEFT USED ANTENNA ON BOAT TILL NEW PARTS ARRIVE, LAUNCHED VESSEL AND PARKED AT MARINA.\n-PARTS ARRIVED EARLY OCTOBER, RCMP DROPPED VESSEL OF AT MARINA, SERVICE MECHANIC CAME TO VESSEL\n-INSTALLED NEW SPOTLIGHT BULB.\n-REMOVED OLD ANCHOR LIGHT / DRILLED NEW HOLES & INSTALLED NEW ANCHOR LIGHT (TESTED GOOD)\n-REMOVED GPS ANTENNA, INSTALLED NEW (GPS + VHF NOW WORK)  \n   10/06/2022 03:39 PM : 34004019 - EXTERIOR BULBS (EXCEPT HEADLAMP) - PARTS - THE ABOVE ADJUSTMENT(S) HAVE BEEN MADE TO THIS PO. 10/06/2022 03:39 PM : 34004061 - INSTRUMENT LIGHTS - LABOR - THE ABOVE ADJUSTMENT(S) HAVE BEEN MADE TO THIS PO. 10/06/2022 03:39 PM : 34004061 - INSTRUMENT LIGHTS - PARTS - THE ABOVE ADJUSTMENT(S) HAVE BEEN MADE TO THIS PO. 10/06/2022 03:39 PM : 63001008 - GPS / CELLULAR ANTENNA - PARTS - THE ABOVE ADJUSTMENT(S) HAVE BEEN MADE TO THIS PO. 10/06/2022 03:39 PM : PO pending acceptance from vendor for $851.24 10/06/2022 03:39 PM : RCMP VESSEL TITAN 240 VESSEL \nCUSTOMER NOTED ANCHOR LIGHT IS VERY DIM, GPS TAKING TOO LONG TO AQUIRE POSITION, AND VHF RADIO SYSTEM IS NO LONGER RECEIVING GPS POSITION ANYMORE.  10/06/2022 03:40 PM : Initial negotiation rejected by supplier. Please review parts pricing and labor time(s) accordingly. 10/06/2022 03:49 PM : PO APPROVED FOR $1,476.22 BY HOLMAN ON 10/06/2022 10/07/2022 11:17 AM : RCMP VESSEL TITAN 240 VESSEL\nCUSTOMER NOTED ANCHOR LIGHT IS VERY DIM, GPS TAKING TOO LONG TO AQUIRE POSITION, AND VHF RADIO SYSTEM IS NO LONGER RECEIVING GPS POSITION ANYMORE.\n-PICKED UP BOAT FROM MARINA, PUT ON TRAILER.\n-TESTED ANCHOR LIGHT, MOST LEDS BURNT OUT, ORDERED NEW ANCHOR LIGHT.\n-TESTED SPOTLIGHT, ONE BULB BURNT OUT, ORDERED NEW BULB\n-CHECKED OUT GPS SYSTEM, GPS NOT RECOGNIZING EXT GPS ANTENNA, GPS SYSTEM WAS USING INTERNAL ANTENNA WHICH TAKES ALOT LONGER TO AQUIRE POSITION. TESTED GPS SYSTEM WITH USED/WORKING ANTENNA WE HAD ON HAND AND IT AQUIRED POSITION VERY QUICKLY. ORDERED NEW ANTENNA. LEFT USED ANTENNA ON BOAT TILL NEW PARTS ARRIVE, LAUNCHED VESSEL AND PARKED AT MARINA.\n-PARTS ARRIVED EARLY OCTOBER, RCMP DROPPED VESSEL OF AT MARINA, SERVICE MECHANIC CAME TO VESSEL\n-INSTALLED NEW SPOTLIGHT BULB.\n-REMOVED OLD ANCHOR LIGHT / DRILLED NEW HOLES & INSTALLED NEW ANCHOR LIGHT (TESTED GOOD)\n-REMOVED GPS ANTENNA, INSTALLED NEW (GPS + VHF NOW WORK) ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,1120,0,'Delivered','QEK24011M314',1,NULL,43,NULL,4),(97564696,'97564696','2022-12-08 00:00:00.000000','2023-10-24 00:00:00.000000',0,'12/08/2022 9:00 AM 12/08/2022 09:48 AM : WO# 2059 , ISSUED PO $ 404.29 BT  12/08/2022 09:49 AM : IN FOR SERVICE AND WINTERIZATION .. 12/08/2022 09:54 AM : PO APPROVED FOR $404.29 BY HOLMAN ON 12/08/2022 12/09/2022 09:50 AM : *JESSY @ MCDONALD CALLED IN TO ASK HOLMAN TO CLOSE OUT INVOICE FOR PAYMENT 12/09/2022 09:50 AM : PO APPROVED FOR $424.51 BY HOLMAN ON 12/09/2022 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLVKJ316J920',1,NULL,34,NULL,6),(97582920,'97582920','2022-12-09 00:00:00.000000','2023-10-24 00:00:00.000000',0,'12/09/2022 9:52 AM 12/09/2022 09:52 AM : VENDOR INV# 2065<br> 12/09/2022 9:00 AM 12/09/2022 10:02 AM : ROUTINE MAINTENANCE PLUS AUX MOTOR REPAIRS\n- AUX MOTOR WAS INOP \n- FULE SYSYTEM WAS FULL OF WATER - EXCESS SALT INSIDE & THE WATER PUMP WAS FULL OF SALT & CORROSION & HAS BEEN SITTING. MAIN WORK WAS ON AUXILIARY MOTOR MAINLY DUE TO LACK OF USE 12/09/2022 10:06 AM : PER CALL FROM JESSY @ MCDONALD MARINE// HAS THE FULL QUOTE ON REPAIRS - MAINLY IN AUX MOTOR & ROUTINE MAINTENANCE ON PRIMARY ENGINE\n*APPROVE OF ENGINE REPAIRS AND MAINTENANCE DUE TO SAFETY, HISTORY & PARAMETERS 12/09/2022 10:06 AM : PO APPROVED FOR $2,023.96 BY HOLMAN ON 12/09/2022 12/09/2022 10:06 AM : Vendor Notification: Vendor emailed: jesse@mcdonaldmarine.ca for $2023.96 12/09/2022 10:08 AM : *BOAT IS COMPLETED AS RCMP NEEDED IT TODAY - JESSY ASKED HOLMAN TO CLOSE INVOICE FOR PAYMENT ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QEK23003C003',1,NULL,34,NULL,6),(98439419,'98439419','2023-02-09 00:00:00.000000','2023-10-24 00:00:00.000000',0,'02/09/2023 12:10 PM 02/09/2023 12:17 PM : Perform service on engine.\nRun engine and note performance.\nRemove thermostats and covers.\nInstall new thermostats with seals. One cover broke and must be replaced (common issue).\nRemove spark plugs.\nInstall new and index as required.\nReplace all anodes as required.\nRemove and replace fuel filter.\nRemove gear oil, noticed water mixed in with oil.\nSeals have failed and the lower unit will need to be resealed.\nFlush with diesel, store with some diesel in gear.\nDisassemble and reseal the gear.\nPressure/vacuum test gear.\nReplace water pump assembly.\nInstall back into engine.\nRun up and confirm no issues.\n\nWATER PUMP IMPELLER, LABOR= All labour required to complete service.\nELECTRICAL CONNECTORS, PARTS= Anode\nFUSE - ELECTRICAL, PARTS= Anode 02/09/2023 12:56 PM : PO APPROVED FOR $2,181.06 BY HOLMAN ON 02/09/2023 02/09/2023 12:56 PM : VENDOR EMAIL SENT.  TO: seapower@seapower.ca.  SUBJECT: REPAIR AUTHORIZATION ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,411520,0,'Delivered','XDC533101G595',1,NULL,8,NULL,2),(98530691,'98530691','2023-02-15 00:00:00.000000','2023-10-24 00:00:00.000000',0,'02/15/2023 7:00 PM 02/15/2023 07:48 PM : RG\'S CALLED IN TO REPORT THAT THEY FORGOT TO ADD ON WIPER MOTOR REPLACEMENT, WHICH WAS FAULTY/INOP 02/15/2023 07:49 PM : NO LABOR JUST PART CHARGE 02/15/2023 07:50 PM : PO APPROVED FOR $214.96 BY HOLMAN ON 02/15/2023 02/15/2023 07:50 PM : PO APPROVED FOR $225.71 BY HOLMAN ON 02/15/2023 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,757,0,'Delivered','QEK23008K006',1,NULL,54,NULL,63),(101207220,'101207220','2023-08-08 00:00:00.000000','2023-10-24 00:00:00.000000',0,'08/08/2023 6:00 PM 08/08/2023 06:27 PM : TRIM BUSHINGS ARE WORN. 08/08/2023 06:31 PM : PO APPROVED FOR $710.16 BY HOLMAN ON 08/08/2023 ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC5414G504',1,NULL,55,NULL,26),(101305081,'101305081','2023-08-15 00:00:00.000000','2023-10-24 00:00:00.000000',0,'07/20/2023 12:10 PM 07/20/2023 12:10 PM : DRV MARK VERREULT CB# 604-316-8330, CLD TO VERIFY THE CARD IS ACTIVE, ADVISED ACTIVE<br> 06/24/2023 12:00 AM 08/15/2023 03:18 PM : BELT CAME OFF IN WATER, OVERHEATED - REC RPCLING BELT 08/15/2023 03:20 PM : PO APPROVED FOR $387.68 BY HOLMAN ON 08/15/2023 08/15/2023 03:20 PM : SA CLLD IN FOR WORK ATF ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QOM22314C909',1,NULL,36,NULL,43),(101305154,'101305154','2023-08-15 00:00:00.000000','2023-10-24 00:00:00.000000',0,'06/21/2023 12:00 AM 08/15/2023 03:22 PM : ENGINE SURGING    PURGED AIR, CLEANED OUT FUEL LINE FROM TANK TO FILTER 08/15/2023 03:23 PM : PO APPROVED FOR $257.51 BY HOLMAN ON 08/15/2023 08/15/2023 03:23 PM : SA CLLD IN FOR WORK ATF ',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','XDC54413C202',1,NULL,36,NULL,43),(101756159,'101756159','2023-09-13 00:00:00.000000','2023-10-24 00:00:00.000000',0,'',0,NULL,NULL,NULL,NULL,NULL,NULL,'TBD',-1,0,0,'Delivered','QLV7M212D211',1,NULL,5,NULL,12);
+/*!40000 ALTER TABLE `api_repairsmodel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_repairsmodelhistory`
+--
+
+DROP TABLE IF EXISTS `api_repairsmodelhistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_repairsmodelhistory` (
+  `repair_history_id` int NOT NULL AUTO_INCREMENT,
+  `work_order` varchar(100) NOT NULL,
+  `date` datetime(6) NOT NULL,
+  `description` longtext NOT NULL,
+  `requested_delivery_date` datetime(6) DEFAULT NULL,
+  `estimated_delivery_date` datetime(6) DEFAULT NULL,
+  `available_pickup_date` datetime(6) DEFAULT NULL,
+  `date_completed` datetime(6) DEFAULT NULL,
+  `down_time` int DEFAULT NULL,
+  `vendor_contacted_date` datetime(6) DEFAULT NULL,
+  `vendor_email` varchar(100) NOT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `location_id` int DEFAULT NULL,
+  `modified_by_id` int DEFAULT NULL,
+  `repair_id` int NOT NULL,
+  `vendor_id` int DEFAULT NULL,
+  PRIMARY KEY (`repair_history_id`),
+  KEY `api_repairsmodelhist_location_id_409ef7e3_fk_api_locat` (`location_id`),
+  KEY `api_repairsmodelhist_modified_by_id_a021000f_fk_api_detai` (`modified_by_id`),
+  KEY `api_repairsmodelhist_repair_id_34ccb561_fk_api_repai` (`repair_id`),
+  KEY `api_repairsmodelhist_vendor_id_22ec1f3b_fk_api_appro` (`vendor_id`),
+  CONSTRAINT `api_repairsmodelhist_location_id_409ef7e3_fk_api_locat` FOREIGN KEY (`location_id`) REFERENCES `api_locationmodel` (`location_id`),
+  CONSTRAINT `api_repairsmodelhist_modified_by_id_a021000f_fk_api_detai` FOREIGN KEY (`modified_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_repairsmodelhist_repair_id_34ccb561_fk_api_repai` FOREIGN KEY (`repair_id`) REFERENCES `api_repairsmodel` (`repair_id`),
+  CONSTRAINT `api_repairsmodelhist_vendor_id_22ec1f3b_fk_api_appro` FOREIGN KEY (`vendor_id`) REFERENCES `api_approvedvendorsmodel` (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_repairsmodelhistory`
+--
+
+LOCK TABLES `api_repairsmodelhistory` WRITE;
+/*!40000 ALTER TABLE `api_repairsmodelhistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_repairsmodelhistory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_rolepermissions`
+--
+
+DROP TABLE IF EXISTS `api_rolepermissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_rolepermissions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `role` varchar(50) NOT NULL,
+  `dashboard` tinyint(1) NOT NULL,
+  `dashboard_operator` tinyint(1) NOT NULL,
+  `fleet_at_a_glance` tinyint(1) NOT NULL,
+  `fleet_at_a_glance_executive` tinyint(1) NOT NULL,
+  `fleet_at_a_glance_manager` tinyint(1) NOT NULL,
+  `fleet_overview` tinyint(1) NOT NULL,
+  `asset_request` tinyint(1) NOT NULL,
+  `asset_request_new_order` tinyint(1) NOT NULL,
+  `asset_request_list` tinyint(1) NOT NULL,
+  `repairs` tinyint(1) NOT NULL,
+  `repairs_list` tinyint(1) NOT NULL,
+  `repairs_new_request` tinyint(1) NOT NULL,
+  `maintenance` tinyint(1) NOT NULL,
+  `maintenance_status` tinyint(1) NOT NULL,
+  `maintenance_new_request` tinyint(1) NOT NULL,
+  `maintenance_forecast` tinyint(1) NOT NULL,
+  `maintenance_lookup` tinyint(1) NOT NULL,
+  `incidents` tinyint(1) NOT NULL,
+  `incidents_list` tinyint(1) NOT NULL,
+  `incidents_new_report` tinyint(1) NOT NULL,
+  `issues` tinyint(1) NOT NULL,
+  `issues_new` tinyint(1) NOT NULL,
+  `issues_list` tinyint(1) NOT NULL,
+  `issues_search` tinyint(1) NOT NULL,
+  `operators` tinyint(1) NOT NULL,
+  `operators_daily_check` tinyint(1) NOT NULL,
+  `operators_search` tinyint(1) NOT NULL,
+  `unfinished_checks` tinyint(1) NOT NULL,
+  `energy` tinyint(1) NOT NULL,
+  `energy_fuel_tracking` tinyint(1) NOT NULL,
+  `fuel_orders` tinyint(1) NOT NULL,
+  `fuel_transactions` tinyint(1) NOT NULL,
+  `asset_removal` tinyint(1) NOT NULL,
+  `asset_removal_new` tinyint(1) NOT NULL,
+  `asset_removal_list` tinyint(1) NOT NULL,
+  `approval_request` tinyint(1) NOT NULL,
+  `asset_transfers` tinyint(1) NOT NULL,
+  `asset_transfers_current_transfers` tinyint(1) NOT NULL,
+  `asset_transfers_new_transfer_request` tinyint(1) NOT NULL,
+  `asset_transfers_map` tinyint(1) NOT NULL,
+  `asset_log` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_rolepermissions`
+--
+
+LOCK TABLES `api_rolepermissions` WRITE;
+/*!40000 ALTER TABLE `api_rolepermissions` DISABLE KEYS */;
+INSERT INTO `api_rolepermissions` VALUES (1,'operator',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0),(2,'manager',1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1),(3,'executive',1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1),(4,'supervisor',0,0,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,1,1,0,1,1);
+/*!40000 ALTER TABLE `api_rolepermissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailyasset`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailyasset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailyasset` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `VIN` varchar(100) DEFAULT NULL,
+  `parent` varchar(100) DEFAULT NULL,
+  `equipment_type` varchar(100) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `jde_department` varchar(100) DEFAULT NULL,
+  `original_location` varchar(100) DEFAULT NULL,
+  `current_location` varchar(100) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `aircraft_compatability` varchar(100) DEFAULT NULL,
+  `unit_number` varchar(100) DEFAULT NULL,
+  `license_plate` varchar(100) DEFAULT NULL,
+  `date_of_manufacture` date DEFAULT NULL,
+  `department` varchar(100) DEFAULT NULL,
+  `job_specification` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_quantity` varchar(100) DEFAULT NULL,
+  `fire_extinguisher_inspection_date` date DEFAULT NULL,
+  `path` varchar(300) DEFAULT NULL,
+  `last_process` varchar(50) DEFAULT NULL,
+  `hours_or_mileage` varchar(50) DEFAULT NULL,
+  `mileage` double NOT NULL,
+  `hours` double NOT NULL,
+  `mileage_unit` varchar(50) DEFAULT NULL,
+  `date_in_service` date DEFAULT NULL,
+  `total_cost` double NOT NULL,
+  `currency` varchar(100) DEFAULT NULL,
+  `daily_average_hours` double NOT NULL,
+  `daily_average_mileage` double NOT NULL,
+  `replacement_hours` double DEFAULT NULL,
+  `replacement_mileage` double DEFAULT NULL,
+  `insurance_renewal_date` date DEFAULT NULL,
+  `registration_renewal_date` date DEFAULT NULL,
+  `load_capacity` double DEFAULT NULL,
+  `load_capacity_unit` varchar(50) DEFAULT NULL,
+  `fuel` varchar(100) DEFAULT NULL,
+  `engine` varchar(50) DEFAULT NULL,
+  `colour` varchar(50) NOT NULL,
+  `fuel_tank_capacity` double DEFAULT NULL,
+  `fuel_tank_capacity_unit` varchar(50) DEFAULT NULL,
+  `is_rental` tinyint(1) DEFAULT NULL,
+  `monthly_subscription_cost` double DEFAULT NULL,
+  `date_created` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=731 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailyasset`
+--
+
+LOCK TABLES `api_snapshotdailyasset` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailyasset` DISABLE KEYS */;
+INSERT INTO `api_snapshotdailyasset` VALUES (1,'C02979BC',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.642879'),(2,'C03816BC',NULL,'32','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ02056',NULL,'2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2002-09-01',77536.69,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.642879'),(3,'C04918BC',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(4,'C05243BC',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(5,'C05959BC',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(6,'C06484BC',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(7,'C06526BC',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(8,'C06583BC',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(9,'C06586BC',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(10,'C07422BC',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.643879'),(11,'C08159BC',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(12,'C08163BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(13,'C08195BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(14,'C08247BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(15,'C08249BC',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(16,'C08271BC',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(17,'C08272BC',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(18,'C08275BC',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(19,'C10239BC',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(20,'C10467BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(21,'C10842BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.644878'),(22,'C10908BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(23,'C11074BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(24,'C11252BC',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(25,'C11558BC',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(26,'C12349BC',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(27,'C12350BC',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(28,'C12699BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(29,'C12700BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(30,'C12701BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(31,'C12702BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(32,'C12720BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.645878'),(33,'C12744BC',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(34,'C12761BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(35,'C12906BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(36,'C12951BC',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(37,'C13153BC',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(38,'C13340BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(39,'C13833BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(40,'C13942BC',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(41,'C14130BC',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(42,'C14131BC',NULL,'30','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDL94020','C14131BC','1994-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,223,NULL,'2008-10-06',13519.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.646888'),(43,'C14220BC',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(44,'C15005BC',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(45,'C15112BC',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(46,'C16860BC',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(47,'C16930BC',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(48,'C17194BC',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(49,'C17655BC',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(50,'C17996BC',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(51,'C18409BC',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(52,'C19624BC',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(53,'C20804BC',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.647886'),(54,'C20959BC',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(55,'C20967BC',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(56,'C21386BC',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(57,'C21713BC',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(58,'C21880BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(59,'C21884BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(60,'C22110BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(61,'C22236BC',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(62,'C22606BC',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(63,'C22745BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(64,'C22834BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.648888'),(65,'C22835BC',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(66,'C22911BC',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(67,'C22991BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(68,'C23176BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(69,'C23236BC',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(70,'C23752BC',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(71,'C23806BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(72,'C23857BC',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(73,'C24180BC',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(74,'C24278BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.649885'),(75,'C24418BC',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(76,'C24460BC',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(77,'C25643BC',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(78,'C26023BC',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(79,'C26593BC',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(80,'C26714BC',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(81,'C26758BC',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(82,'C26999BC',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(83,'C27129BC',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(84,'C27371BC',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(85,'C27425BC',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.650878'),(86,'C29809BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(87,'C29886BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(88,'C30002BC',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(89,'C32275BC',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(90,'C32276BC',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(91,'C33386BC',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(92,'C35227BC',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(93,'C35228BC',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-10-26 15:19:52.651887'),(94,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.577860'),(95,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578002'),(96,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578127'),(97,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578248'),(98,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578367'),(99,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578486'),(100,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578605'),(101,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578723'),(102,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578838'),(103,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.578954'),(104,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579070'),(105,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579184'),(106,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579316'),(107,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579431'),(108,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579549'),(109,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579664'),(110,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579778'),(111,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.579894'),(112,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580010'),(113,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580125'),(114,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580240'),(115,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580355'),(116,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580470'),(117,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580585'),(118,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580700'),(119,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580816'),(120,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.580932'),(121,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581046'),(122,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581161'),(123,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581275'),(124,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581390'),(125,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581504'),(126,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581619'),(127,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581734'),(128,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581848'),(129,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.581963'),(130,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582077'),(131,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582191'),(132,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582306'),(133,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582422'),(134,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582537'),(135,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582651'),(136,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582766'),(137,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582880'),(138,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.582995'),(139,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583110'),(140,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583231'),(141,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583347'),(142,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583462'),(143,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583577'),(144,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583692'),(145,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583807'),(146,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.583921'),(147,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584036'),(148,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584151'),(149,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584265'),(150,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584380'),(151,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584529'),(152,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584648'),(153,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584764'),(154,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584880'),(155,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.584995'),(156,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585110'),(157,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585224'),(158,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585338'),(159,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585453'),(160,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585569'),(161,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585684'),(162,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585799'),(163,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.585913'),(164,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586028'),(165,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586142'),(166,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586296'),(167,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586435'),(168,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586554'),(169,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586670'),(170,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586786'),(171,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.586901'),(172,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587017'),(173,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587132'),(174,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587256'),(175,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587372'),(176,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587487'),(177,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587603'),(178,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587718'),(179,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587833'),(180,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.587947'),(181,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.588062'),(182,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.588177'),(183,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.588293'),(184,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-01 15:12:19.588408'),(185,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.076669'),(186,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.076850'),(187,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077001'),(188,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077150'),(189,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077296'),(190,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077441'),(191,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077586'),(192,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077798'),(193,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.077942'),(194,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078055'),(195,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078167'),(196,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078280'),(197,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078391'),(198,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078501'),(199,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078611'),(200,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078753'),(201,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078865'),(202,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.078977'),(203,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079089'),(204,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079201'),(205,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079312'),(206,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079422'),(207,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079533'),(208,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079647'),(209,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079761'),(210,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079872'),(211,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.079985'),(212,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080096'),(213,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080206'),(214,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080317'),(215,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080428'),(216,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080538'),(217,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080648'),(218,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080760'),(219,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080870'),(220,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.080981'),(221,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081091'),(222,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081201'),(223,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081311'),(224,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081421'),(225,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081532'),(226,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081642'),(227,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081751'),(228,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081861'),(229,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.081971'),(230,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082081'),(231,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082191'),(232,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082302'),(233,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082444'),(234,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082619'),(235,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082772'),(236,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.082888'),(237,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083000'),(238,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083113'),(239,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083225'),(240,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083336'),(241,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083447'),(242,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083558'),(243,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083668'),(244,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083780'),(245,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.083890'),(246,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084002'),(247,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084113'),(248,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084223'),(249,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084333'),(250,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084443'),(251,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084554'),(252,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084664'),(253,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084776'),(254,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084886'),(255,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.084997'),(256,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085107'),(257,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085217'),(258,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085328'),(259,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085443'),(260,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085555'),(261,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085667'),(262,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085779'),(263,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.085890'),(264,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086001'),(265,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086112'),(266,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086222'),(267,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086333'),(268,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086444'),(269,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086554'),(270,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086664'),(271,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086793'),(272,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.086904'),(273,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.087016'),(274,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.087129'),(275,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-08 15:10:33.087239'),(276,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.158556'),(277,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.158733'),(278,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.158851'),(279,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.158966'),(280,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159078'),(281,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159205'),(282,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159320'),(283,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159490'),(284,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159606'),(285,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159721'),(286,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159841'),(287,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.159955'),(288,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160089'),(289,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160207'),(290,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160322'),(291,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160436'),(292,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160549'),(293,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160661'),(294,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.160774'),(295,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161042'),(296,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161179'),(297,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161301'),(298,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161417'),(299,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161535'),(300,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161649'),(301,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161762'),(302,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.161875'),(303,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162048'),(304,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162172'),(305,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162291'),(306,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162405'),(307,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162568'),(308,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162701'),(309,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162820'),(310,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.162936'),(311,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163048'),(312,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163214'),(313,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163330'),(314,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163444'),(315,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163557'),(316,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163670'),(317,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163782'),(318,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.163895'),(319,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164010'),(320,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164126'),(321,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164238'),(322,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164351'),(323,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164464'),(324,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164575'),(325,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164687'),(326,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164802'),(327,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.164914'),(328,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165027'),(329,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165139'),(330,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165250'),(331,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165361'),(332,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165474'),(333,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165589'),(334,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165728'),(335,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165873'),(336,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.165986'),(337,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166099'),(338,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166211'),(339,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166323'),(340,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166441'),(341,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166555'),(342,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166667'),(343,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166797'),(344,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.166910'),(345,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167022'),(346,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167133'),(347,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167247'),(348,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167360'),(349,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167471'),(350,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167585'),(351,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167697'),(352,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167808'),(353,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.167919'),(354,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168036'),(355,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168148'),(356,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168259'),(357,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168372'),(358,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168483'),(359,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168594'),(360,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168707'),(361,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168821'),(362,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.168933'),(363,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.169044'),(364,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.169165'),(365,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.169315'),(366,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-09 02:30:07.169535'),(367,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.609809'),(368,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.609946'),(369,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610064'),(370,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610253'),(371,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610422'),(372,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610543'),(373,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610713'),(374,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610835'),(375,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.610997'),(376,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.611141'),(377,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.611258'),(378,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.611569'),(379,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.611723'),(380,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.611839'),(381,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.611953'),(382,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612067'),(383,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612180'),(384,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612293'),(385,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612406'),(386,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612518'),(387,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612630'),(388,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612741'),(389,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612878'),(390,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.612994'),(391,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613108'),(392,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613223'),(393,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613336'),(394,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613449'),(395,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613561'),(396,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613673'),(397,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613786'),(398,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.613898'),(399,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614011'),(400,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614161'),(401,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614358'),(402,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614478'),(403,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614596'),(404,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614735'),(405,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614850'),(406,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.614964'),(407,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615077'),(408,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615223'),(409,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615385'),(410,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615512'),(411,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615626'),(412,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615740'),(413,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615870'),(414,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.615993'),(415,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616107'),(416,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616227'),(417,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616371'),(418,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616486'),(419,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616601'),(420,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616715'),(421,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616840'),(422,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.616966'),(423,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617080'),(424,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617195'),(425,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617311'),(426,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617425'),(427,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617541'),(428,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617654'),(429,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617768'),(430,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617881'),(431,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.617994'),(432,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.618108'),(433,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.618225'),(434,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.618343'),(435,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.618871'),(436,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619013'),(437,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619129'),(438,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619243'),(439,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619356'),(440,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619470'),(441,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619583'),(442,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619696'),(443,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619808'),(444,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.619920'),(445,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620032'),(446,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620145'),(447,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620259'),(448,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620371'),(449,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620483'),(450,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620596'),(451,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620708'),(452,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620822'),(453,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.620934'),(454,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.621045'),(455,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.621156'),(456,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.621315'),(457,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-10 02:30:07.621432'),(458,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.895109'),(459,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.895297'),(460,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.895418'),(461,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.895776'),(462,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.895936'),(463,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896052'),(464,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896166'),(465,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896279'),(466,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896393'),(467,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896595'),(468,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896717'),(469,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896831'),(470,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.896944'),(471,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897057'),(472,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897168'),(473,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897280'),(474,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897392'),(475,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897503'),(476,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897615'),(477,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897775'),(478,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.897892'),(479,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898006'),(480,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898119'),(481,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898231'),(482,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898343'),(483,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898455'),(484,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898614'),(485,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898749'),(486,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898863'),(487,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.898976'),(488,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899088'),(489,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899200'),(490,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899313'),(491,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899427'),(492,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899538'),(493,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899650'),(494,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899763'),(495,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899874'),(496,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.899985'),(497,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900098'),(498,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900210'),(499,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900321'),(500,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900433'),(501,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900544'),(502,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900655'),(503,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900766'),(504,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.900955'),(505,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901076'),(506,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901191'),(507,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901302'),(508,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901415'),(509,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901526'),(510,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901638'),(511,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901771'),(512,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.901922'),(513,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902038'),(514,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902149'),(515,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902262'),(516,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902430'),(517,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902614'),(518,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902746'),(519,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902859'),(520,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.902974'),(521,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903086'),(522,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903199'),(523,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903311'),(524,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903423'),(525,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903535'),(526,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903647'),(527,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903757'),(528,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903869'),(529,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.903982'),(530,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904095'),(531,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904208'),(532,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904320'),(533,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904431'),(534,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904545'),(535,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904658'),(536,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904770'),(537,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904882'),(538,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.904994'),(539,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905105'),(540,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905217'),(541,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905327'),(542,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905480'),(543,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905597'),(544,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905709'),(545,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905821'),(546,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.905934'),(547,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.906046'),(548,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-11 02:30:07.906157'),(549,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.828796'),(550,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.828969'),(551,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829118'),(552,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829264'),(553,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829409'),(554,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829554'),(555,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829699'),(556,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829845'),(557,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.829990'),(558,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.830134'),(559,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.830278'),(560,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.830420'),(561,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.830564'),(562,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.830737'),(563,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.830884'),(564,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831029'),(565,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831173'),(566,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831317'),(567,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831461'),(568,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831608'),(569,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831752'),(570,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.831896'),(571,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832040'),(572,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832184'),(573,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832327'),(574,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832470'),(575,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832613'),(576,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832775'),(577,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.832939'),(578,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.833085'),(579,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.833228'),(580,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.833372'),(581,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.833516'),(582,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.833659'),(583,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.833802'),(584,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.834085'),(585,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.834275'),(586,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.834464'),(587,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.834660'),(588,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.834825'),(589,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.835896'),(590,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836083'),(591,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836237'),(592,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836385'),(593,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836532'),(594,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836677'),(595,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836821'),(596,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.836965'),(597,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837109'),(598,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837258'),(599,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837403'),(600,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837548'),(601,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837693'),(602,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837837'),(603,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.837968'),(604,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838078'),(605,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838187'),(606,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838297'),(607,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838406'),(608,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838517'),(609,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838628'),(610,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838757'),(611,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838868'),(612,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.838978'),(613,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839089'),(614,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839199'),(615,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839309'),(616,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839420'),(617,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839531'),(618,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839641'),(619,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839751'),(620,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839861'),(621,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.839971'),(622,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840083'),(623,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840194'),(624,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840305'),(625,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840415'),(626,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840525'),(627,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840635'),(628,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840745'),(629,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840855'),(630,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.840967'),(631,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841077'),(632,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841188'),(633,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841298'),(634,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841407'),(635,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841518'),(636,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841628'),(637,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841737'),(638,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841847'),(639,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-12 02:30:07.841957'),(640,'CA-XDC75434C212',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ12106',NULL,'2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,439,NULL,'2012-06-15',97322.76,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.766370'),(641,'CA-XMP11222E919',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21142',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,210,NULL,'2021-09-22',122531.24,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.766511'),(642,'CA-XMP11224C121',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR21141',NULL,'2021-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2021-09-22',89221.49,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.766625'),(643,'CA-XMP11232J222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23144',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',9640.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.766769'),(644,'CA-XMP11233L222',NULL,'29','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDR23145',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-04-18',21613.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.766883'),(645,'PLX77257A404',NULL,'2','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXAL04067','C14220BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-06',1065.75,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.766995'),(646,'QBSY0467C212',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'49','Active',NULL,'EXAL12104','UTK 75Y','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,147,NULL,'2012-06-22',21700.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767105'),(647,'QBSY9477G011',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL10096','C17655BC','2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,120,NULL,'2010-08-18',43457.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767218'),(648,'QBSY9874C111',NULL,'1','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXAL11097',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2011-04-11',25799.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767330'),(649,'QEK22007J005',NULL,'17','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'6','Active',NULL,'EXDQ04068',NULL,'2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1211,NULL,'2005-01-28',59661.36,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767442'),(650,'QEK22008J005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'46','Active',NULL,'EXDQ05076','C10467BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1005,NULL,'2005-04-06',175699.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767553'),(651,'QEK22009A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ05078','C10842BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,843,NULL,'2006-02-13',142823.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767664'),(652,'QEK22010C005',NULL,'16','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'27','Active',NULL,'EXDQ05080','C11252BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,494,NULL,'2012-05-02',52277.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767776'),(653,'QEK22011A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'41','Active',NULL,'EXDQ05077',NULL,'2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,751,NULL,'2006-01-26',114590.6,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767887'),(654,'QEK22012A005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDQ05079','C12720BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2334,NULL,'2012-05-02',51640.82,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.767998'),(655,'QEK22014F005',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'42','Active',NULL,'EXDQ06088','C13340BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,687,NULL,'2008-04-24',130883.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768113'),(656,'QEK22016K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'45','Active',NULL,'EXDQ06089',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,670,NULL,'2008-08-22',139766.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768225'),(657,'QEK22017K007',NULL,'15','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXDQ07090',NULL,'2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1939,NULL,'2008-05-27',149142.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768336'),(658,'QEK23001L003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'29','Active',NULL,'EXAQ03058',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,432,NULL,'2003-04-25',112019.96,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768447'),(659,'QEK23002A003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'50','Active',NULL,'EXAQ03059','4522 2W','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,702,NULL,'2003-05-22',203148.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768609'),(660,'QEK23003C003',NULL,'18','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXAQ03060',NULL,'2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2003-09-03',87612.54,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768726'),(661,'QEK23004F003',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'12','Active',NULL,'EXAQ03061','C04918BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,854,NULL,'2003-10-03',161645.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768839'),(662,'QEK23005K004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ03065','C08271BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2097,NULL,'2006-09-18',175156.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.768985'),(663,'QEK23006K004-XL',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'30','Active',NULL,'EXAQ04071','C08272BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1900,NULL,'2006-09-18',157950.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769100'),(664,'QEK23007E004',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXAQ04072','C08249BC','2007-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,2193,NULL,'2007-06-06',192602.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'13','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769214'),(665,'QEK23008K006',NULL,'19','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'54','Active',NULL,'EXAQ05081','03509Y','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,776,NULL,'2006-01-25',170123.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'16','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769325'),(666,'QEK24005B011',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ11100','83327 C','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,118,NULL,'2011-08-09',421900.99,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769436'),(667,'QEK24008J013',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'19','Active',NULL,'EXDQ13109','UTJ 17P','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,224,NULL,'2013-05-03',356331.33,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769547'),(668,'QEK24011M314',NULL,'25','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'43','Active',NULL,'EXDQ14118','61620 D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,12,NULL,'2014-03-17',156386.35,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769657'),(669,'QEK24012M314',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ14117','UVY26M','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,690,NULL,'2014-03-17',239682.71,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769768'),(670,'QEK24013L415',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDQ15124','WBG 45A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,811,NULL,'2015-07-20',102849.95,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769879'),(671,'QEK24014J414',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'14','Active',NULL,'EXDQ15125','UXV 53A','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,807,NULL,'2015-05-13',184336.2,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.769995'),(672,'QEK24016K617',NULL,'26','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'24','Active',NULL,'EXDQ17132','WCP88X','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,729,NULL,'2017-04-12',67158.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770105'),(673,'QEK24017K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDQ17131',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,671,NULL,'2017-04-12',101818.02,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770219'),(674,'QEK24018K617',NULL,'20','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'48','Active',NULL,'EXDQ18135',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,485,NULL,'2018-04-12',60500.88,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770330'),(675,'QEK24927E003',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'20','Active',NULL,'EXDQ04069',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,691,NULL,'2013-04-03',93922.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770440'),(676,'QEK24937H006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05082','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,589,NULL,'2006-06-13',126450.59,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770551'),(677,'QEK24938J006',NULL,'21','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ05083','C12349BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,771,NULL,'2006-06-13',123430.04,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770661'),(678,'QEK28006B008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08091','C15005BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,658,NULL,'2008-11-04',363786.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.770981'),(679,'QEK28007G008',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ08093',NULL,'2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,880,NULL,'2009-10-20',502293.39,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771107'),(680,'QEK28008K010',NULL,'22','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'3','Active',NULL,'EXDQ09095',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,825,NULL,'2011-05-25',597782.22,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771219'),(681,'QEK29010H013',NULL,'13','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'18','Active',NULL,'EXDQ1202','29529D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1025,NULL,'2012-12-06',654271.38,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771331'),(682,'QEK30001A006',NULL,'23','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ06084','15238C','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,563,NULL,'2006-12-22',199188.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771443'),(683,'QEK30006E009',NULL,'24','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ08092',NULL,'2010-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,780,NULL,'2010-01-11',352755.14,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771554'),(684,'QEK30014A717',NULL,'14','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'13','Active',NULL,'EXDQ18137',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1565,NULL,'2017-09-18',115237.31,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771666'),(685,'QLV102RJA617',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'21','Active',NULL,'EXDL16130','WAR88Y','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,274,NULL,'2016-10-19',19248.46,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771777'),(686,'QLV103RJA612',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDL16129','2995 4U','2016-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2016-07-13',13525.74,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771888'),(687,'QLV105MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'16','Active',NULL,'EXDL15128','UXY 09F','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,144,NULL,'2014-11-13',10871.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.771999'),(688,'QLV115MRH405',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'40','Active',NULL,'EXDL15127','UYY 01Y','2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2015-04-23',3685.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772110'),(689,'QLV15MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'4','Active',NULL,'EXDL13110',NULL,'2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,816,NULL,'2013-06-12',25320.48,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772221'),(690,'QLV16MRCL310',NULL,'6','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'23','Active',NULL,'EXDQ14116','6454 7D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,550,NULL,'2014-03-27',27829.78,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772332'),(691,'QLV25MRCA305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'22','Active',NULL,'EXDL13111','UYG 36Y','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,7215,NULL,'2013-07-29',25989.5,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772442'),(692,'QLV35MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'52','Active',NULL,'EXDL14112','35989D','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,230,NULL,'2013-06-12',11019.15,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772553'),(693,'QLV45MRCC305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXDL14113','3257 6D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,630,NULL,'2013-06-12',12494.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772664'),(694,'QLV55MRCF305',NULL,'3','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'57','Active',NULL,'EXDL14114','UVK 77X','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,293,NULL,'2013-09-12',11874.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772776'),(695,'QLV65MRCF305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'58','Active',NULL,'EXDL14115','UWG 80F','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,220,NULL,'2013-09-12',20683.56,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772886'),(696,'QLV75MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'7','Active',NULL,'EXDL14119','UVX 14H','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,571,NULL,'2014-04-10',10323.01,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.772999'),(697,'QLV7M212D211',NULL,'7','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'5','Active',NULL,'EXDQ13108','USG67X','2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2012-11-14',94646.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773110'),(698,'QLV7RC12B211',NULL,'10','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'10','Active',NULL,'EXDQ12105','06709D','2012-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,280,NULL,'2013-06-27',26494.89,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773224'),(699,'QLV85MRCJ305',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14121','32576D','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,352,NULL,'2014-05-30',20761.61,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773336'),(700,'QLV95MRCJ305',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'25','Active',NULL,'EXDL14120','UWK 17C','2013-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,358,NULL,'2014-05-30',16376.65,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773447'),(701,'QLVKJ301D705',NULL,'5','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'26','Active',NULL,'EXDL17134',NULL,'2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2017-09-12',5594.63,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773559'),(702,'QLVKJ315J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'38','Active',NULL,'EXDL20138',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,196,NULL,'2020-04-06',9578.9,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'11','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773671'),(703,'QLVKJ316J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'34','Active',NULL,'EXDL20140',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2020-04-06',6977.79,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773812'),(704,'QLVKJ317J920',NULL,'4','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL20139',NULL,'2020-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,180,NULL,'2020-04-29',7704.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.773927'),(705,'QLVKT300L711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'53','Active',NULL,'EXDQ17133','50103U','2017-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,283,NULL,'2017-07-25',24080.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774038'),(706,'QLVKT302G711',NULL,'8','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'44','Active',NULL,'EXDQ18136',NULL,'2018-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1022,NULL,'2018-04-27',77386.57,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774202'),(707,'QLVMH330A222',NULL,'9','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'9','Active',NULL,'EXAQ22141',NULL,'2022-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2023-01-03',9994,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'17','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774320'),(708,'QOM22314C909',NULL,'11','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXAQ08094','C17194BC','2008-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,878,NULL,'2009-06-11',70928.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774431'),(709,'QSMJT724D414',NULL,'12','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'28','Active',NULL,'EXAL14122','288996B','2014-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,80,NULL,'2015-04-23',7435.4,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774542'),(710,'XDC531070696',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'15','Active',NULL,'EXDL96032',NULL,'1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,194,NULL,'2012-06-27',11032.58,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774654'),(711,'XDC533101G595',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL95024','15237C','1995-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,411520,NULL,'2006-06-19',34103.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774783'),(712,'XDC54002C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97038','WCM23L','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1090,NULL,'1997-03-31',29305.16,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.774896'),(713,'XDC54003C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97039','12827U','1996-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,562,NULL,'1996-05-10',37531.8,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775009'),(714,'XDC54005C797',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL97040','C12699BC','1997-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,480,NULL,'1997-03-31',30392.29,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775121'),(715,'XDC54110A202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'33','Active',NULL,'EXDL02051','961 147','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,0,NULL,'2010-07-30',10149.21,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775233'),(716,'XDC54111B202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'11','Active',NULL,'EXDL02054','UBE75C','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,470,NULL,'2002-07-15',35072.85,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775344'),(717,'XDC54113C202',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'35','Active',NULL,'EXDL02053','C08159BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1176,NULL,'2007-05-25',21773.08,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775456'),(718,'XDC54114C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'31','Active',NULL,'EXDL02055','C12761BC','2002-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,292,NULL,'2006-12-14',6913.23,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775566'),(719,'XDC54140H405',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'17','Active',NULL,'EXDL04070','C08163BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,573,NULL,'2005-07-08',19982.73,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'12','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775677'),(720,'XDC541448B505',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'32','Active',NULL,'EXDL05074','UTJ73C','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,437,NULL,'2005-11-23',9898.97,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775788'),(721,'XDC54147A505',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'47','Active',NULL,'EXDL05075','C10908BC','2005-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,382,NULL,'2005-04-06',20418.18,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.775898'),(722,'XDC5414G504',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'55','Active',NULL,'EXDL04073','C08247BC','2004-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1,NULL,'2009-02-17',7315.53,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'14','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776010'),(723,'XDC54160C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDL06086','C13942BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,278,NULL,'2007-03-05',37860.19,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'10','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776120'),(724,'XDC54161C606',NULL,'31','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'2','Active',NULL,'EXDL06087','C12744BC','2006-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,650,NULL,'2006-07-21',17212.87,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776231'),(725,'XDC54413C202',NULL,'35','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'36','Active',NULL,'EXDL02052','C14130BC','2001-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,85,NULL,'2006-03-31',36897.27,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776341'),(726,'XDC63290B303',NULL,'37','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'56','Active',NULL,'EXDQ03063','C06526BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,377,NULL,'2003-04-24',115028.17,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'15','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776451'),(727,'XDC63291B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'51','Active',NULL,'EXDQ03062','C06484BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,777,NULL,'2008-04-23',50991.84,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776562'),(728,'XDC63292B303',NULL,'36','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'39','Active',NULL,'EXDQ03064','C08275BC','2003-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,495,NULL,'2003-06-10',85175.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776672'),(729,'XDC73387B494',NULL,'33','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'37','Active',NULL,'EXDQ94099',NULL,'2011-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,1311,NULL,'2011-06-02',97030.32,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776783'),(730,'XMP75447A515',NULL,'34','b37b68f5-2d52-4864-babf-5840f822a9d1',NULL,NULL,'8','Active',NULL,'EXDQ15126',NULL,'2015-01-01','1','1',NULL,NULL,NULL,'Maintenance','hours',-1,433,NULL,'2015-06-03',155495.93,'2',0,0,NULL,NULL,NULL,NULL,NULL,NULL,'9','TBD','TBD',NULL,NULL,0,0,'2023-11-13 02:30:07.776893');
+/*!40000 ALTER TABLE `api_snapshotdailyasset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailycounts`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailycounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailycounts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `asset_count` int NOT NULL,
+  `user_count` int NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailycounts`
+--
+
+LOCK TABLES `api_snapshotdailycounts` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailycounts` DISABLE KEYS */;
+INSERT INTO `api_snapshotdailycounts` VALUES (1,91,2,'2023-11-01 15:12:29.031600'),(2,91,2,'2023-11-08 15:10:35.902334'),(3,91,2,'2023-11-09 02:20:07.446868'),(4,91,2,'2023-11-10 02:20:08.209850'),(5,91,2,'2023-11-11 02:20:08.479523'),(6,91,2,'2023-11-12 02:20:08.508422'),(7,91,2,'2023-11-13 02:20:08.534503');
+/*!40000 ALTER TABLE `api_snapshotdailycounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailycurrency`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailycurrency`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailycurrency` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `currency_value` double NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  `currency_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_snapshotdailycur_currency_id_2b593858_fk_api_curre` (`currency_id`),
+  CONSTRAINT `api_snapshotdailycur_currency_id_2b593858_fk_api_curre` FOREIGN KEY (`currency_id`) REFERENCES `api_currency` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailycurrency`
+--
+
+LOCK TABLES `api_snapshotdailycurrency` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailycurrency` DISABLE KEYS */;
+INSERT INTO `api_snapshotdailycurrency` VALUES (1,0.7242888402625821,'2023-11-13 02:25:07.947753',1),(2,1,'2023-11-13 02:25:07.975267',2),(3,0.6778760246096113,'2023-11-13 02:25:08.003320',3);
+/*!40000 ALTER TABLE `api_snapshotdailycurrency` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailylocationcost`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailylocationcost`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailylocationcost` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `location` varchar(50) NOT NULL,
+  `volume_fuel` double NOT NULL,
+  `volume_unit` varchar(50) NOT NULL,
+  `total_cost_fuel` double NOT NULL,
+  `taxes_fuel` double NOT NULL,
+  `deductible` double NOT NULL,
+  `total_cost_insurance` double NOT NULL,
+  `total_base_hours` double NOT NULL,
+  `total_overtime_hours` double NOT NULL,
+  `total_cost_labor` double NOT NULL,
+  `taxes_labor` double NOT NULL,
+  `license_registration_cost` double NOT NULL,
+  `license_plate_renewal_cost` double NOT NULL,
+  `total_cost_license` double NOT NULL,
+  `taxes_license` double NOT NULL,
+  `total_cost_parts` double NOT NULL,
+  `taxes_parts` double NOT NULL,
+  `total_cost_rental` double NOT NULL,
+  `total_cost_acquisition` double NOT NULL,
+  `taxes_acquisition` double NOT NULL,
+  `total_cost_delivery` double NOT NULL,
+  `taxes_delivery` double NOT NULL,
+  `currency` varchar(50) NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  `date_modified` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=523 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailylocationcost`
+--
+
+LOCK TABLES `api_snapshotdailylocationcost` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailylocationcost` DISABLE KEYS */;
+INSERT INTO `api_snapshotdailylocationcost` VALUES (1,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(2,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(3,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(4,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(5,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(6,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(7,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(8,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(9,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(10,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(11,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(12,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(13,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(14,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.449907','2023-10-25 17:22:00.449907'),(15,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(16,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(17,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(18,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(19,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(20,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(21,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(22,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(23,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(24,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(25,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(26,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(27,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(28,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(29,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(30,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.450911','2023-10-25 17:22:00.450911'),(31,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(32,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(33,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(34,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(35,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(36,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(37,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(38,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(39,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(40,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(41,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(42,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(43,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(44,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(45,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(46,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.451911'),(47,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.451911','2023-10-25 17:22:00.452910'),(48,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(49,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(50,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(51,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(52,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(53,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(54,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(55,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(56,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(57,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(58,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-25 17:22:00.452910','2023-10-25 17:22:00.452910'),(59,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.141526','2023-10-27 15:27:07.141565'),(60,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.141632','2023-10-27 15:27:07.141645'),(61,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.141708','2023-10-27 15:27:07.141719'),(62,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.141782','2023-10-27 15:27:07.141794'),(63,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.141856','2023-10-27 15:27:07.141867'),(64,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.141930','2023-10-27 15:27:07.141942'),(65,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142005','2023-10-27 15:27:07.142016'),(66,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142079','2023-10-27 15:27:07.142090'),(67,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142153','2023-10-27 15:27:07.142165'),(68,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142227','2023-10-27 15:27:07.142238'),(69,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142298','2023-10-27 15:27:07.142309'),(70,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142370','2023-10-27 15:27:07.142380'),(71,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142441','2023-10-27 15:27:07.142451'),(72,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142512','2023-10-27 15:27:07.142523'),(73,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142584','2023-10-27 15:27:07.142594'),(74,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142654','2023-10-27 15:27:07.142665'),(75,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142725','2023-10-27 15:27:07.142736'),(76,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142796','2023-10-27 15:27:07.142807'),(77,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142867','2023-10-27 15:27:07.142879'),(78,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.142940','2023-10-27 15:27:07.142951'),(79,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143011','2023-10-27 15:27:07.143022'),(80,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143082','2023-10-27 15:27:07.143093'),(81,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143153','2023-10-27 15:27:07.143164'),(82,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143228','2023-10-27 15:27:07.143245'),(83,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143327','2023-10-27 15:27:07.143346'),(84,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143408','2023-10-27 15:27:07.143420'),(85,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143480','2023-10-27 15:27:07.143491'),(86,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143551','2023-10-27 15:27:07.143562'),(87,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143622','2023-10-27 15:27:07.143633'),(88,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143694','2023-10-27 15:27:07.143705'),(89,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143766','2023-10-27 15:27:07.143777'),(90,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143838','2023-10-27 15:27:07.143849'),(91,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143910','2023-10-27 15:27:07.143921'),(92,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.143981','2023-10-27 15:27:07.143992'),(93,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144053','2023-10-27 15:27:07.144064'),(94,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144124','2023-10-27 15:27:07.144135'),(95,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144195','2023-10-27 15:27:07.144207'),(96,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144268','2023-10-27 15:27:07.144280'),(97,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144340','2023-10-27 15:27:07.144351'),(98,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144411','2023-10-27 15:27:07.144422'),(99,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144483','2023-10-27 15:27:07.144494'),(100,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144555','2023-10-27 15:27:07.144566'),(101,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144628','2023-10-27 15:27:07.144639'),(102,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144699','2023-10-27 15:27:07.144710'),(103,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144771','2023-10-27 15:27:07.144782'),(104,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144842','2023-10-27 15:27:07.144853'),(105,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144913','2023-10-27 15:27:07.144924'),(106,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.144986','2023-10-27 15:27:07.144997'),(107,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145057','2023-10-27 15:27:07.145068'),(108,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145128','2023-10-27 15:27:07.145139'),(109,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145210','2023-10-27 15:27:07.145222'),(110,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145282','2023-10-27 15:27:07.145293'),(111,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145353','2023-10-27 15:27:07.145365'),(112,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145426','2023-10-27 15:27:07.145437'),(113,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145498','2023-10-27 15:27:07.145509'),(114,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145570','2023-10-27 15:27:07.145581'),(115,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145675','2023-10-27 15:27:07.145697'),(116,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-10-27 15:27:07.145758','2023-10-27 15:27:07.145769'),(117,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.900719','2023-11-01 15:12:23.900760'),(118,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.900858','2023-11-01 15:12:23.900876'),(119,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.900971','2023-11-01 15:12:23.900985'),(120,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901049','2023-11-01 15:12:23.901061'),(121,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901126','2023-11-01 15:12:23.901137'),(122,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901201','2023-11-01 15:12:23.901212'),(123,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901276','2023-11-01 15:12:23.901288'),(124,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901351','2023-11-01 15:12:23.901363'),(125,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901426','2023-11-01 15:12:23.901439'),(126,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901502','2023-11-01 15:12:23.901513'),(127,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901576','2023-11-01 15:12:23.901588'),(128,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901650','2023-11-01 15:12:23.901662'),(129,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901726','2023-11-01 15:12:23.901738'),(130,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901801','2023-11-01 15:12:23.901812'),(131,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901875','2023-11-01 15:12:23.901887'),(132,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.901949','2023-11-01 15:12:23.901961'),(133,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902024','2023-11-01 15:12:23.902035'),(134,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902099','2023-11-01 15:12:23.902110'),(135,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902174','2023-11-01 15:12:23.902186'),(136,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902249','2023-11-01 15:12:23.902260'),(137,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902323','2023-11-01 15:12:23.902334'),(138,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902397','2023-11-01 15:12:23.902408'),(139,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902471','2023-11-01 15:12:23.902482'),(140,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902544','2023-11-01 15:12:23.902555'),(141,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902616','2023-11-01 15:12:23.902627'),(142,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902688','2023-11-01 15:12:23.902699'),(143,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902760','2023-11-01 15:12:23.902771'),(144,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902832','2023-11-01 15:12:23.902843'),(145,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902903','2023-11-01 15:12:23.902914'),(146,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.902975','2023-11-01 15:12:23.902986'),(147,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903047','2023-11-01 15:12:23.903058'),(148,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903119','2023-11-01 15:12:23.903130'),(149,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903191','2023-11-01 15:12:23.903202'),(150,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903317','2023-11-01 15:12:23.903331'),(151,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903395','2023-11-01 15:12:23.903406'),(152,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903466','2023-11-01 15:12:23.903477'),(153,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903539','2023-11-01 15:12:23.903550'),(154,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903611','2023-11-01 15:12:23.903622'),(155,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903683','2023-11-01 15:12:23.903694'),(156,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903755','2023-11-01 15:12:23.903766'),(157,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903827','2023-11-01 15:12:23.903838'),(158,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903898','2023-11-01 15:12:23.903909'),(159,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.903970','2023-11-01 15:12:23.903981'),(160,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904042','2023-11-01 15:12:23.904053'),(161,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904114','2023-11-01 15:12:23.904125'),(162,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904186','2023-11-01 15:12:23.904197'),(163,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904258','2023-11-01 15:12:23.904273'),(164,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904366','2023-11-01 15:12:23.904378'),(165,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904440','2023-11-01 15:12:23.904451'),(166,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904512','2023-11-01 15:12:23.904523'),(167,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904584','2023-11-01 15:12:23.904595'),(168,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904656','2023-11-01 15:12:23.904667'),(169,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904729','2023-11-01 15:12:23.904740'),(170,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904800','2023-11-01 15:12:23.904812'),(171,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904873','2023-11-01 15:12:23.904884'),(172,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.904954','2023-11-01 15:12:23.904972'),(173,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.905054','2023-11-01 15:12:23.905067'),(174,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-01 15:12:23.905130','2023-11-01 15:12:23.905141'),(175,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.558871','2023-11-08 15:10:04.558942'),(176,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559047','2023-11-08 15:10:04.559069'),(177,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559167','2023-11-08 15:10:04.559188'),(178,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559286','2023-11-08 15:10:04.559306'),(179,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559405','2023-11-08 15:10:04.559425'),(180,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559524','2023-11-08 15:10:04.559544'),(181,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559769','2023-11-08 15:10:04.559799'),(182,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.559902','2023-11-08 15:10:04.559922'),(183,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560021','2023-11-08 15:10:04.560041'),(184,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560140','2023-11-08 15:10:04.560159'),(185,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560257','2023-11-08 15:10:04.560276'),(186,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560376','2023-11-08 15:10:04.560396'),(187,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560496','2023-11-08 15:10:04.560516'),(188,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560614','2023-11-08 15:10:04.560634'),(189,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560735','2023-11-08 15:10:04.560754'),(190,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560853','2023-11-08 15:10:04.560873'),(191,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.560972','2023-11-08 15:10:04.560992'),(192,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561090','2023-11-08 15:10:04.561110'),(193,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561209','2023-11-08 15:10:04.561228'),(194,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561326','2023-11-08 15:10:04.561347'),(195,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561442','2023-11-08 15:10:04.561461'),(196,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561560','2023-11-08 15:10:04.561579'),(197,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561676','2023-11-08 15:10:04.561695'),(198,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561793','2023-11-08 15:10:04.561812'),(199,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.561907','2023-11-08 15:10:04.561927'),(200,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562047','2023-11-08 15:10:04.562067'),(201,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562170','2023-11-08 15:10:04.562189'),(202,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562278','2023-11-08 15:10:04.562297'),(203,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562386','2023-11-08 15:10:04.562404'),(204,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562496','2023-11-08 15:10:04.562516'),(205,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562612','2023-11-08 15:10:04.562634'),(206,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562754','2023-11-08 15:10:04.562780'),(207,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.562894','2023-11-08 15:10:04.562917'),(208,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563014','2023-11-08 15:10:04.563033'),(209,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563129','2023-11-08 15:10:04.563145'),(210,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563236','2023-11-08 15:10:04.563254'),(211,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563352','2023-11-08 15:10:04.563371'),(212,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563467','2023-11-08 15:10:04.563488'),(213,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563585','2023-11-08 15:10:04.563603'),(214,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563699','2023-11-08 15:10:04.563717'),(215,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563813','2023-11-08 15:10:04.563833'),(216,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.563932','2023-11-08 15:10:04.563958'),(217,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564060','2023-11-08 15:10:04.564080'),(218,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564182','2023-11-08 15:10:04.564202'),(219,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564303','2023-11-08 15:10:04.564323'),(220,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564416','2023-11-08 15:10:04.564438'),(221,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564536','2023-11-08 15:10:04.564557'),(222,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564655','2023-11-08 15:10:04.564676'),(223,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564773','2023-11-08 15:10:04.564794'),(224,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.564889','2023-11-08 15:10:04.564908'),(225,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565007','2023-11-08 15:10:04.565026'),(226,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565124','2023-11-08 15:10:04.565145'),(227,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565246','2023-11-08 15:10:04.565267'),(228,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565362','2023-11-08 15:10:04.565383'),(229,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565481','2023-11-08 15:10:04.565502'),(230,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565587','2023-11-08 15:10:04.565605'),(231,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565701','2023-11-08 15:10:04.565720'),(232,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-08 15:10:04.565816','2023-11-08 15:10:04.565837'),(233,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.842638','2023-11-09 02:15:08.842735'),(234,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.842877','2023-11-09 02:15:08.842903'),(235,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843032','2023-11-09 02:15:08.843057'),(236,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843185','2023-11-09 02:15:08.843209'),(237,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843337','2023-11-09 02:15:08.843363'),(238,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843491','2023-11-09 02:15:08.843515'),(239,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843644','2023-11-09 02:15:08.843668'),(240,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843795','2023-11-09 02:15:08.843819'),(241,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.843946','2023-11-09 02:15:08.843970'),(242,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844096','2023-11-09 02:15:08.844121'),(243,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844247','2023-11-09 02:15:08.844271'),(244,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844398','2023-11-09 02:15:08.844423'),(245,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844550','2023-11-09 02:15:08.844573'),(246,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844688','2023-11-09 02:15:08.844715'),(247,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844836','2023-11-09 02:15:08.844862'),(248,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.844982','2023-11-09 02:15:08.845007'),(249,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845156','2023-11-09 02:15:08.845173'),(250,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845251','2023-11-09 02:15:08.845266'),(251,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845343','2023-11-09 02:15:08.845358'),(252,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845436','2023-11-09 02:15:08.845451'),(253,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845529','2023-11-09 02:15:08.845541'),(254,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845599','2023-11-09 02:15:08.845611'),(255,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845670','2023-11-09 02:15:08.845680'),(256,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845742','2023-11-09 02:15:08.845754'),(257,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845814','2023-11-09 02:15:08.845825'),(258,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845884','2023-11-09 02:15:08.845895'),(259,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.845956','2023-11-09 02:15:08.845967'),(260,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846026','2023-11-09 02:15:08.846037'),(261,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846096','2023-11-09 02:15:08.846107'),(262,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846166','2023-11-09 02:15:08.846177'),(263,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846236','2023-11-09 02:15:08.846246'),(264,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846306','2023-11-09 02:15:08.846317'),(265,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846375','2023-11-09 02:15:08.846386'),(266,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846445','2023-11-09 02:15:08.846456'),(267,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846515','2023-11-09 02:15:08.846526'),(268,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846585','2023-11-09 02:15:08.846596'),(269,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846658','2023-11-09 02:15:08.846669'),(270,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846750','2023-11-09 02:15:08.846763'),(271,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846823','2023-11-09 02:15:08.846834'),(272,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846893','2023-11-09 02:15:08.846904'),(273,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.846963','2023-11-09 02:15:08.846974'),(274,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847033','2023-11-09 02:15:08.847044'),(275,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847104','2023-11-09 02:15:08.847114'),(276,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847173','2023-11-09 02:15:08.847184'),(277,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847243','2023-11-09 02:15:08.847254'),(278,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847313','2023-11-09 02:15:08.847324'),(279,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847383','2023-11-09 02:15:08.847394'),(280,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847454','2023-11-09 02:15:08.847465'),(281,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847525','2023-11-09 02:15:08.847535'),(282,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847631','2023-11-09 02:15:08.847651'),(283,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847739','2023-11-09 02:15:08.847758'),(284,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847854','2023-11-09 02:15:08.847872'),(285,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.847971','2023-11-09 02:15:08.847990'),(286,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.848091','2023-11-09 02:15:08.848110'),(287,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.848208','2023-11-09 02:15:08.848227'),(288,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.848326','2023-11-09 02:15:08.848345'),(289,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.848443','2023-11-09 02:15:08.848462'),(290,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-09 02:15:08.848561','2023-11-09 02:15:08.848580'),(291,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097050','2023-11-10 02:15:08.097097'),(292,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097160','2023-11-10 02:15:08.097172'),(293,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097231','2023-11-10 02:15:08.097242'),(294,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097302','2023-11-10 02:15:08.097313'),(295,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097373','2023-11-10 02:15:08.097385'),(296,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097445','2023-11-10 02:15:08.097456'),(297,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097516','2023-11-10 02:15:08.097527'),(298,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097586','2023-11-10 02:15:08.097597'),(299,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097670','2023-11-10 02:15:08.097688'),(300,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097771','2023-11-10 02:15:08.097783'),(301,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097843','2023-11-10 02:15:08.097854'),(302,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097915','2023-11-10 02:15:08.097926'),(303,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.097985','2023-11-10 02:15:08.097996'),(304,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098056','2023-11-10 02:15:08.098067'),(305,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098126','2023-11-10 02:15:08.098137'),(306,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098197','2023-11-10 02:15:08.098207'),(307,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098267','2023-11-10 02:15:08.098278'),(308,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098337','2023-11-10 02:15:08.098348'),(309,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098407','2023-11-10 02:15:08.098419'),(310,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098478','2023-11-10 02:15:08.098489'),(311,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098549','2023-11-10 02:15:08.098560'),(312,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098620','2023-11-10 02:15:08.098630'),(313,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098711','2023-11-10 02:15:08.098723'),(314,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098784','2023-11-10 02:15:08.098851'),(315,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098917','2023-11-10 02:15:08.098929'),(316,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.098989','2023-11-10 02:15:08.099000'),(317,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099060','2023-11-10 02:15:08.099071'),(318,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099161','2023-11-10 02:15:08.099176'),(319,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099237','2023-11-10 02:15:08.099248'),(320,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099308','2023-11-10 02:15:08.099319'),(321,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099379','2023-11-10 02:15:08.099390'),(322,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099450','2023-11-10 02:15:08.099461'),(323,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099520','2023-11-10 02:15:08.099531'),(324,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099590','2023-11-10 02:15:08.099601'),(325,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099660','2023-11-10 02:15:08.099671'),(326,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099732','2023-11-10 02:15:08.099743'),(327,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099803','2023-11-10 02:15:08.099814'),(328,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099873','2023-11-10 02:15:08.099884'),(329,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.099943','2023-11-10 02:15:08.099954'),(330,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100013','2023-11-10 02:15:08.100024'),(331,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100084','2023-11-10 02:15:08.100095'),(332,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100154','2023-11-10 02:15:08.100165'),(333,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100223','2023-11-10 02:15:08.100234'),(334,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100294','2023-11-10 02:15:08.100304'),(335,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100363','2023-11-10 02:15:08.100374'),(336,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100433','2023-11-10 02:15:08.100444'),(337,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100503','2023-11-10 02:15:08.100515'),(338,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100574','2023-11-10 02:15:08.100585'),(339,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100643','2023-11-10 02:15:08.100654'),(340,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100713','2023-11-10 02:15:08.100724'),(341,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100783','2023-11-10 02:15:08.100793'),(342,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100852','2023-11-10 02:15:08.100863'),(343,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100921','2023-11-10 02:15:08.100932'),(344,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.100993','2023-11-10 02:15:08.101004'),(345,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.101063','2023-11-10 02:15:08.101074'),(346,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.101133','2023-11-10 02:15:08.101144'),(347,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.101202','2023-11-10 02:15:08.101213'),(348,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-10 02:15:08.101272','2023-11-10 02:15:08.101283'),(349,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.540689','2023-11-11 02:15:08.540735'),(350,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.540798','2023-11-11 02:15:08.540810'),(351,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.540870','2023-11-11 02:15:08.540882'),(352,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.540942','2023-11-11 02:15:08.540953'),(353,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541012','2023-11-11 02:15:08.541023'),(354,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541082','2023-11-11 02:15:08.541094'),(355,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541154','2023-11-11 02:15:08.541165'),(356,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541224','2023-11-11 02:15:08.541235'),(357,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541295','2023-11-11 02:15:08.541306'),(358,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541367','2023-11-11 02:15:08.541378'),(359,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541436','2023-11-11 02:15:08.541448'),(360,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541507','2023-11-11 02:15:08.541517'),(361,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541576','2023-11-11 02:15:08.541590'),(362,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541649','2023-11-11 02:15:08.541661'),(363,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541719','2023-11-11 02:15:08.541730'),(364,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541790','2023-11-11 02:15:08.541801'),(365,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541860','2023-11-11 02:15:08.541870'),(366,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541929','2023-11-11 02:15:08.541940'),(367,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.541999','2023-11-11 02:15:08.542010'),(368,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542069','2023-11-11 02:15:08.542080'),(369,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542139','2023-11-11 02:15:08.542150'),(370,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542209','2023-11-11 02:15:08.542220'),(371,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542279','2023-11-11 02:15:08.542290'),(372,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542349','2023-11-11 02:15:08.542360'),(373,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542419','2023-11-11 02:15:08.542430'),(374,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542490','2023-11-11 02:15:08.542501'),(375,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542560','2023-11-11 02:15:08.542571'),(376,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542630','2023-11-11 02:15:08.542641'),(377,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542724','2023-11-11 02:15:08.542736'),(378,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542795','2023-11-11 02:15:08.542806'),(379,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542866','2023-11-11 02:15:08.542877'),(380,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.542938','2023-11-11 02:15:08.542949'),(381,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543009','2023-11-11 02:15:08.543019'),(382,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543078','2023-11-11 02:15:08.543089'),(383,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543148','2023-11-11 02:15:08.543159'),(384,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543219','2023-11-11 02:15:08.543230'),(385,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543289','2023-11-11 02:15:08.543299'),(386,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543358','2023-11-11 02:15:08.543369'),(387,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543428','2023-11-11 02:15:08.543438'),(388,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543498','2023-11-11 02:15:08.543508'),(389,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543568','2023-11-11 02:15:08.543579'),(390,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543638','2023-11-11 02:15:08.543649'),(391,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543708','2023-11-11 02:15:08.543719'),(392,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543777','2023-11-11 02:15:08.543788'),(393,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543847','2023-11-11 02:15:08.543858'),(394,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543916','2023-11-11 02:15:08.543927'),(395,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.543986','2023-11-11 02:15:08.543997'),(396,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544056','2023-11-11 02:15:08.544067'),(397,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544125','2023-11-11 02:15:08.544136'),(398,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544195','2023-11-11 02:15:08.544205'),(399,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544265','2023-11-11 02:15:08.544275'),(400,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544335','2023-11-11 02:15:08.544346'),(401,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544406','2023-11-11 02:15:08.544417'),(402,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544475','2023-11-11 02:15:08.544486'),(403,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544544','2023-11-11 02:15:08.544555'),(404,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544614','2023-11-11 02:15:08.544624'),(405,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544683','2023-11-11 02:15:08.544694'),(406,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-11 02:15:08.544752','2023-11-11 02:15:08.544763'),(407,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.551925','2023-11-12 02:15:08.551978'),(408,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552064','2023-11-12 02:15:08.552079'),(409,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552158','2023-11-12 02:15:08.552173'),(410,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552251','2023-11-12 02:15:08.552265'),(411,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552343','2023-11-12 02:15:08.552358'),(412,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552436','2023-11-12 02:15:08.552451'),(413,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552529','2023-11-12 02:15:08.552544'),(414,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552621','2023-11-12 02:15:08.552636'),(415,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552714','2023-11-12 02:15:08.552729'),(416,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552807','2023-11-12 02:15:08.552821'),(417,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552899','2023-11-12 02:15:08.552913'),(418,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.552991','2023-11-12 02:15:08.553006'),(419,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553084','2023-11-12 02:15:08.553098'),(420,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553175','2023-11-12 02:15:08.553189'),(421,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553268','2023-11-12 02:15:08.553282'),(422,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553359','2023-11-12 02:15:08.553373'),(423,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553483','2023-11-12 02:15:08.553508'),(424,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553635','2023-11-12 02:15:08.553653'),(425,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553730','2023-11-12 02:15:08.553744'),(426,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553822','2023-11-12 02:15:08.553836'),(427,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.553914','2023-11-12 02:15:08.553928'),(428,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554005','2023-11-12 02:15:08.554019'),(429,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554096','2023-11-12 02:15:08.554110'),(430,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554187','2023-11-12 02:15:08.554201'),(431,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554276','2023-11-12 02:15:08.554287'),(432,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554346','2023-11-12 02:15:08.554357'),(433,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554417','2023-11-12 02:15:08.554428'),(434,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554487','2023-11-12 02:15:08.554498'),(435,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554557','2023-11-12 02:15:08.554568'),(436,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554627','2023-11-12 02:15:08.554638'),(437,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554719','2023-11-12 02:15:08.554731'),(438,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554791','2023-11-12 02:15:08.554802'),(439,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554862','2023-11-12 02:15:08.554873'),(440,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.554932','2023-11-12 02:15:08.554943'),(441,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555003','2023-11-12 02:15:08.555014'),(442,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555074','2023-11-12 02:15:08.555084'),(443,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555144','2023-11-12 02:15:08.555155'),(444,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555214','2023-11-12 02:15:08.555225'),(445,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555283','2023-11-12 02:15:08.555294'),(446,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555353','2023-11-12 02:15:08.555364'),(447,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555423','2023-11-12 02:15:08.555434'),(448,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555492','2023-11-12 02:15:08.555503'),(449,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555562','2023-11-12 02:15:08.555573'),(450,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555631','2023-11-12 02:15:08.555642'),(451,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555702','2023-11-12 02:15:08.555712'),(452,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555771','2023-11-12 02:15:08.555782'),(453,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555841','2023-11-12 02:15:08.555852'),(454,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555910','2023-11-12 02:15:08.555921'),(455,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.555980','2023-11-12 02:15:08.555991'),(456,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556049','2023-11-12 02:15:08.556060'),(457,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556119','2023-11-12 02:15:08.556130'),(458,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556188','2023-11-12 02:15:08.556199'),(459,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556258','2023-11-12 02:15:08.556269'),(460,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556328','2023-11-12 02:15:08.556339'),(461,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556398','2023-11-12 02:15:08.556409'),(462,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556467','2023-11-12 02:15:08.556478'),(463,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556538','2023-11-12 02:15:08.556549'),(464,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-12 02:15:08.556607','2023-11-12 02:15:08.556618'),(465,'1',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440280','2023-11-13 02:15:08.440330'),(466,'2',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440413','2023-11-13 02:15:08.440428'),(467,'3',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440506','2023-11-13 02:15:08.440521'),(468,'4',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440598','2023-11-13 02:15:08.440614'),(469,'5',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440692','2023-11-13 02:15:08.440706'),(470,'6',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440784','2023-11-13 02:15:08.440799'),(471,'7',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440876','2023-11-13 02:15:08.440890'),(472,'8',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.440967','2023-11-13 02:15:08.440981'),(473,'9',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441057','2023-11-13 02:15:08.441072'),(474,'10',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441149','2023-11-13 02:15:08.441163'),(475,'11',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441241','2023-11-13 02:15:08.441255'),(476,'12',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441332','2023-11-13 02:15:08.441346'),(477,'13',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441422','2023-11-13 02:15:08.441436'),(478,'14',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441513','2023-11-13 02:15:08.441527'),(479,'15',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441604','2023-11-13 02:15:08.441618'),(480,'16',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441695','2023-11-13 02:15:08.441708'),(481,'17',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441784','2023-11-13 02:15:08.441798'),(482,'18',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441875','2023-11-13 02:15:08.441889'),(483,'19',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.441965','2023-11-13 02:15:08.441979'),(484,'20',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442056','2023-11-13 02:15:08.442070'),(485,'21',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442177','2023-11-13 02:15:08.442193'),(486,'22',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442271','2023-11-13 02:15:08.442285'),(487,'23',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442361','2023-11-13 02:15:08.442376'),(488,'24',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442452','2023-11-13 02:15:08.442466'),(489,'25',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442543','2023-11-13 02:15:08.442557'),(490,'26',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442633','2023-11-13 02:15:08.442648'),(491,'27',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442751','2023-11-13 02:15:08.442765'),(492,'28',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442843','2023-11-13 02:15:08.442857'),(493,'29',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.442933','2023-11-13 02:15:08.442948'),(494,'30',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443024','2023-11-13 02:15:08.443038'),(495,'31',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443115','2023-11-13 02:15:08.443129'),(496,'32',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443205','2023-11-13 02:15:08.443220'),(497,'33',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443296','2023-11-13 02:15:08.443311'),(498,'34',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443388','2023-11-13 02:15:08.443402'),(499,'35',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443478','2023-11-13 02:15:08.443492'),(500,'36',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443569','2023-11-13 02:15:08.443583'),(501,'37',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443660','2023-11-13 02:15:08.443674'),(502,'38',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443767','2023-11-13 02:15:08.443789'),(503,'39',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443901','2023-11-13 02:15:08.443916'),(504,'40',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.443994','2023-11-13 02:15:08.444008'),(505,'41',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444085','2023-11-13 02:15:08.444099'),(506,'42',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444175','2023-11-13 02:15:08.444189'),(507,'43',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444266','2023-11-13 02:15:08.444280'),(508,'44',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444357','2023-11-13 02:15:08.444371'),(509,'45',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444447','2023-11-13 02:15:08.444461'),(510,'46',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444538','2023-11-13 02:15:08.444552'),(511,'47',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444628','2023-11-13 02:15:08.444642'),(512,'48',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444719','2023-11-13 02:15:08.444733'),(513,'49',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444809','2023-11-13 02:15:08.444823'),(514,'50',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444899','2023-11-13 02:15:08.444913'),(515,'51',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.444989','2023-11-13 02:15:08.445003'),(516,'52',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445083','2023-11-13 02:15:08.445097'),(517,'53',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445174','2023-11-13 02:15:08.445188'),(518,'54',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445264','2023-11-13 02:15:08.445278'),(519,'55',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445355','2023-11-13 02:15:08.445369'),(520,'56',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445446','2023-11-13 02:15:08.445460'),(521,'57',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445536','2023-11-13 02:15:08.445550'),(522,'58',0,'NA',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Currency object (2)','2023-11-13 02:15:08.445626','2023-11-13 02:15:08.445640');
+/*!40000 ALTER TABLE `api_snapshotdailylocationcost` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_snapshotdailylocationcounts`
+--
+
+DROP TABLE IF EXISTS `api_snapshotdailylocationcounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_snapshotdailylocationcounts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `active_asset_count` int NOT NULL,
+  `all_asset_count` int NOT NULL,
+  `daily_check_count` int NOT NULL,
+  `location` int NOT NULL,
+  `date_of_checks` date NOT NULL,
+  `date_created` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=407 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_snapshotdailylocationcounts`
+--
+
+LOCK TABLES `api_snapshotdailylocationcounts` WRITE;
+/*!40000 ALTER TABLE `api_snapshotdailylocationcounts` DISABLE KEYS */;
+INSERT INTO `api_snapshotdailylocationcounts` VALUES (1,0,0,0,1,'2023-10-31','2023-11-01 15:12:29.174982'),(2,0,0,0,2,'2023-10-31','2023-11-01 15:12:29.175028'),(3,0,0,0,3,'2023-10-31','2023-11-01 15:12:29.175055'),(4,0,0,0,4,'2023-10-31','2023-11-01 15:12:29.175080'),(5,0,0,0,5,'2023-10-31','2023-11-01 15:12:29.175106'),(6,0,0,0,6,'2023-10-31','2023-11-01 15:12:29.175131'),(7,0,0,0,7,'2023-10-31','2023-11-01 15:12:29.175156'),(8,0,0,0,8,'2023-10-31','2023-11-01 15:12:29.175181'),(9,0,0,0,9,'2023-10-31','2023-11-01 15:12:29.175206'),(10,0,0,0,10,'2023-10-31','2023-11-01 15:12:29.175245'),(11,0,0,0,11,'2023-10-31','2023-11-01 15:12:29.175270'),(12,0,0,0,12,'2023-10-31','2023-11-01 15:12:29.175296'),(13,0,0,0,13,'2023-10-31','2023-11-01 15:12:29.175321'),(14,0,0,0,14,'2023-10-31','2023-11-01 15:12:29.175346'),(15,0,0,0,15,'2023-10-31','2023-11-01 15:12:29.175371'),(16,0,0,0,16,'2023-10-31','2023-11-01 15:12:29.175398'),(17,0,0,0,17,'2023-10-31','2023-11-01 15:12:29.175424'),(18,0,0,0,18,'2023-10-31','2023-11-01 15:12:29.175449'),(19,0,0,0,19,'2023-10-31','2023-11-01 15:12:29.175475'),(20,0,0,0,20,'2023-10-31','2023-11-01 15:12:29.175499'),(21,0,0,0,21,'2023-10-31','2023-11-01 15:12:29.175525'),(22,0,0,0,22,'2023-10-31','2023-11-01 15:12:29.175550'),(23,0,0,0,23,'2023-10-31','2023-11-01 15:12:29.175575'),(24,0,0,0,24,'2023-10-31','2023-11-01 15:12:29.175600'),(25,0,0,0,25,'2023-10-31','2023-11-01 15:12:29.175625'),(26,0,0,0,26,'2023-10-31','2023-11-01 15:12:29.175651'),(27,0,0,0,27,'2023-10-31','2023-11-01 15:12:29.175680'),(28,0,0,0,28,'2023-10-31','2023-11-01 15:12:29.175705'),(29,0,0,0,29,'2023-10-31','2023-11-01 15:12:29.175731'),(30,0,0,0,30,'2023-10-31','2023-11-01 15:12:29.175756'),(31,0,0,0,31,'2023-10-31','2023-11-01 15:12:29.175781'),(32,0,0,0,32,'2023-10-31','2023-11-01 15:12:29.175807'),(33,0,0,0,33,'2023-10-31','2023-11-01 15:12:29.175832'),(34,0,0,0,34,'2023-10-31','2023-11-01 15:12:29.175857'),(35,0,0,0,35,'2023-10-31','2023-11-01 15:12:29.175882'),(36,0,0,0,36,'2023-10-31','2023-11-01 15:12:29.175907'),(37,0,0,0,37,'2023-10-31','2023-11-01 15:12:29.175933'),(38,0,0,0,38,'2023-10-31','2023-11-01 15:12:29.175958'),(39,0,0,0,39,'2023-10-31','2023-11-01 15:12:29.175983'),(40,0,0,0,40,'2023-10-31','2023-11-01 15:12:29.176008'),(41,0,0,0,41,'2023-10-31','2023-11-01 15:12:29.176034'),(42,0,0,0,42,'2023-10-31','2023-11-01 15:12:29.176059'),(43,0,0,0,43,'2023-10-31','2023-11-01 15:12:29.176084'),(44,0,0,0,44,'2023-10-31','2023-11-01 15:12:29.176109'),(45,0,0,0,45,'2023-10-31','2023-11-01 15:12:29.176135'),(46,0,0,0,46,'2023-10-31','2023-11-01 15:12:29.176160'),(47,0,0,0,47,'2023-10-31','2023-11-01 15:12:29.176185'),(48,0,0,0,48,'2023-10-31','2023-11-01 15:12:29.176210'),(49,0,0,0,49,'2023-10-31','2023-11-01 15:12:29.176236'),(50,0,0,0,50,'2023-10-31','2023-11-01 15:12:29.176261'),(51,0,0,0,51,'2023-10-31','2023-11-01 15:12:29.176286'),(52,0,0,0,52,'2023-10-31','2023-11-01 15:12:29.176311'),(53,0,0,0,53,'2023-10-31','2023-11-01 15:12:29.176337'),(54,0,0,0,54,'2023-10-31','2023-11-01 15:12:29.176362'),(55,0,0,0,55,'2023-10-31','2023-11-01 15:12:29.176387'),(56,0,0,0,56,'2023-10-31','2023-11-01 15:12:29.176412'),(57,0,0,0,57,'2023-10-31','2023-11-01 15:12:29.176438'),(58,0,0,0,58,'2023-10-31','2023-11-01 15:12:29.176463'),(59,0,0,0,1,'2023-11-07','2023-11-08 15:10:36.093433'),(60,0,0,0,2,'2023-11-07','2023-11-08 15:10:36.093496'),(61,0,0,0,3,'2023-11-07','2023-11-08 15:10:36.093531'),(62,0,0,0,4,'2023-11-07','2023-11-08 15:10:36.093563'),(63,0,0,0,5,'2023-11-07','2023-11-08 15:10:36.093596'),(64,0,0,0,6,'2023-11-07','2023-11-08 15:10:36.093628'),(65,0,0,0,7,'2023-11-07','2023-11-08 15:10:36.093659'),(66,0,0,0,8,'2023-11-07','2023-11-08 15:10:36.093689'),(67,0,0,0,9,'2023-11-07','2023-11-08 15:10:36.093720'),(68,0,0,0,10,'2023-11-07','2023-11-08 15:10:36.093764'),(69,0,0,0,11,'2023-11-07','2023-11-08 15:10:36.093811'),(70,0,0,0,12,'2023-11-07','2023-11-08 15:10:36.093862'),(71,0,0,0,13,'2023-11-07','2023-11-08 15:10:36.093901'),(72,0,0,0,14,'2023-11-07','2023-11-08 15:10:36.093932'),(73,0,0,0,15,'2023-11-07','2023-11-08 15:10:36.093963'),(74,0,0,0,16,'2023-11-07','2023-11-08 15:10:36.093994'),(75,0,0,0,17,'2023-11-07','2023-11-08 15:10:36.094024'),(76,0,0,0,18,'2023-11-07','2023-11-08 15:10:36.094055'),(77,0,0,0,19,'2023-11-07','2023-11-08 15:10:36.094087'),(78,0,0,0,20,'2023-11-07','2023-11-08 15:10:36.094118'),(79,0,0,0,21,'2023-11-07','2023-11-08 15:10:36.094150'),(80,0,0,0,22,'2023-11-07','2023-11-08 15:10:36.094180'),(81,0,0,0,23,'2023-11-07','2023-11-08 15:10:36.094211'),(82,0,0,0,24,'2023-11-07','2023-11-08 15:10:36.094241'),(83,0,0,0,25,'2023-11-07','2023-11-08 15:10:36.094272'),(84,0,0,0,26,'2023-11-07','2023-11-08 15:10:36.094303'),(85,0,0,0,27,'2023-11-07','2023-11-08 15:10:36.094334'),(86,0,0,0,28,'2023-11-07','2023-11-08 15:10:36.094365'),(87,0,0,0,29,'2023-11-07','2023-11-08 15:10:36.094395'),(88,0,0,0,30,'2023-11-07','2023-11-08 15:10:36.094426'),(89,0,0,0,31,'2023-11-07','2023-11-08 15:10:36.094456'),(90,0,0,0,32,'2023-11-07','2023-11-08 15:10:36.094487'),(91,0,0,0,33,'2023-11-07','2023-11-08 15:10:36.094518'),(92,0,0,0,34,'2023-11-07','2023-11-08 15:10:36.094548'),(93,0,0,0,35,'2023-11-07','2023-11-08 15:10:36.094579'),(94,0,0,0,36,'2023-11-07','2023-11-08 15:10:36.094609'),(95,0,0,0,37,'2023-11-07','2023-11-08 15:10:36.094640'),(96,0,0,0,38,'2023-11-07','2023-11-08 15:10:36.094671'),(97,0,0,0,39,'2023-11-07','2023-11-08 15:10:36.094730'),(98,0,0,0,40,'2023-11-07','2023-11-08 15:10:36.094762'),(99,0,0,0,41,'2023-11-07','2023-11-08 15:10:36.094792'),(100,0,0,0,42,'2023-11-07','2023-11-08 15:10:36.094823'),(101,0,0,0,43,'2023-11-07','2023-11-08 15:10:36.094853'),(102,0,0,0,44,'2023-11-07','2023-11-08 15:10:36.094883'),(103,0,0,0,45,'2023-11-07','2023-11-08 15:10:36.094914'),(104,0,0,0,46,'2023-11-07','2023-11-08 15:10:36.094966'),(105,0,0,0,47,'2023-11-07','2023-11-08 15:10:36.095011'),(106,0,0,0,48,'2023-11-07','2023-11-08 15:10:36.095057'),(107,0,0,0,49,'2023-11-07','2023-11-08 15:10:36.095101'),(108,0,0,0,50,'2023-11-07','2023-11-08 15:10:36.095148'),(109,0,0,0,51,'2023-11-07','2023-11-08 15:10:36.095182'),(110,0,0,0,52,'2023-11-07','2023-11-08 15:10:36.095215'),(111,0,0,0,53,'2023-11-07','2023-11-08 15:10:36.095246'),(112,0,0,0,54,'2023-11-07','2023-11-08 15:10:36.095277'),(113,0,0,0,55,'2023-11-07','2023-11-08 15:10:36.095308'),(114,0,0,0,56,'2023-11-07','2023-11-08 15:10:36.095339'),(115,0,0,0,57,'2023-11-07','2023-11-08 15:10:36.095370'),(116,0,0,0,58,'2023-11-07','2023-11-08 15:10:36.095401'),(117,0,0,0,1,'2023-11-08','2023-11-09 02:20:07.604554'),(118,1,1,0,2,'2023-11-08','2023-11-09 02:20:07.604607'),(119,2,2,0,3,'2023-11-08','2023-11-09 02:20:07.604634'),(120,1,1,0,4,'2023-11-08','2023-11-09 02:20:07.604658'),(121,2,2,0,5,'2023-11-08','2023-11-09 02:20:07.604682'),(122,1,1,0,6,'2023-11-08','2023-11-09 02:20:07.604706'),(123,1,1,0,7,'2023-11-08','2023-11-09 02:20:07.604730'),(124,11,11,0,8,'2023-11-08','2023-11-09 02:20:07.604753'),(125,2,2,0,9,'2023-11-08','2023-11-09 02:20:07.604780'),(126,1,1,0,10,'2023-11-08','2023-11-09 02:20:07.604805'),(127,2,2,0,11,'2023-11-08','2023-11-09 02:20:07.604829'),(128,1,1,0,12,'2023-11-08','2023-11-09 02:20:07.604852'),(129,3,3,0,13,'2023-11-08','2023-11-09 02:20:07.604876'),(130,2,2,0,14,'2023-11-08','2023-11-09 02:20:07.604899'),(131,3,3,0,15,'2023-11-08','2023-11-09 02:20:07.604923'),(132,2,2,0,16,'2023-11-08','2023-11-09 02:20:07.604947'),(133,1,1,0,17,'2023-11-08','2023-11-09 02:20:07.604970'),(134,7,7,0,18,'2023-11-08','2023-11-09 02:20:07.604994'),(135,3,3,0,19,'2023-11-08','2023-11-09 02:20:07.605017'),(136,1,1,0,20,'2023-11-08','2023-11-09 02:20:07.605041'),(137,1,1,0,21,'2023-11-08','2023-11-09 02:20:07.605064'),(138,1,1,0,22,'2023-11-08','2023-11-09 02:20:07.605087'),(139,1,1,0,23,'2023-11-08','2023-11-09 02:20:07.605111'),(140,1,1,0,24,'2023-11-08','2023-11-09 02:20:07.605135'),(141,2,2,0,25,'2023-11-08','2023-11-09 02:20:07.605158'),(142,1,1,0,26,'2023-11-08','2023-11-09 02:20:07.605182'),(143,1,1,0,27,'2023-11-08','2023-11-09 02:20:07.605206'),(144,3,3,0,28,'2023-11-08','2023-11-09 02:20:07.605229'),(145,1,1,0,29,'2023-11-08','2023-11-09 02:20:07.605252'),(146,2,2,0,30,'2023-11-08','2023-11-09 02:20:07.605277'),(147,1,1,0,31,'2023-11-08','2023-11-09 02:20:07.605301'),(148,1,1,0,32,'2023-11-08','2023-11-09 02:20:07.605325'),(149,1,1,0,33,'2023-11-08','2023-11-09 02:20:07.605350'),(150,2,2,0,34,'2023-11-08','2023-11-09 02:20:07.605374'),(151,1,1,0,35,'2023-11-08','2023-11-09 02:20:07.605398'),(152,2,2,0,36,'2023-11-08','2023-11-09 02:20:07.605422'),(153,1,1,0,37,'2023-11-08','2023-11-09 02:20:07.605446'),(154,1,1,0,38,'2023-11-08','2023-11-09 02:20:07.605469'),(155,1,1,0,39,'2023-11-08','2023-11-09 02:20:07.605493'),(156,1,1,0,40,'2023-11-08','2023-11-09 02:20:07.605516'),(157,1,1,0,41,'2023-11-08','2023-11-09 02:20:07.605540'),(158,1,1,0,42,'2023-11-08','2023-11-09 02:20:07.605563'),(159,1,1,0,43,'2023-11-08','2023-11-09 02:20:07.605586'),(160,1,1,0,44,'2023-11-08','2023-11-09 02:20:07.605609'),(161,1,1,0,45,'2023-11-08','2023-11-09 02:20:07.605633'),(162,1,1,0,46,'2023-11-08','2023-11-09 02:20:07.605656'),(163,1,1,0,47,'2023-11-08','2023-11-09 02:20:07.605679'),(164,1,1,0,48,'2023-11-08','2023-11-09 02:20:07.605703'),(165,1,1,0,49,'2023-11-08','2023-11-09 02:20:07.605726'),(166,1,1,0,50,'2023-11-08','2023-11-09 02:20:07.605750'),(167,1,1,0,51,'2023-11-08','2023-11-09 02:20:07.605774'),(168,1,1,0,52,'2023-11-08','2023-11-09 02:20:07.605798'),(169,1,1,0,53,'2023-11-08','2023-11-09 02:20:07.605822'),(170,1,1,0,54,'2023-11-08','2023-11-09 02:20:07.605846'),(171,1,1,0,55,'2023-11-08','2023-11-09 02:20:07.605869'),(172,1,1,0,56,'2023-11-08','2023-11-09 02:20:07.605893'),(173,1,1,0,57,'2023-11-08','2023-11-09 02:20:07.605916'),(174,1,1,0,58,'2023-11-08','2023-11-09 02:20:07.605940'),(175,0,0,0,1,'2023-11-09','2023-11-10 02:20:08.392512'),(176,1,1,0,2,'2023-11-09','2023-11-10 02:20:08.392574'),(177,2,2,0,3,'2023-11-09','2023-11-10 02:20:08.392608'),(178,1,1,0,4,'2023-11-09','2023-11-10 02:20:08.392641'),(179,2,2,0,5,'2023-11-09','2023-11-10 02:20:08.392672'),(180,1,1,0,6,'2023-11-09','2023-11-10 02:20:08.392704'),(181,1,1,0,7,'2023-11-09','2023-11-10 02:20:08.392735'),(182,11,11,0,8,'2023-11-09','2023-11-10 02:20:08.392765'),(183,2,2,0,9,'2023-11-09','2023-11-10 02:20:08.392797'),(184,1,1,0,10,'2023-11-09','2023-11-10 02:20:08.392828'),(185,2,2,0,11,'2023-11-09','2023-11-10 02:20:08.392859'),(186,1,1,0,12,'2023-11-09','2023-11-10 02:20:08.392890'),(187,3,3,0,13,'2023-11-09','2023-11-10 02:20:08.392921'),(188,2,2,0,14,'2023-11-09','2023-11-10 02:20:08.392960'),(189,3,3,0,15,'2023-11-09','2023-11-10 02:20:08.393003'),(190,2,2,0,16,'2023-11-09','2023-11-10 02:20:08.393053'),(191,1,1,0,17,'2023-11-09','2023-11-10 02:20:08.393099'),(192,7,7,0,18,'2023-11-09','2023-11-10 02:20:08.393132'),(193,3,3,0,19,'2023-11-09','2023-11-10 02:20:08.393163'),(194,1,1,0,20,'2023-11-09','2023-11-10 02:20:08.393195'),(195,1,1,0,21,'2023-11-09','2023-11-10 02:20:08.393225'),(196,1,1,0,22,'2023-11-09','2023-11-10 02:20:08.393256'),(197,1,1,0,23,'2023-11-09','2023-11-10 02:20:08.393331'),(198,1,1,0,24,'2023-11-09','2023-11-10 02:20:08.393403'),(199,2,2,0,25,'2023-11-09','2023-11-10 02:20:08.393435'),(200,1,1,0,26,'2023-11-09','2023-11-10 02:20:08.393466'),(201,1,1,0,27,'2023-11-09','2023-11-10 02:20:08.393497'),(202,3,3,0,28,'2023-11-09','2023-11-10 02:20:08.393528'),(203,1,1,0,29,'2023-11-09','2023-11-10 02:20:08.393558'),(204,2,2,0,30,'2023-11-09','2023-11-10 02:20:08.393589'),(205,1,1,0,31,'2023-11-09','2023-11-10 02:20:08.393620'),(206,1,1,0,32,'2023-11-09','2023-11-10 02:20:08.393651'),(207,1,1,0,33,'2023-11-09','2023-11-10 02:20:08.393682'),(208,2,2,0,34,'2023-11-09','2023-11-10 02:20:08.393712'),(209,1,1,0,35,'2023-11-09','2023-11-10 02:20:08.393743'),(210,2,2,0,36,'2023-11-09','2023-11-10 02:20:08.393773'),(211,1,1,0,37,'2023-11-09','2023-11-10 02:20:08.393805'),(212,1,1,0,38,'2023-11-09','2023-11-10 02:20:08.393835'),(213,1,1,0,39,'2023-11-09','2023-11-10 02:20:08.393866'),(214,1,1,0,40,'2023-11-09','2023-11-10 02:20:08.393897'),(215,1,1,0,41,'2023-11-09','2023-11-10 02:20:08.393927'),(216,1,1,0,42,'2023-11-09','2023-11-10 02:20:08.393958'),(217,1,1,0,43,'2023-11-09','2023-11-10 02:20:08.393988'),(218,1,1,0,44,'2023-11-09','2023-11-10 02:20:08.394019'),(219,1,1,0,45,'2023-11-09','2023-11-10 02:20:08.394050'),(220,1,1,0,46,'2023-11-09','2023-11-10 02:20:08.394080'),(221,1,1,0,47,'2023-11-09','2023-11-10 02:20:08.394111'),(222,1,1,0,48,'2023-11-09','2023-11-10 02:20:08.394142'),(223,1,1,0,49,'2023-11-09','2023-11-10 02:20:08.394173'),(224,1,1,0,50,'2023-11-09','2023-11-10 02:20:08.394204'),(225,1,1,0,51,'2023-11-09','2023-11-10 02:20:08.394234'),(226,1,1,0,52,'2023-11-09','2023-11-10 02:20:08.394265'),(227,1,1,0,53,'2023-11-09','2023-11-10 02:20:08.394295'),(228,1,1,0,54,'2023-11-09','2023-11-10 02:20:08.394326'),(229,1,1,0,55,'2023-11-09','2023-11-10 02:20:08.394357'),(230,1,1,0,56,'2023-11-09','2023-11-10 02:20:08.394387'),(231,1,1,0,57,'2023-11-09','2023-11-10 02:20:08.394418'),(232,1,1,0,58,'2023-11-09','2023-11-10 02:20:08.394450'),(233,0,0,0,1,'2023-11-10','2023-11-11 02:20:08.673048'),(234,1,1,0,2,'2023-11-10','2023-11-11 02:20:08.673103'),(235,2,2,0,3,'2023-11-10','2023-11-11 02:20:08.673130'),(236,1,1,0,4,'2023-11-10','2023-11-11 02:20:08.673155'),(237,2,2,0,5,'2023-11-10','2023-11-11 02:20:08.673180'),(238,1,1,0,6,'2023-11-10','2023-11-11 02:20:08.673205'),(239,1,1,0,7,'2023-11-10','2023-11-11 02:20:08.673231'),(240,11,11,0,8,'2023-11-10','2023-11-11 02:20:08.673255'),(241,2,2,0,9,'2023-11-10','2023-11-11 02:20:08.673297'),(242,1,1,0,10,'2023-11-10','2023-11-11 02:20:08.673327'),(243,2,2,0,11,'2023-11-10','2023-11-11 02:20:08.673357'),(244,1,1,0,12,'2023-11-10','2023-11-11 02:20:08.673387'),(245,3,3,0,13,'2023-11-10','2023-11-11 02:20:08.673417'),(246,2,2,0,14,'2023-11-10','2023-11-11 02:20:08.673446'),(247,3,3,0,15,'2023-11-10','2023-11-11 02:20:08.673476'),(248,2,2,0,16,'2023-11-10','2023-11-11 02:20:08.673506'),(249,1,1,0,17,'2023-11-10','2023-11-11 02:20:08.673535'),(250,7,7,0,18,'2023-11-10','2023-11-11 02:20:08.673565'),(251,3,3,0,19,'2023-11-10','2023-11-11 02:20:08.673596'),(252,1,1,0,20,'2023-11-10','2023-11-11 02:20:08.673626'),(253,1,1,0,21,'2023-11-10','2023-11-11 02:20:08.673655'),(254,1,1,0,22,'2023-11-10','2023-11-11 02:20:08.673685'),(255,1,1,0,23,'2023-11-10','2023-11-11 02:20:08.673715'),(256,1,1,0,24,'2023-11-10','2023-11-11 02:20:08.673745'),(257,2,2,0,25,'2023-11-10','2023-11-11 02:20:08.673774'),(258,1,1,0,26,'2023-11-10','2023-11-11 02:20:08.673804'),(259,1,1,0,27,'2023-11-10','2023-11-11 02:20:08.673965'),(260,3,3,0,28,'2023-11-10','2023-11-11 02:20:08.673997'),(261,1,1,0,29,'2023-11-10','2023-11-11 02:20:08.674027'),(262,2,2,0,30,'2023-11-10','2023-11-11 02:20:08.674057'),(263,1,1,0,31,'2023-11-10','2023-11-11 02:20:08.674086'),(264,1,1,0,32,'2023-11-10','2023-11-11 02:20:08.674116'),(265,1,1,0,33,'2023-11-10','2023-11-11 02:20:08.674146'),(266,2,2,0,34,'2023-11-10','2023-11-11 02:20:08.674175'),(267,1,1,0,35,'2023-11-10','2023-11-11 02:20:08.674205'),(268,2,2,0,36,'2023-11-10','2023-11-11 02:20:08.674235'),(269,1,1,0,37,'2023-11-10','2023-11-11 02:20:08.674265'),(270,1,1,0,38,'2023-11-10','2023-11-11 02:20:08.674294'),(271,1,1,0,39,'2023-11-10','2023-11-11 02:20:08.674325'),(272,1,1,0,40,'2023-11-10','2023-11-11 02:20:08.674355'),(273,1,1,0,41,'2023-11-10','2023-11-11 02:20:08.674385'),(274,1,1,0,42,'2023-11-10','2023-11-11 02:20:08.674415'),(275,1,1,0,43,'2023-11-10','2023-11-11 02:20:08.674445'),(276,1,1,0,44,'2023-11-10','2023-11-11 02:20:08.674475'),(277,1,1,0,45,'2023-11-10','2023-11-11 02:20:08.674505'),(278,1,1,0,46,'2023-11-10','2023-11-11 02:20:08.674535'),(279,1,1,0,47,'2023-11-10','2023-11-11 02:20:08.674565'),(280,1,1,0,48,'2023-11-10','2023-11-11 02:20:08.674595'),(281,1,1,0,49,'2023-11-10','2023-11-11 02:20:08.674625'),(282,1,1,0,50,'2023-11-10','2023-11-11 02:20:08.674655'),(283,1,1,0,51,'2023-11-10','2023-11-11 02:20:08.674727'),(284,1,1,0,52,'2023-11-10','2023-11-11 02:20:08.674761'),(285,1,1,0,53,'2023-11-10','2023-11-11 02:20:08.674791'),(286,1,1,0,54,'2023-11-10','2023-11-11 02:20:08.674821'),(287,1,1,0,55,'2023-11-10','2023-11-11 02:20:08.674851'),(288,1,1,0,56,'2023-11-10','2023-11-11 02:20:08.674881'),(289,1,1,0,57,'2023-11-10','2023-11-11 02:20:08.674911'),(290,1,1,0,58,'2023-11-10','2023-11-11 02:20:08.674941'),(291,0,0,0,1,'2023-11-11','2023-11-12 02:20:08.707516'),(292,1,1,0,2,'2023-11-11','2023-11-12 02:20:08.707565'),(293,2,2,0,3,'2023-11-11','2023-11-12 02:20:08.707591'),(294,1,1,0,4,'2023-11-11','2023-11-12 02:20:08.707621'),(295,2,2,0,5,'2023-11-11','2023-11-12 02:20:08.707645'),(296,1,1,0,6,'2023-11-11','2023-11-12 02:20:08.707669'),(297,1,1,0,7,'2023-11-11','2023-11-12 02:20:08.707692'),(298,11,11,0,8,'2023-11-11','2023-11-12 02:20:08.707716'),(299,2,2,0,9,'2023-11-11','2023-11-12 02:20:08.707739'),(300,1,1,0,10,'2023-11-11','2023-11-12 02:20:08.707763'),(301,2,2,0,11,'2023-11-11','2023-11-12 02:20:08.707786'),(302,1,1,0,12,'2023-11-11','2023-11-12 02:20:08.707809'),(303,3,3,0,13,'2023-11-11','2023-11-12 02:20:08.707833'),(304,2,2,0,14,'2023-11-11','2023-11-12 02:20:08.707856'),(305,3,3,0,15,'2023-11-11','2023-11-12 02:20:08.707880'),(306,2,2,0,16,'2023-11-11','2023-11-12 02:20:08.707903'),(307,1,1,0,17,'2023-11-11','2023-11-12 02:20:08.707927'),(308,7,7,0,18,'2023-11-11','2023-11-12 02:20:08.707950'),(309,3,3,0,19,'2023-11-11','2023-11-12 02:20:08.707973'),(310,1,1,0,20,'2023-11-11','2023-11-12 02:20:08.707997'),(311,1,1,0,21,'2023-11-11','2023-11-12 02:20:08.708020'),(312,1,1,0,22,'2023-11-11','2023-11-12 02:20:08.708044'),(313,1,1,0,23,'2023-11-11','2023-11-12 02:20:08.708067'),(314,1,1,0,24,'2023-11-11','2023-11-12 02:20:08.708090'),(315,2,2,0,25,'2023-11-11','2023-11-12 02:20:08.708113'),(316,1,1,0,26,'2023-11-11','2023-11-12 02:20:08.708136'),(317,1,1,0,27,'2023-11-11','2023-11-12 02:20:08.708160'),(318,3,3,0,28,'2023-11-11','2023-11-12 02:20:08.708183'),(319,1,1,0,29,'2023-11-11','2023-11-12 02:20:08.708206'),(320,2,2,0,30,'2023-11-11','2023-11-12 02:20:08.708229'),(321,1,1,0,31,'2023-11-11','2023-11-12 02:20:08.708252'),(322,1,1,0,32,'2023-11-11','2023-11-12 02:20:08.708275'),(323,1,1,0,33,'2023-11-11','2023-11-12 02:20:08.708298'),(324,2,2,0,34,'2023-11-11','2023-11-12 02:20:08.708321'),(325,1,1,0,35,'2023-11-11','2023-11-12 02:20:08.708344'),(326,2,2,0,36,'2023-11-11','2023-11-12 02:20:08.708368'),(327,1,1,0,37,'2023-11-11','2023-11-12 02:20:08.708391'),(328,1,1,0,38,'2023-11-11','2023-11-12 02:20:08.708414'),(329,1,1,0,39,'2023-11-11','2023-11-12 02:20:08.708437'),(330,1,1,0,40,'2023-11-11','2023-11-12 02:20:08.708460'),(331,1,1,0,41,'2023-11-11','2023-11-12 02:20:08.708484'),(332,1,1,0,42,'2023-11-11','2023-11-12 02:20:08.708507'),(333,1,1,0,43,'2023-11-11','2023-11-12 02:20:08.708530'),(334,1,1,0,44,'2023-11-11','2023-11-12 02:20:08.708553'),(335,1,1,0,45,'2023-11-11','2023-11-12 02:20:08.708577'),(336,1,1,0,46,'2023-11-11','2023-11-12 02:20:08.708600'),(337,1,1,0,47,'2023-11-11','2023-11-12 02:20:08.708626'),(338,1,1,0,48,'2023-11-11','2023-11-12 02:20:08.708649'),(339,1,1,0,49,'2023-11-11','2023-11-12 02:20:08.708673'),(340,1,1,0,50,'2023-11-11','2023-11-12 02:20:08.708696'),(341,1,1,0,51,'2023-11-11','2023-11-12 02:20:08.708719'),(342,1,1,0,52,'2023-11-11','2023-11-12 02:20:08.708742'),(343,1,1,0,53,'2023-11-11','2023-11-12 02:20:08.708765'),(344,1,1,0,54,'2023-11-11','2023-11-12 02:20:08.708788'),(345,1,1,0,55,'2023-11-11','2023-11-12 02:20:08.708812'),(346,1,1,0,56,'2023-11-11','2023-11-12 02:20:08.708835'),(347,1,1,0,57,'2023-11-11','2023-11-12 02:20:08.708858'),(348,1,1,0,58,'2023-11-11','2023-11-12 02:20:08.708881'),(349,0,0,0,1,'2023-11-12','2023-11-13 02:20:08.723490'),(350,1,1,0,2,'2023-11-12','2023-11-13 02:20:08.723554'),(351,2,2,0,3,'2023-11-12','2023-11-13 02:20:08.723589'),(352,1,1,0,4,'2023-11-12','2023-11-13 02:20:08.723621'),(353,2,2,0,5,'2023-11-12','2023-11-13 02:20:08.723652'),(354,1,1,0,6,'2023-11-12','2023-11-13 02:20:08.723683'),(355,1,1,0,7,'2023-11-12','2023-11-13 02:20:08.723715'),(356,11,11,0,8,'2023-11-12','2023-11-13 02:20:08.723748'),(357,2,2,0,9,'2023-11-12','2023-11-13 02:20:08.723779'),(358,1,1,0,10,'2023-11-12','2023-11-13 02:20:08.723810'),(359,2,2,0,11,'2023-11-12','2023-11-13 02:20:08.723841'),(360,1,1,0,12,'2023-11-12','2023-11-13 02:20:08.723872'),(361,3,3,0,13,'2023-11-12','2023-11-13 02:20:08.723903'),(362,2,2,0,14,'2023-11-12','2023-11-13 02:20:08.723933'),(363,3,3,0,15,'2023-11-12','2023-11-13 02:20:08.723964'),(364,2,2,0,16,'2023-11-12','2023-11-13 02:20:08.723995'),(365,1,1,0,17,'2023-11-12','2023-11-13 02:20:08.724025'),(366,7,7,0,18,'2023-11-12','2023-11-13 02:20:08.724062'),(367,3,3,0,19,'2023-11-12','2023-11-13 02:20:08.724093'),(368,1,1,0,20,'2023-11-12','2023-11-13 02:20:08.724123'),(369,1,1,0,21,'2023-11-12','2023-11-13 02:20:08.724154'),(370,1,1,0,22,'2023-11-12','2023-11-13 02:20:08.724185'),(371,1,1,0,23,'2023-11-12','2023-11-13 02:20:08.724216'),(372,1,1,0,24,'2023-11-12','2023-11-13 02:20:08.724247'),(373,2,2,0,25,'2023-11-12','2023-11-13 02:20:08.724278'),(374,1,1,0,26,'2023-11-12','2023-11-13 02:20:08.724309'),(375,1,1,0,27,'2023-11-12','2023-11-13 02:20:08.724340'),(376,3,3,0,28,'2023-11-12','2023-11-13 02:20:08.724370'),(377,1,1,0,29,'2023-11-12','2023-11-13 02:20:08.724400'),(378,2,2,0,30,'2023-11-12','2023-11-13 02:20:08.724431'),(379,1,1,0,31,'2023-11-12','2023-11-13 02:20:08.724461'),(380,1,1,0,32,'2023-11-12','2023-11-13 02:20:08.724492'),(381,1,1,0,33,'2023-11-12','2023-11-13 02:20:08.724522'),(382,2,2,0,34,'2023-11-12','2023-11-13 02:20:08.724552'),(383,1,1,0,35,'2023-11-12','2023-11-13 02:20:08.724583'),(384,2,2,0,36,'2023-11-12','2023-11-13 02:20:08.724613'),(385,1,1,0,37,'2023-11-12','2023-11-13 02:20:08.724644'),(386,1,1,0,38,'2023-11-12','2023-11-13 02:20:08.724675'),(387,1,1,0,39,'2023-11-12','2023-11-13 02:20:08.724705'),(388,1,1,0,40,'2023-11-12','2023-11-13 02:20:08.724736'),(389,1,1,0,41,'2023-11-12','2023-11-13 02:20:08.724766'),(390,1,1,0,42,'2023-11-12','2023-11-13 02:20:08.724796'),(391,1,1,0,43,'2023-11-12','2023-11-13 02:20:08.724827'),(392,1,1,0,44,'2023-11-12','2023-11-13 02:20:08.724857'),(393,1,1,0,45,'2023-11-12','2023-11-13 02:20:08.724887'),(394,1,1,0,46,'2023-11-12','2023-11-13 02:20:08.724917'),(395,1,1,0,47,'2023-11-12','2023-11-13 02:20:08.724948'),(396,1,1,0,48,'2023-11-12','2023-11-13 02:20:08.724979'),(397,1,1,0,49,'2023-11-12','2023-11-13 02:20:08.725010'),(398,1,1,0,50,'2023-11-12','2023-11-13 02:20:08.725040'),(399,1,1,0,51,'2023-11-12','2023-11-13 02:20:08.725070'),(400,1,1,0,52,'2023-11-12','2023-11-13 02:20:08.725101'),(401,1,1,0,53,'2023-11-12','2023-11-13 02:20:08.725131'),(402,1,1,0,54,'2023-11-12','2023-11-13 02:20:08.725161'),(403,1,1,0,55,'2023-11-12','2023-11-13 02:20:08.725192'),(404,1,1,0,56,'2023-11-12','2023-11-13 02:20:08.725222'),(405,1,1,0,57,'2023-11-12','2023-11-13 02:20:08.725252'),(406,1,1,0,58,'2023-11-12','2023-11-13 02:20:08.725283');
+/*!40000 ALTER TABLE `api_snapshotdailylocationcounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_transferfile`
+--
+
+DROP TABLE IF EXISTS `api_transferfile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_transferfile` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `file_type` varchar(150) NOT NULL,
+  `file_name` longtext NOT NULL,
+  `file_url` longtext NOT NULL,
+  `bytes` bigint NOT NULL,
+  `file_created` datetime(6) NOT NULL,
+  `file_purpose` varchar(50) NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `transfer_id` int DEFAULT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `api_transferfile_created_by_id_eb950b6f_fk_api_detai` (`created_by_id`),
+  KEY `api_transferfile_transfer_id_93e2fc4e_fk_api_asset` (`transfer_id`),
+  CONSTRAINT `api_transferfile_created_by_id_eb950b6f_fk_api_detai` FOREIGN KEY (`created_by_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_transferfile_transfer_id_93e2fc4e_fk_api_asset` FOREIGN KEY (`transfer_id`) REFERENCES `api_assettransfer` (`asset_transfer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_transferfile`
+--
+
+LOCK TABLES `api_transferfile` WRITE;
+/*!40000 ALTER TABLE `api_transferfile` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_transferfile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `api_userconfiguration`
+--
+
+DROP TABLE IF EXISTS `api_userconfiguration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `api_userconfiguration` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date_modified` datetime(6) NOT NULL,
+  `sound` tinyint(1) NOT NULL,
+  `sound_percentage` int unsigned NOT NULL,
+  `dashboard_layout` longtext,
+  `table_filter` longtext,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `api_userconfiguratio_user_id_0dd3d13f_fk_api_detai` (`user_id`),
+  CONSTRAINT `api_userconfiguratio_user_id_0dd3d13f_fk_api_detai` FOREIGN KEY (`user_id`) REFERENCES `api_detaileduser` (`detailed_user_id`),
+  CONSTRAINT `api_userconfiguration_chk_1` CHECK ((`sound_percentage` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `api_userconfiguration`
+--
+
+LOCK TABLES `api_userconfiguration` WRITE;
+/*!40000 ALTER TABLE `api_userconfiguration` DISABLE KEYS */;
+INSERT INTO `api_userconfiguration` VALUES (1,'2023-10-16 06:46:27.062833',0,0,'{\'exec_layout\': {\'lg\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 17.7, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 24.299999999999997, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 30.9, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 37.5, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 5, \'x\': 0, \'y\': 44.1, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 49.1, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 55.7, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 5, \'x\': 0, \'y\': 62.300000000000004, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 5, \'x\': 0, \'y\': 67.30000000000001, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 5}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 5}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 5}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 5}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 5}], \'md\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 17.7, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 24.299999999999997, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 30.9, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 37.5, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 44.1, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 49.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 55.7, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 62.300000000000004, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 67.30000000000001, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}], \'sm\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 2, \'y\': 0, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 1, \'y\': 0, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 4.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 11.1, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 17.7, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 24.299999999999997, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 30.9, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 37.5, \'i\': \'h\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 44.1, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 49.1, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 55.7, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 62.300000000000004, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.6, \'x\': 0, \'y\': 67.30000000000001, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 50.699999999999996, \'w\': 3, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 57.3, \'w\': 3, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 63.9, \'w\': 3, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 70.5, \'w\': 3, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 77.1, \'w\': 3, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 83.69999999999999, \'w\': 3, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 90.3, \'w\': 3, \'h\': 6.6}], \'xs\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 4.5, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 9, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 5, \'x\': 0, \'y\': 13.5, \'i\': \'xx\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 18.5, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 23, \'i\': \'e\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 27.5, \'i\': \'f\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 32, \'i\': \'g\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 5.699999999999999, \'x\': 0, \'y\': 43, \'i\': \'i\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6.5, \'x\': 0, \'y\': 36.5, \'i\': \'jj\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6.5, \'x\': 0, \'y\': 48.7, \'i\': \'kk\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6.5, \'x\': 0, \'y\': 55.2, \'i\': \'ll\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6.5, \'x\': 0, \'y\': 61.7, \'i\': \'mm\', \'moved\': False, \'static\': False}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.5}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.5}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.5}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.5}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.5}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.5}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.5}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.5}], \'xxs\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 1, \'h\': 4.5}, {\'i\': \'b\', \'x\': 0, \'y\': 4.5, \'w\': 1, \'h\': 4.5}, {\'i\': \'c\', \'x\': 0, \'y\': 9, \'w\': 1, \'h\': 4.5}, {\'i\': \'xx\', \'x\': 0, \'y\': 13.5, \'w\': 1, \'h\': 5.2}, {\'i\': \'d\', \'x\': 0, \'y\': 18.5, \'w\': 1, \'h\': 4.5}, {\'i\': \'e\', \'x\': 0, \'y\': 23, \'w\': 1, \'h\': 4.5}, {\'i\': \'f\', \'x\': 0, \'y\': 27.5, \'w\': 1, \'h\': 4.5}, {\'i\': \'g\', \'x\': 0, \'y\': 32, \'w\': 1, \'h\': 4.5}, {\'i\': \'i\', \'x\': 0, \'y\': 43, \'w\': 1, \'h\': 6.199999999999999}, {\'i\': \'jj\', \'x\': 0, \'y\': 36.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 48.7, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 55.2, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 61.7, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 39.8, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'jj\', \'x\': 0, \'y\': 45, \'w\': 1, \'h\': 6.6}, {\'i\': \'kk\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'ll\', \'x\': 0, \'y\': 49.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'mm\', \'x\': 0, \'y\': 54, \'w\': 1, \'h\': 6.6}, {\'i\': \'nn\', \'x\': 0, \'y\': 58.5, \'w\': 1, \'h\': 6.6}, {\'i\': \'oo\', \'x\': 0, \'y\': 63, \'w\': 1, \'h\': 6.6}, {\'i\': \'pp\', \'x\': 0, \'y\': 67.5, \'w\': 1, \'h\': 6.6}]}, \'mngr_layout\': {\'lg\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 3, \'h\': 6.5}, {\'i\': \'b\', \'x\': 0, \'y\': 6.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'c\', \'x\': 0, \'y\': 13, \'w\': 3, \'h\': 4.5}, {\'i\': \'d\', \'x\': 0, \'y\': 17.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'e\', \'x\': 0, \'y\': 24, \'w\': 3, \'h\': 6.5}], \'md\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 3, \'h\': 6.5}, {\'i\': \'b\', \'x\': 0, \'y\': 6.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'c\', \'x\': 0, \'y\': 13, \'w\': 3, \'h\': 4.5}, {\'i\': \'d\', \'x\': 0, \'y\': 17.5, \'w\': 3, \'h\': 6.5}, {\'i\': \'e\', \'x\': 0, \'y\': 24, \'w\': 3, \'h\': 6.5}], \'sm\': [{\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 6.5, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 4.5, \'x\': 0, \'y\': 13, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 17.5, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 3, \'h\': 6.5, \'x\': 0, \'y\': 24, \'i\': \'e\', \'moved\': False, \'static\': False}], \'xs\': [{\'i\': \'a\', \'x\': 0, \'y\': 0, \'w\': 1, \'h\': 4.5}, {\'i\': \'b\', \'x\': 0, \'y\': 4.5, \'w\': 1, \'h\': 4.5}, {\'i\': \'c\', \'x\': 0, \'y\': 9, \'w\': 1, \'h\': 4.5}, {\'i\': \'e\', \'x\': 0, \'y\': 19.5, \'w\': 1, \'h\': 6}], \'xxs\': [{\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 0, \'i\': \'a\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 4.5, \'i\': \'b\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 4.5, \'x\': 0, \'y\': 9, \'i\': \'c\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 1, \'x\': 0, \'y\': 19.5, \'i\': \'d\', \'moved\': False, \'static\': False}, {\'w\': 1, \'h\': 6, \'x\': 0, \'y\': 13.5, \'i\': \'e\', \'moved\': False, \'static\': False}]}}','{\'saint john\': {\'manufacturer\': [{\'name\': \'Saint John Shipbuilding\'}]}}',1);
+/*!40000 ALTER TABLE `api_userconfiguration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_content_type`
+--
+
+DROP TABLE IF EXISTS `django_content_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_content_type` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_content_type`
+--
+
+LOCK TABLES `django_content_type` WRITE;
+/*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
+INSERT INTO `django_content_type` VALUES (86,'api','accidentfilemodel'),(6,'api','accidentmodel'),(85,'api','accidentmodelhistory'),(7,'api','acquisitioncost'),(84,'api','acquisitioncostmodelhistory'),(8,'api','approval'),(83,'api','approvalmodelhistory'),(9,'api','approvedvendordepartments'),(82,'api','approvedvendorrequest'),(10,'api','approvedvendorsmodel'),(11,'api','approvedvendortasks'),(81,'api','assetdailycheckscomment'),(12,'api','assetdailychecksmodel'),(80,'api','assetdailychecksmodelhistory'),(79,'api','assetdisposalfile'),(13,'api','assetdisposalmodel'),(78,'api','assetdisposalmodelhistory'),(77,'api','assetfile'),(14,'api','assetissuecategory'),(76,'api','assetissuefilemodel'),(15,'api','assetissuemodel'),(75,'api','assetissuemodelhistory'),(74,'api','assetlog'),(16,'api','assetmanufacturermodel'),(17,'api','assetmodel'),(73,'api','assetmodelhistory'),(18,'api','assetrequestjustificationmodel'),(19,'api','assetrequestmodel'),(72,'api','assetrequestmodelhistory'),(20,'api','assettransfer'),(71,'api','assettransfermodelhistory'),(21,'api','assettypechecks'),(70,'api','assettypecheckshistory'),(22,'api','assettypemodel'),(23,'api','businessunitmodel'),(24,'api','company'),(25,'api','currency'),(69,'api','dailyinspection'),(26,'api','dailyinspectionhistory'),(27,'api','deliverycost'),(68,'api','deliverycosthistory'),(28,'api','detaileduser'),(67,'api','detailedusermodelhistory'),(66,'api','equipmenttypemodel'),(29,'api','errorreport'),(65,'api','errorreportfile'),(30,'api','fleetguru'),(64,'api','fuelcard'),(31,'api','fuelcost'),(63,'api','fuelcostmodelhistory'),(62,'api','fueltype'),(32,'api','inspectiontypemodel'),(33,'api','insurancecost'),(61,'api','insurancecostmodelhistory'),(34,'api','jobspecification'),(35,'api','laborcost'),(60,'api','laborcostmodelhistory'),(36,'api','licensecost'),(59,'api','licensecostmodelhistory'),(37,'api','locationmodel'),(38,'api','maintenanceforecastrules'),(58,'api','maintenanceforecastruleshistory'),(57,'api','maintenancerequestfile'),(39,'api','maintenancerequestmodel'),(56,'api','maintenancerequestmodelhistory'),(55,'api','notificationconfiguration'),(40,'api','parts'),(54,'api','partsmodelhistory'),(41,'api','rentalcost'),(53,'api','rentalcostmodelhistory'),(52,'api','repairfile'),(42,'api','repairsmodel'),(51,'api','repairsmodelhistory'),(43,'api','rolepermissions'),(44,'api','snapshotdailyasset'),(45,'api','snapshotdailycounts'),(50,'api','snapshotdailycurrency'),(46,'api','snapshotdailylocationcost'),(47,'api','snapshotdailylocationcounts'),(49,'api','transferfile'),(48,'api','userconfiguration'),(4,'api_auth','user'),(5,'api_auth','usermodelhistory'),(2,'auth','group'),(1,'auth','permission'),(3,'contenttypes','contenttype');
+/*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_migrations`
+--
+
+DROP TABLE IF EXISTS `django_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `django_migrations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `app` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `applied` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_migrations`
+--
+
+LOCK TABLES `django_migrations` WRITE;
+/*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2023-10-16 19:09:03.299982'),(2,'contenttypes','0002_remove_content_type_name','2023-10-16 19:09:03.744817'),(3,'auth','0001_initial','2023-10-16 19:09:03.830394'),(4,'auth','0002_alter_permission_name_max_length','2023-10-16 19:09:03.907366'),(5,'auth','0003_alter_user_email_max_length','2023-10-16 19:09:03.986861'),(6,'auth','0004_alter_user_username_opts','2023-10-16 19:09:04.065853'),(7,'auth','0005_alter_user_last_login_null','2023-10-16 19:09:04.152302'),(8,'auth','0006_require_contenttypes_0002','2023-10-16 19:09:04.229983'),(9,'auth','0007_alter_validators_add_error_messages','2023-10-16 19:09:04.327222'),(10,'auth','0008_alter_user_username_max_length','2023-10-16 19:09:04.408912'),(11,'auth','0009_alter_user_last_name_max_length','2023-10-16 19:09:04.487403'),(12,'auth','0010_alter_group_name_max_length','2023-10-16 19:09:04.568649'),(13,'auth','0011_update_proxy_permissions','2023-10-16 19:09:04.746692'),(14,'api_auth','0001_initial','2023-10-16 19:09:04.831751'),(15,'api','0001_initial','2023-10-16 19:12:01.604146'),(16,'api','0002_maintenancerequestmodel_description','2023-10-16 19:12:51.995353'),(17,'api','0003_auto_20231016_1250','2023-10-16 19:12:52.378862');
+/*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-01-22 12:19:21
