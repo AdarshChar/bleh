@@ -4,7 +4,7 @@ resource "aws_security_group" "db" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "Postgres from allowed CIDRs"
+    description = "DB from allowed CIDRs"
     from_port   = var.db_port
     to_port     = var.db_port
     protocol    = "tcp"
@@ -43,24 +43,43 @@ resource "aws_db_subnet_group" "this" {
 }
 
 locals {
+  engine_family = startswith(var.db_engine, "sqlserver") ? "sqlserver" : var.db_engine
+
   # If the user didn't specify a version, pick the right one for the engine
-  default_version = var.db_engine_version != null ? var.db_engine_version : (var.db_engine == "postgres" ? "16.6" : "8.0.35")
+  default_version = var.db_engine_version != null ? var.db_engine_version : (
+    local.engine_family == "postgres" ? "16.6" :
+    local.engine_family == "mysql" ? "8.0.35" :
+    null
+  )
 
   # Logic for Port
-  actual_port = var.db_port != null ? var.db_port : (var.db_engine == "postgres" ? 5432 : 3306)
+  actual_port = var.db_port != null ? var.db_port : (
+    local.engine_family == "postgres" ? 5432 :
+    local.engine_family == "mysql" ? 3306 :
+    local.engine_family == "sqlserver" ? 1433 :
+    null
+  )
+
+  # Default instance class by engine
+  actual_instance_class = var.db_instance_class != null ? var.db_instance_class : (
+    local.engine_family == "sqlserver" ? "db.t3.micro" : "db.t4g.micro"
+  )
+
+  # SQL Server does not support initial DB name
+  db_name_for_engine = local.engine_family == "sqlserver" ? null : var.db_name
 }
 
 resource "aws_db_instance" "this" {
   identifier              = "${var.project_name}-rds"
   engine                  = var.db_engine
   engine_version          = local.default_version
-  instance_class          = var.db_instance_class
+  instance_class          = local.actual_instance_class
   allocated_storage       = var.db_allocated_storage
 
-  db_name                 = var.db_name
+  db_name                 = local.db_name_for_engine
   username                = var.db_username
   password                = var.db_password
-  port                    =local.actual_port
+  port                    = local.actual_port
 
   vpc_security_group_ids  = [aws_security_group.db.id]
   db_subnet_group_name    = aws_db_subnet_group.this.name
@@ -92,7 +111,7 @@ resource "null_resource" "apply_schema" {
     db_endpoint = aws_db_instance.this.address
     db_name      = var.db_name
     db_user      = var.db_username
-    db_port      = tostring(var.db_port)
+    db_port      = tostring(local.actual_port)
     engine       = var.db_engine
   }
 
@@ -136,6 +155,10 @@ elif [ "${var.db_engine}" == "mysql" ]; then
     # MySQL uses -h for host, -P for port, and < for the file input
     mysql -h ${aws_db_instance.this.address} -P ${local.actual_port} -u ${var.db_username} ${var.db_name} < "${var.schema_file_path}"
 
+elif [[ "${var.db_engine}" == sqlserver-* ]]; then
+    echo "Detected SQL Server. Schema application is not automated."
+    echo "Set apply_schema = false and apply the schema manually."
+    exit 1
 else
     echo "Error: Unsupported engine ${var.db_engine}"
     exit 1
