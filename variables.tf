@@ -29,25 +29,23 @@ variable "db_engine" {
   type    = string
   default = "postgres"
   validation {
-    condition     = contains(["postgres", "mysql"], var.db_engine)
-    error_message = "Supported engines are 'postgres' or 'mysql'."
+    condition = contains(
+      ["postgres", "mysql", "sqlserver-ex", "sqlserver-web", "sqlserver-se", "sqlserver-ee"],
+      var.db_engine
+    )
+    error_message = "Supported engines are 'postgres', 'mysql', or SQL Server variants: 'sqlserver-ex', 'sqlserver-web', 'sqlserver-se', 'sqlserver-ee'."
   }
 }
 variable "db_engine_version" {
   type    = string
-  default = "16.6"
-}
-locals {
-  # If the user didn't specify a version, pick the right one for the engine
-  default_version = var.db_engine_version != null ? var.db_engine_version : (var.db_engine == "postgres" ? "16.6" : "8.0.35")
-
-  # Logic for Port
-  actual_port = var.db_port != null ? var.db_port : (var.db_engine == "postgres" ? 5432 : 3306)
+  default = null
+  description = "Optional engine version. If null, defaults are used for Postgres/MySQL; SQL Server uses the AWS default."
 }
 
 variable "db_instance_class" {
   type    = string
-  default = "db.t4g.micro"
+  default = null
+  description = "Instance class. If null, a per-engine default is selected."
 }
 variable "db_allocated_storage" {
   type    = number
@@ -56,6 +54,7 @@ variable "db_allocated_storage" {
 variable "db_name" {
   type    = string
   default = "schematest"
+  description = "Initial database name (not used by SQL Server engines)."
 }
 variable "db_username" {
   type    = string
@@ -67,7 +66,8 @@ variable "db_password" {
 }
 variable "db_port" {
   type    = number
-  default = 5432
+  default = null
+  description = "Optional override for DB port. If null, engine defaults are used."
 }
 
 variable "allowed_cidr_blocks" {
@@ -78,11 +78,16 @@ variable "allowed_cidr_blocks" {
 # Schema apply
 variable "apply_schema" {
   type    = bool
-  default = true
+  default = false
 }
 variable "schema_file_path" {
   type    = string
-  default = "schemas/aukai_23_dump/skyit_demo_1_schema.sql"
+  default = null
+  description = "Path to the schema file to apply when apply_schema is true."
+  validation {
+    condition     = var.apply_schema ? (var.schema_file_path != null && length(trim(var.schema_file_path)) > 0) : true
+    error_message = "schema_file_path must be set when apply_schema is true."
+  }
 }
 variable "db_sslmode" {
   type    = string
